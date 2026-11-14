@@ -1,0 +1,7 @@
+node_modules/
+dist/
+# Le PDF source n'est pas versionné : les règles extraites (src/data/*.json) le sont.
+*.pdf
+*:Zone.Identifier
+playwright-report/
+test-results/

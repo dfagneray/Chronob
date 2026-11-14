@@ -1,0 +1,52 @@
+[
+ {
+  "id": "aveugle",
+  "nom": "Aveuglé",
+  "description": "-5 en Init., attaque et DEF, -10 en attaque à distance. Les attaques magiques nécessitant de voir la cible sont impossibles. "
+ },
+ {
+  "id": "affaibli",
+  "nom": "Affaibli",
+  "description": "Dé malus à tous les tests. "
+ },
+ {
+  "id": "essouffle",
+  "nom": "Essoufflé",
+  "description": "Le déplacement est limité à 5 m par action de mouvement. "
+ },
+ {
+  "id": "etourdi",
+  "nom": "Étourdi",
+  "description": "Aucune action possible et -5 en DEF. "
+ },
+ {
+  "id": "immobilise",
+  "nom": "Immobilisé",
+  "description": "Pas de déplacement et dé malus aux tests d’attaque. "
+ },
+ {
+  "id": "invalide",
+  "nom": "Invalide",
+  "description": "Le déplacement est limité à 5 m par action de mouvement. "
+ },
+ {
+  "id": "paralyse",
+  "nom": "Paralysé",
+  "description": "Aucune action possible, en cas d’attaque touché automatiquement et subit un critique. "
+ },
+ {
+  "id": "ralenti",
+  "nom": "Ralenti",
+  "description": "Une seule action par round (action d’attaque ou de mouvement). "
+ },
+ {
+  "id": "renverse",
+  "nom": "Renversé",
+  "description": "-5 en attaque et DEF, nécessite une action d’attaque pour se relever. "
+ },
+ {
+  "id": "surpris",
+  "nom": "Surpris",
+  "description": "Pas d’action et -5 en DEF au premier round de combat."
+ }
+]

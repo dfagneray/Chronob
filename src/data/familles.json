@@ -1,0 +1,30 @@
+{
+ "aventuriers": {
+  "nom": "Aventuriers",
+  "pv": 4,
+  "dr": 8,
+  "bonus": "+1 point de chance",
+  "caracCommune": "AGI"
+ },
+ "combattants": {
+  "nom": "Combattants",
+  "pv": 5,
+  "dr": 10,
+  "bonus": null,
+  "caracCommune": "FOR"
+ },
+ "mages": {
+  "nom": "Mages",
+  "pv": 3,
+  "dr": 6,
+  "bonus": "+1 capacité de rang 2",
+  "caracCommune": "INT"
+ },
+ "mystiques": {
+  "nom": "Mystiques",
+  "pv": 4,
+  "dr": 8,
+  "bonus": "+1 dé de récupération",
+  "caracCommune": "VOL"
+ }
+}

@@ -1,0 +1,3 @@
+// Tables « Idéaux héroïques » et « Travers » (Touche finale, p. 33).
+export const IDEAUX = ['Abnégation', 'Clémence', 'Compassion', 'Courage', 'Égalité', 'Éducation', 'Fraternité', 'Frugalité', 'Générosité', 'Honnêteté', 'Honneur', 'Humilité', 'Justice', 'Liberté', 'Loyauté', 'Pacifisme', 'Protection', 'Sens du sacrifice', 'Solidarité', 'Vérité'];
+export const TRAVERS = ['Alcoolique', 'Couard', 'Crédule', 'Cupide', 'Colérique', 'Distrait', 'Dragueur', 'Fanfaron', 'Gourmand', 'Grossier', 'Impatient', 'Indécis', 'Menteur', 'Orgueilleux', 'Paranoïaque', 'Paresseux', 'Phobie (au choix)', 'Timide', 'Violent', 'Voleur'];
