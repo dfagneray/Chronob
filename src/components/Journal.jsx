@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, MessageSquare, Send, Trash2, Activity, History } from 'lucide-react';
+import { ArrowRight, MessageSquare, Send, Trash2, Activity, History, Swords, TrendingUp, Backpack, Pencil, Sparkle } from 'lucide-react';
+
+const ICONES_CAT = { combat: Swords, progression: TrendingUp, equipement: Backpack, fiche: Pencil, note: MessageSquare };
 import { Sheet, Btn, Chip, ConfirmBtn, Empty, cx } from './ui.jsx';
 import { useStore } from '../lib/store.jsx';
 import { CATEGORIES_JOURNAL, categoriesEntree } from '../lib/journal.js';
@@ -131,9 +133,16 @@ function Entree({ e, onSupprimer }) {
   const note = e.type === 'note';
   return (
     <li className="flex gap-3">
-      <span className={cx('mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full', note ? 'bg-gold/20 text-gold' : 'bg-surface2 text-muted')}>
-        {note ? <MessageSquare size={15} /> : <Activity size={15} />}
-      </span>
+      {(() => {
+        const cat = categoriesEntree(e)[0];
+        const I = e.type === 'evenement' ? Sparkle : ICONES_CAT[cat] || Activity;
+        const ton = note ? 'bg-gold/20 text-gold' : cat === 'combat' ? 'bg-blood/15 text-blood' : cat === 'progression' ? 'bg-leaf/15 text-leaf' : cat === 'equipement' ? 'bg-mana/15 text-mana' : 'bg-surface2 text-muted';
+        return (
+          <span className={cx('mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full', ton)} aria-hidden="true">
+            <I size={15} />
+          </span>
+        );
+      })()}
       <div className={cx('min-w-0 flex-1 rounded-xl px-3 py-2', note ? 'bg-gold/10 rune-border' : 'bg-surface rune-border')}>
         <div className="flex items-baseline gap-2">
           <span className="min-w-0 flex-1 font-ui text-sm font-semibold">{e.titre || (note ? 'Note' : CATEGORIES_JOURNAL[categoriesEntree(e)[0]] || 'Modification')}</span>

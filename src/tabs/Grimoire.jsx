@@ -5,6 +5,24 @@ import { peuples, profils, voies, etats, regles, EQUIPEMENT, peupleById, profilB
 import { CATEGORIES_EQUIPEMENT } from '../data/equipement.js';
 import { useStore, exporterJSON } from '../lib/store.jsx';
 import { origineVoie } from '../components/Details.jsx';
+import { Hexa, IconeProfil, ICONES_CATEGORIE, ICONES_ETAT } from '../components/visuels.jsx';
+import { Users as IcPeuple, Waypoints, Sparkle, ScrollText, AlertTriangle as IcEtat, Package as IcObjet } from 'lucide-react';
+
+/** Pastille d'icône selon le type de résultat de l'encyclopédie. */
+function IconeType({ x }) {
+  let I = Sparkle;
+  if (x.type === 'peuple') I = IcPeuple;
+  else if (x.type === 'voie') I = Waypoints;
+  else if (x.type === 'regle') I = ScrollText;
+  else if (x.type === 'equipement') I = ICONES_CATEGORIE[x.ref.categorie] || IcObjet;
+  else if (x.type === 'etat') I = ICONES_ETAT[x.ref.id] || IcEtat;
+  const ton = x.type === 'etat' ? 'bg-blood/15 text-blood' : x.type === 'regle' ? 'bg-mana/15 text-mana' : 'bg-gold/15 text-gold';
+  return (
+    <span className={cx('flex h-9 w-9 shrink-0 items-center justify-center rounded-xl', ton)} aria-hidden="true">
+      {x.type === 'profil' ? <IconeProfil id={x.ref.id} size={17} /> : <I size={17} />}
+    </span>
+  );
+}
 
 const norm = (s) =>
   String(s || '')
@@ -122,6 +140,7 @@ function Encyclopedie({ details }) {
         {resultats.slice(0, limite).map((x, i) => (
           <li key={`${x.type}-${x.ref.id}-${i}`}>
             <button type="button" onClick={() => ouvrir(x)} className="flex min-h-[56px] w-full items-center gap-3 px-3 py-2 text-left active:bg-surface2">
+              <IconeType x={x} />
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-semibold">{x.titre}</span>
                 <span className="block truncate font-ui text-xs text-muted">{x.sous}</span>
@@ -171,8 +190,8 @@ function Roster({ onNouveau }) {
         value={theme}
         onChange={setTheme}
         options={[
-          { value: 'dark', label: '🌙 Dark Fantasy' },
-          { value: 'light', label: '📜 Parchemin' },
+          { value: 'dark', label: 'Veillée (nuit)' },
+          { value: 'light', label: 'Grimoire (livre)' },
         ]}
       />
 
@@ -191,9 +210,11 @@ function Roster({ onNouveau }) {
           return (
             <Card key={p.id} className={cx('p-3', on && 'border-gold')}>
               <button type="button" className="flex w-full items-center gap-3 text-left" onClick={() => choisir(p.id)}>
-                <span className={cx('flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-lg font-bold', on ? 'bg-gold text-bg' : 'bg-surface2 text-gold')}>{p.niveau}</span>
+                <Hexa taille={44} plein={on}>
+                  {p.niveau}
+                </Hexa>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate font-display text-[16px] font-bold">{p.nom}</span>
+                  <span className="block truncate font-display text-[18px]">{p.nom}</span>
                   <span className="block truncate font-ui text-xs text-muted">
                     {peupleById[p.peupleId]?.nom} · {profilById[p.profilId]?.nom} · niveau {p.niveau}
                   </span>

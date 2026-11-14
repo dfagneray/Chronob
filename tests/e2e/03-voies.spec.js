@@ -20,7 +20,7 @@ test('suivi d’utilisation : Cri de guerre utilisé puis rechargé par une réc
   expect((await perso(page)).utilise).toEqual({ 'voie-de-la-rage--1': true });
   await nav(page, 'Personnage').click();
   await btn(page, '-5', { exact: true }).click();
-  await btn(page, /Récupération \(rapide/).click();
+  await btn(page, 'Récupération', { exact: true }).click();
   await dialog(page, 'Récupération').getByRole('button', { name: /PV \(−1 DR\)/ }).click();
   expect((await perso(page)).utilise).toEqual({});
 });

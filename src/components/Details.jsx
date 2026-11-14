@@ -1,5 +1,6 @@
 import { BookOpen, CheckCircle2, Circle, Sparkles } from 'lucide-react';
 import { Sheet, Badge, ActionBadge, RuleText, Btn, cx } from './ui.jsx';
+import { Hexa, VoieTrace, IconeProfil, ICONES_CATEGORIE, ICONES_ETAT } from './visuels.jsx';
 import { voieById, profilById, peupleById, ACTIONS, CATEGORIES_PRESTIGE, familles, CARAC_NOMS } from '../data/index.js';
 import { NIVEAU_REQUIS, coutRang, frequence, modApplique, fmt } from '../lib/rules.js';
 import { CATEGORIES_EQUIPEMENT, formatPrix } from '../data/equipement.js';
@@ -107,13 +108,18 @@ export function VoieSheet({ voie, open, onClose, char, onOpenCap }) {
         {origineVoie(voie)} · p. {voie.page}
         {voie.pvParNiveau ? ` · ${voie.pvParNiveau} PV par niveau` : ''}
       </div>
+      <div className="mb-3 rounded-xl bg-surface2 px-3 py-2">
+        <VoieTrace voie={voie} rang={rang} />
+      </div>
       {voie.presentation && <RuleText text={voie.presentation} className="mb-3 text-muted" />}
       {voie.intro && <RuleText text={voie.intro} className="mb-3 text-muted" />}
       <div className="space-y-2">
         {voie.capacites.map((c) => (
           <button key={c.id} type="button" onClick={() => onOpenCap?.(c)} className={cx('w-full rounded-xl p-3 text-left rune-border active:brightness-95', rang >= c.rang ? 'bg-gold/10' : 'bg-surface2')}>
             <div className="flex items-center gap-2">
-              <span className={cx('flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold', rang >= c.rang ? 'bg-gold text-bg' : 'bg-line text-muted')}>{c.rang}</span>
+              <Hexa taille={30} plein={rang >= c.rang} petit>
+                {c.rang}
+              </Hexa>
               <span className="flex-1 font-semibold">{c.nom}</span>
               <ActionBadge action={c.action} sort={c.sort} />
             </div>
@@ -130,7 +136,10 @@ export function ProfilSheet({ profil, open, onClose, onOpenVoie }) {
   const fam = familles[profil.famille];
   return (
     <Sheet open={open} onClose={onClose} title={profil.nom} tall>
-      <div className="mb-3 flex flex-wrap gap-1.5">
+      <div className="mb-3 flex flex-wrap items-center gap-1.5">
+        <span className="mr-1 flex h-10 w-10 items-center justify-center rounded-xl bg-gold/15 text-gold">
+          <IconeProfil id={profil.id} size={22} aria-hidden="true" />
+        </span>
         <Badge tone="gold">{fam.nom}</Badge>
         <Badge>{profil.pvParNiveau} PV / niveau</Badge>
         <Badge>DR d{profil.de}</Badge>
@@ -140,17 +149,17 @@ export function ProfilSheet({ profil, open, onClose, onOpenVoie }) {
       <RuleText text={profil.description} />
       {profil.armesArmures && (
         <>
-          <h3 className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-gold">Armes & armures maîtrisées</h3>
+          <h3 className="mt-5 flex items-center gap-2 font-display text-[17px] text-goldsoft">Armes & armures maîtrisées</h3>
           <RuleText text={profil.armesArmures} />
         </>
       )}
       {profil.equipementDepart && (
         <>
-          <h3 className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-gold">Équipement de départ</h3>
+          <h3 className="mt-5 flex items-center gap-2 font-display text-[17px] text-goldsoft">Équipement de départ</h3>
           <RuleText text={profil.equipementDepart} />
         </>
       )}
-      <h3 className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-gold">Voies</h3>
+      <h3 className="mt-5 flex items-center gap-2 font-display text-[17px] text-goldsoft">Voies</h3>
       <div className="mt-2 space-y-2">
         {[...profil.voies, ...(profil.voieDuMage ? ['voie-du-mage'] : [])].map((id) => {
           const v = voieById[id];
@@ -201,7 +210,13 @@ export function EquipSheet({ item, open, onClose, footer }) {
   return (
     <Sheet open={open} onClose={onClose} title={item.nom} footer={footer}>
       <div className="mb-3 flex flex-wrap gap-1.5">
-        <Badge tone="gold">{CATEGORIES_EQUIPEMENT[item.categorie]}</Badge>
+        <Badge tone="gold">
+          {(() => {
+            const I = ICONES_CATEGORIE[item.categorie];
+            return I ? <I size={12} aria-hidden="true" /> : null;
+          })()}
+          {CATEGORIES_EQUIPEMENT[item.categorie]}
+        </Badge>
         {item.page && <Badge>p. {item.page}</Badge>}
       </div>
       <dl className="grid grid-cols-[auto,1fr] gap-x-4 gap-y-1.5 font-ui text-[15px]">
@@ -252,6 +267,14 @@ export function EtatSheet({ etat, open, onClose, footer }) {
   if (!etat) return null;
   return (
     <Sheet open={open} onClose={onClose} title={etat.nom} footer={footer}>
+      {(() => {
+        const I = ICONES_ETAT[etat.id];
+        return I ? (
+          <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-blood/15 text-blood">
+            <I size={24} aria-hidden="true" />
+          </span>
+        ) : null;
+      })()}
       <RuleText text={etat.description} />
       <p className="mt-3 font-ui text-sm text-muted">États préjudiciables, p. 214-215.</p>
     </Sheet>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, createContext, useContext, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { Minus, Plus, X, Delete, Check } from 'lucide-react';
+import { Minus, Plus, X, Delete, Check, Sparkles } from 'lucide-react';
+import { ICONES_ACTION } from './visuels.jsx';
 
 export const cx = (...a) => a.filter(Boolean).join(' ');
 
@@ -75,16 +76,19 @@ export function Card({ className, children, ...p }) {
   );
 }
 
-export function SectionTitle({ children, right, className }) {
+/** Titre de section avec ornement (filet qui s'efface la nuit, double filet doré façon livre le jour). */
+export function SectionTitle({ children, right, className, icon: Icon }) {
   return (
-    <div className={cx('mb-2 mt-5 flex items-center justify-between gap-2 px-1', className)}>
-      <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.14em] text-gold">{children}</h2>
+    <div className={cx('mb-2.5 mt-6 flex items-center gap-2.5 px-1', className)}>
+      {Icon && <Icon size={17} className="shrink-0 text-gold" aria-hidden="true" />}
+      <h2 className="shrink-0 font-display text-[18px] leading-tight text-goldsoft">{children}</h2>
+      <span className="orn-ligne" aria-hidden="true" />
       {right}
     </div>
   );
 }
 
-export function Badge({ children, className, tone = 'muted' }) {
+export function Badge({ children, className, tone = 'muted', title }) {
   const tones = {
     muted: 'bg-surface2 text-muted',
     gold: 'bg-gold/15 text-gold',
@@ -93,17 +97,33 @@ export function Badge({ children, className, tone = 'muted' }) {
     luck: 'bg-luck/15 text-luck',
     leaf: 'bg-leaf/15 text-leaf',
   };
-  return <span className={cx('inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-ui text-[11px] font-semibold leading-none', tones[tone], className)}>{children}</span>;
+  return (
+    <span title={title} className={cx('inline-flex items-center gap-1 rounded-md px-1.5 py-[3px] font-ui text-[11px] font-semibold leading-none', tones[tone], className)}>
+      {children}
+    </span>
+  );
 }
 
+const NOMS_ACTION = { L: 'action limitée', A: 'action d’attaque', M: 'action de mouvement', G: 'action gratuite' };
+/** Type d'action (L/A/M/G) et marque de sort, avec icônes. */
 export function ActionBadge({ action, sort }) {
   if (!action && !sort) return null;
   const tone = action === 'L' ? 'blood' : action === 'A' ? 'gold' : action === 'M' ? 'leaf' : 'muted';
+  const Icone = action ? ICONES_ACTION[action] : null;
   return (
-    <Badge tone={tone} className="shrink-0">
-      {action ? `(${action})` : ''}
-      {sort ? '✦ sort' : ''}
-    </Badge>
+    <span className="inline-flex shrink-0 items-center gap-1">
+      {action && (
+        <Badge tone={tone} className="shrink-0" title={NOMS_ACTION[action]}>
+          <Icone size={11} aria-hidden="true" />({action})
+        </Badge>
+      )}
+      {sort && (
+        <Badge tone="mana" className="shrink-0" title="sort">
+          <Sparkles size={11} aria-hidden="true" />
+          sort
+        </Badge>
+      )}
+    </span>
   );
 }
 
@@ -146,7 +166,7 @@ export function Stepper({ value, onChange, min = -Infinity, max = Infinity, step
       <button
         type="button"
         onClick={onValueTap}
-        className={cx('min-h-[44px] min-w-[3ch] flex-1 text-center font-display font-bold tabular-nums', big ? 'text-3xl' : 'text-xl', onValueTap ? 'rounded-lg active:bg-surface2' : 'cursor-default')}
+        className={cx('min-h-[44px] min-w-[3ch] flex-1 text-center font-num font-semibold', big ? 'text-3xl' : 'text-xl', onValueTap ? 'rounded-lg active:bg-surface2' : 'cursor-default')}
       >
         {format(value)}
       </button>
@@ -239,7 +259,7 @@ export function Sheet({ open, onClose, title, children, footer, tall, label }) {
         <div className="shrink-0 touch-none px-4 pb-2 pt-2" onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}>
           <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-line" />
           <div className="flex items-center gap-2">
-            <div className="min-w-0 flex-1 font-display text-lg font-bold leading-tight text-goldsoft">{title}</div>
+            <div className="min-w-0 flex-1 font-display text-xl leading-tight text-goldsoft">{title}</div>
             <IconBtn icon={X} label="Fermer" onClick={onClose} />
           </div>
         </div>
@@ -284,11 +304,11 @@ export function NumPad({ open, onClose, title, initial = 0, onSubmit, allowNegat
         </Btn>
       }
     >
-      <div className="mb-3 rounded-xl bg-surface2 py-3 text-center font-display text-4xl font-bold tabular-nums">{txt}</div>
+      <div className="mb-3 rounded-xl bg-surface2 py-3 text-center font-num text-4xl font-semibold">{txt}</div>
       <div className="grid grid-cols-3 gap-2">
         {['1', '2', '3', '4', '5', '6', '7', '8', '9', allowNegative ? '±' : '', '0', '⌫'].map((k, i) =>
           k ? (
-            <button key={i} type="button" aria-label={k === '⌫' ? 'Effacer' : k === '±' ? 'Changer le signe' : undefined} onClick={() => press(k)} className="h-14 rounded-xl bg-surface2 font-display text-2xl font-bold rune-border active:brightness-90">
+            <button key={i} type="button" aria-label={k === '⌫' ? 'Effacer' : k === '±' ? 'Changer le signe' : undefined} onClick={() => press(k)} className="h-14 rounded-xl bg-surface2 font-num text-2xl font-semibold rune-border active:brightness-90">
               {k === '⌫' ? <Delete className="mx-auto" /> : k}
             </button>
           ) : (

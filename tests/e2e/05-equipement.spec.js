@@ -33,7 +33,7 @@ test('achat avec la bourse, fonds insuffisants, change de monnaie', async ({ pag
   await fermer(page);
   await fermer(page);
   // 25 pc → change : 2 pa 5 pc
-  for (let i = 0; i < 25; i++) await page.locator('main div', { hasText: /^pcCuivre/ }).getByRole('button', { name: 'Augmenter' }).first().click();
+  for (let i = 0; i < 25; i++) await btn(page, 'Augmenter pièces de cuivre').click();
   await btn(page, /Faire le change/).click();
   expect((await perso(page)).bourse).toEqual({ pp: 0, po: 0, pa: 3, pc: 5 });
 });

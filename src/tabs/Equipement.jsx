@@ -4,13 +4,14 @@ import { Card, SectionTitle, Btn, Sheet, Stepper, Chip, Badge, cx, useToast, Con
 import { EQUIPEMENT, equipById } from '../data/index.js';
 import { CATEGORIES_EQUIPEMENT, SAC_AVENTURIER, formatPrix } from '../data/equipement.js';
 import { dmArme, attaqueArme, fmt } from '../lib/rules.js';
+import { ICONES_CATEGORIE } from '../components/visuels.jsx';
 import { uid } from '../lib/store.jsx';
 
 const PIECES = [
-  { k: 'pp', nom: 'Platine', pc: 1000, tone: 'text-mana' },
-  { k: 'po', nom: 'Or', pc: 100, tone: 'text-gold' },
-  { k: 'pa', nom: 'Argent', pc: 10, tone: 'text-muted' },
-  { k: 'pc', nom: 'Cuivre', pc: 1, tone: 'text-blood' },
+  { k: 'pp', nom: 'Platine', pc: 1000, metal: ['#eef1f6', '#9aa6b8'] },
+  { k: 'po', nom: 'Or', pc: 100, metal: ['#f6d77e', '#b8862a'] },
+  { k: 'pa', nom: 'Argent', pc: 10, metal: ['#e4e6ea', '#8d939d'] },
+  { k: 'pc', nom: 'Cuivre', pc: 1, metal: ['#eba77e', '#9b5530'] },
 ];
 const totalPc = (b) => PIECES.reduce((s, p) => s + (b?.[p.k] || 0) * p.pc, 0);
 
@@ -23,7 +24,18 @@ function repartir(total, garderPP = 0) {
   return { pp, po, pa, pc: reste - pa * 10 };
 }
 
-const ICONES = { contact: Swords, distance: Crosshair, armure: Shield, bouclier: Shield, consommable: FlaskConical };
+const ICONES = ICONES_CATEGORIE;
+
+/** Pièce de monnaie (dégradé du métal) avec son abréviation. */
+const Piece = ({ metal, k }) => (
+  <span
+    aria-hidden="true"
+    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-num text-[11px] font-semibold uppercase text-[#2b2416]"
+    style={{ background: `radial-gradient(circle at 35% 30%, ${metal[0]}, ${metal[1]})`, boxShadow: `inset 0 0 0 2px ${metal[1]}, inset 0 0 0 4px ${metal[0]}55` }}
+  >
+    {k}
+  </span>
+);
 
 export function itemDepuisCatalogue(ref, qte = 1) {
   return { uid: uid(), refId: ref.id, ...ref, id: undefined, qte, equipe: false, magie: 0 };
@@ -82,10 +94,12 @@ export default function Equipement({ char, d, maj }) {
       {/* Défense */}
       <Card className="mt-3 p-3">
         <div className="flex items-center gap-3">
-          <Shield size={28} className="text-gold" />
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/15 text-gold">
+            <Shield size={26} aria-hidden="true" />
+          </span>
           <div className="flex-1">
             <div className="font-ui text-xs font-semibold uppercase tracking-wide text-muted">Défense</div>
-            <div className="font-display text-3xl font-bold">{d.def}</div>
+            <div className="font-num text-3xl font-semibold">{d.def}</div>
           </div>
           <div className="text-right font-ui text-xs leading-relaxed text-muted">
             10 + AGI {fmt(d.carac.AGI)}
@@ -112,17 +126,20 @@ export default function Equipement({ char, d, maj }) {
       </Card>
 
       {/* Bourse */}
-      <SectionTitle right={<span className="font-ui text-xs text-muted">Total : {(totalPc(bourse) / 10).toLocaleString('fr-FR')} pa</span>}>Bourse</SectionTitle>
+      <SectionTitle icon={Coins} right={<span className="font-num text-xs text-muted">{(totalPc(bourse) / 10).toLocaleString('fr-FR')} pa</span>}>
+        Bourse
+      </SectionTitle>
       <Card className="divide-y divide-line">
         {PIECES.map((p) => (
           <div key={p.k} className="flex items-center gap-2 px-3 py-2">
-            <Coins size={18} className={p.tone} />
+            <Piece metal={p.metal} k={p.k} />
             <span className="w-16 font-ui text-sm">
               <b className="uppercase">{p.k}</b>
               <span className="block text-[11px] text-muted">{p.nom}</span>
             </span>
             <Stepper
               className="flex-1"
+              label={`pièces ${p.k === 'po' ? 'd’or' : p.k === 'pa' ? 'd’argent' : p.k === 'pc' ? 'de cuivre' : 'de platine'}`}
               value={bourse[p.k] || 0}
               min={0}
               max={999999}
@@ -149,7 +166,7 @@ export default function Equipement({ char, d, maj }) {
       </Card>
 
       {/* Inventaire */}
-      <SectionTitle>Inventaire</SectionTitle>
+      <SectionTitle icon={Backpack}>Inventaire</SectionTitle>
       <div className="grid grid-cols-2 gap-2">
         <Btn variant="primary" onClick={() => setCatalogue(true)}>
           <Plus size={18} /> Catalogue
@@ -172,7 +189,10 @@ export default function Equipement({ char, d, maj }) {
 
       {groupes.map((g) => (
         <div key={g.cat}>
-          <div className="mb-1.5 mt-4 px-1 font-ui text-xs font-semibold uppercase tracking-wider text-muted">{CATEGORIES_EQUIPEMENT[g.cat]}</div>
+          <div className="mb-1.5 mt-4 flex items-center gap-2 px-1 font-caps text-[13px] font-semibold tracking-wide text-muted">
+            <span className="losange" aria-hidden="true" />
+            {CATEGORIES_EQUIPEMENT[g.cat]}
+          </div>
           <Card className="divide-y divide-line">
             {g.items.map((it) => {
               const Icon = ICONES[it.categorie] || Package;
@@ -181,7 +201,9 @@ export default function Equipement({ char, d, maj }) {
               return (
                 <div key={it.uid} className="flex items-center">
                   <button type="button" className="flex min-h-[60px] min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left active:bg-surface2" onClick={() => setEdit(it)}>
-                    <Icon size={18} className={it.equipe ? 'text-gold' : 'text-muted'} />
+                    <span className={cx('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', it.equipe ? 'bg-gold/20 text-gold' : 'bg-surface2 text-muted')}>
+                      <Icon size={19} aria-hidden="true" />
+                    </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-semibold">
                         {it.nom}
@@ -280,6 +302,14 @@ function Catalogue({ open, onClose, onAdd, onBuy }) {
               }}
               className="flex min-h-[56px] w-full items-center gap-3 px-3 py-2 text-left active:bg-surface2"
             >
+              {(() => {
+                const I = ICONES[e.categorie] || Package;
+                return (
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-gold">
+                    <I size={17} aria-hidden="true" />
+                  </span>
+                );
+              })()}
               <span className="min-w-0 flex-1">
                 <span className="block font-semibold">{e.nom}</span>
                 <span className="block truncate font-ui text-xs text-muted">
@@ -441,11 +471,11 @@ function EditItem({ item, d, onClose, onChange, onDelete }) {
         <Card className="mb-3 grid grid-cols-2 gap-2 p-3 text-center">
           <div>
             <div className="font-ui text-xs text-muted">Attaque</div>
-            <div className="font-display text-2xl font-bold">{fmt(attaqueArme(item, d))}</div>
+            <div className="font-num text-2xl font-semibold">{fmt(attaqueArme(item, d))}</div>
           </div>
           <div>
             <div className="font-ui text-xs text-muted">Dommages</div>
-            <div className="font-display text-2xl font-bold">{dmArme(item, d, item.deuxMainsUse)}</div>
+            <div className="font-num text-2xl font-semibold">{dmArme(item, d, item.deuxMainsUse)}</div>
           </div>
         </Card>
       )}

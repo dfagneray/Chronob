@@ -2,37 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Thème Parchemin (clair) */
+/*
+ * Deux thèmes, mêmes composants :
+ *  - « Veillée » (sombre, par défaut) : nuit d'Osgild, laiton et braise, voies en constellations.
+ *  - « Grimoire » (clair) : la maquette du livre de règles — papier, or, filets à hexagone, losanges.
+ * Les couleurs sont des triplets RGB (utilisables avec l'opacité Tailwind), les polices des variables.
+ */
+
+/* ---------- Grimoire (clair) ---------- */
 :root {
-  --bg: 236 224 196;
-  --surface: 247 239 220;
-  --surface2: 228 212 180;
-  --ink: 48 34 22;
-  --muted: 112 92 66;
-  --line: 196 174 136;
-  --gold: 146 100 22;
-  --goldsoft: 116 76 18;
-  --blood: 158 38 38;
-  --mana: 38 82 168;
-  --luck: 32 116 82;
-  --leaf: 66 118 48;
+  --bg: 239 235 225;
+  --surface: 248 245 237;
+  --surface2: 236 229 213;
+  --ink: 52 50 46;
+  --muted: 118 111 98;
+  --line: 214 200 168;
+  --gold: 176 136 58;
+  --goldsoft: 150 112 40;
+  --blood: 168 64 44;
+  --mana: 52 92 160;
+  --luck: 56 120 82;
+  --leaf: 84 120 44;
+
+  --f-titre: 'Alegreya', Georgia, serif;
+  --f-texte: 'Alegreya Sans', 'Segoe UI', system-ui, sans-serif;
+  --f-chiffre: 'Alegreya Sans', 'Segoe UI', system-ui, sans-serif;
+  --f-capitales: 'Alegreya Sans SC', 'Alegreya Sans', sans-serif;
+
+  --carte-bord: rgb(var(--gold) / 0.45);
+  --carte-ombre: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 1px 2px rgb(90 70 30 / 0.12);
+  --halo: none;
+  --fond: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .4 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: light;
 }
 
-/* Thème Dark Fantasy (obsidienne et or) */
+/* ---------- Veillée (sombre) ---------- */
 :root[data-theme='dark'] {
-  --bg: 18 16 24;
-  --surface: 30 27 38;
-  --surface2: 44 40 54;
-  --ink: 236 228 212;
-  --muted: 158 148 132;
-  --line: 66 60 78;
-  --gold: 212 167 58;
-  --goldsoft: 240 214 138;
-  --blood: 214 82 82;
-  --mana: 110 152 240;
-  --luck: 108 196 146;
-  --leaf: 128 186 110;
+  --bg: 18 26 47;
+  --surface: 26 36 64;
+  --surface2: 34 46 80;
+  --ink: 233 228 214;
+  --muted: 143 155 184;
+  --line: 48 62 100;
+  --gold: 226 176 98;
+  --goldsoft: 240 214 160;
+  --blood: 240 119 90;
+  --mana: 127 166 255;
+  --luck: 124 201 160;
+  --leaf: 143 202 122;
+
+  --f-titre: 'Marcellus', Georgia, serif;
+  --f-texte: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+  --f-chiffre: 'JetBrains Mono', ui-monospace, monospace;
+  --f-capitales: 'Figtree', system-ui, sans-serif;
+
+  --carte-bord: rgb(var(--line));
+  --carte-ombre: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px -16px rgb(0 0 0 / 0.6);
+  --halo: drop-shadow(0 0 6px rgb(var(--gold) / 0.7));
+  --fond: radial-gradient(120% 55% at 85% -10%, rgb(40 56 104 / 0.9) 0%, transparent 60%), radial-gradient(90% 40% at 0% 110%, rgb(60 40 70 / 0.35) 0%, transparent 70%);
   color-scheme: dark;
 }
 
@@ -44,9 +71,11 @@ body,
 
 body {
   margin: 0;
-  background: rgb(var(--bg));
+  background-color: rgb(var(--bg));
+  background-image: var(--fond);
+  background-attachment: fixed;
   color: rgb(var(--ink));
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: var(--f-texte);
   font-size: 17px;
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
@@ -54,10 +83,20 @@ body {
   overflow-x: hidden;
 }
 
-:root[data-theme='light'] body,
-:root:not([data-theme='dark']) body {
-  background-image: radial-gradient(ellipse at top, rgb(250 242 222), transparent 60%), radial-gradient(ellipse at bottom, rgb(222 204 166 / 0.6), transparent 70%);
-  background-attachment: fixed;
+/* Marcellus n'existe qu'en un seul poids : pas de faux gras */
+:root[data-theme='dark'] .font-display {
+  font-synthesis: none;
+  letter-spacing: 0.01em;
+}
+/* Alegreya : titres gras comme dans le livre */
+:root:not([data-theme='dark']) .font-display {
+  font-weight: 800;
+}
+.font-num {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.font-caps {
+  font-family: var(--f-capitales);
 }
 
 button,
@@ -73,8 +112,9 @@ select {
   font-size: 16px; /* évite le zoom automatique sur iOS */
 }
 
-.font-display {
-  letter-spacing: 0.04em;
+:focus-visible {
+  outline: 2px solid rgb(var(--gold));
+  outline-offset: 2px;
 }
 
 .safe-bottom {
@@ -92,7 +132,6 @@ select {
   background: rgb(var(--line));
   border-radius: 4px;
 }
-
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -100,9 +139,39 @@ select {
   scrollbar-width: none;
 }
 
+/* Bordure des cartes : or fin (Grimoire) ou trait de nuit (Veillée) */
 .rune-border {
-  border: 1px solid rgb(var(--line));
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03), 0 1px 2px rgb(0 0 0 / 0.15);
+  border: 1px solid var(--carte-bord);
+  box-shadow: var(--carte-ombre);
+}
+
+/* Lueur des éléments « allumés » (rangs acquis, nav active) — seulement la nuit */
+.halo {
+  filter: var(--halo);
+}
+
+/* ---------- Ornements de section ---------- */
+/* Veillée : un trait qui s'efface. Grimoire : double filet doré avec hexagone, comme les pages du livre. */
+.orn-ligne {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgb(var(--line)), transparent);
+}
+:root:not([data-theme='dark']) .orn-ligne {
+  height: 5px;
+  background:
+    linear-gradient(rgb(var(--gold) / 0.8), rgb(var(--gold) / 0.8)) 0 0 / 100% 1px no-repeat,
+    linear-gradient(rgb(var(--gold) / 0.45), rgb(var(--gold) / 0.45)) 0 4px / 70% 1px no-repeat;
+}
+
+/* Puces losange du livre */
+.losange {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid rgb(var(--gold));
+  transform: rotate(45deg);
+  flex: none;
 }
 
 .prose-co p + p {
@@ -138,6 +207,11 @@ select {
     transform: scale(1);
   }
 }
+@keyframes respire {
+  50% {
+    opacity: 0.45;
+  }
+}
 .anim-sheet {
   animation: sheet-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -147,11 +221,15 @@ select {
 .anim-pop {
   animation: pop 0.3s ease-out;
 }
+:root[data-theme='dark'] .anim-respire {
+  animation: respire 4s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .anim-sheet,
   .anim-fade,
-  .anim-pop {
-    animation: none;
+  .anim-pop,
+  .anim-respire {
+    animation: none !important;
   }
 }

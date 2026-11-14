@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
-import { ChevronDown, RotateCcw, Settings2, BookOpen, Plus, Trash2, Search } from 'lucide-react';
+import { ChevronDown, RotateCcw, Settings2, BookOpen, Plus, Trash2, Search, CircleCheck, CircleOff, Users, Crown, Sparkle } from 'lucide-react';
 import { Card, SectionTitle, Btn, ActionBadge, Badge, Sheet, Stepper, Empty, cx, Segmented, ConfirmBtn } from '../components/ui.jsx';
 import { voies as VOIES, profilById } from '../data/index.js';
 import { voiesPossedees, capaciteSuivie, frequence, premierRang } from '../lib/rules.js';
 import { origineVoie } from '../components/Details.jsx';
+import { Hexa, VoieTrace } from '../components/visuels.jsx';
 
 const FREQ = { combat: '1/combat', jour: '1/jour' };
 
@@ -13,9 +14,9 @@ export default function Voies({ char, maj, details }) {
   const [gerer, setGerer] = useState(false);
   const possedees = voiesPossedees(char);
   const groupes = [
-    { titre: 'Voie de peuple', liste: possedees.filter((x) => x.voie.type === 'peuple' || x.voie.type === 'mage') },
-    { titre: 'Voies de profil', liste: possedees.filter((x) => x.voie.type === 'profil') },
-    { titre: 'Voie de prestige', liste: possedees.filter((x) => x.voie.type === 'prestige') },
+    { titre: 'Voie de peuple', icon: Users, liste: possedees.filter((x) => x.voie.type === 'peuple' || x.voie.type === 'mage') },
+    { titre: 'Voies de profil', icon: Sparkle, liste: possedees.filter((x) => x.voie.type === 'profil') },
+    { titre: 'Voie de prestige', icon: Crown, liste: possedees.filter((x) => x.voie.type === 'prestige') },
   ].filter((g) => g.liste.length);
 
   const toggleUse = (cap) => maj((c) => ({ ...c, utilise: { ...(c.utilise || {}), [cap.id]: !c.utilise?.[cap.id] } }));
@@ -52,7 +53,7 @@ export default function Voies({ char, maj, details }) {
 
       {groupes.map((g) => (
         <div key={g.titre}>
-          <SectionTitle>{g.titre}</SectionTitle>
+          <SectionTitle icon={g.icon}>{g.titre}</SectionTitle>
           <div className="space-y-2.5">
             {g.liste.map(({ voie, rang }) => {
               const open = ouvertes.has(voie.id);
@@ -73,10 +74,13 @@ export default function Voies({ char, maj, details }) {
                     aria-expanded={open}
                   >
                     <div className="min-w-0 flex-1">
-                      <div className="truncate font-display text-[15px] font-bold">{voie.nom}</div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="truncate font-display text-[17px] leading-tight">{voie.nom}</span>
+                        <span className="shrink-0 font-num text-xs text-gold">rang {rang}</span>
+                      </div>
                       <div className="truncate font-ui text-xs text-muted">{origineVoie(voie)}</div>
+                      <VoieTrace voie={voie} rang={rang} className="mt-1.5" />
                     </div>
-                    <RangDots voie={voie} rang={rang} />
                     <ChevronDown size={18} className={cx('shrink-0 text-muted transition-transform', open && 'rotate-180')} />
                   </button>
                   {open && (
@@ -88,7 +92,9 @@ export default function Voies({ char, maj, details }) {
                         return (
                           <li key={c.id} className={cx('flex items-stretch', !acquise && 'opacity-45')}>
                             <button type="button" onClick={() => details.cap(c)} className="flex min-h-[56px] min-w-0 flex-1 items-center gap-2.5 px-3 py-2 text-left active:bg-surface2">
-                              <span className={cx('flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold', acquise ? 'bg-gold text-bg' : 'bg-line text-muted')}>{c.rang}</span>
+                              <Hexa taille={30} plein={acquise} petit>
+                                {c.rang}
+                              </Hexa>
                               <span className="min-w-0 flex-1">
                                 <span className={cx('block font-semibold leading-tight', used && 'line-through decoration-blood/70')}>{c.nom}</span>
                                 {acquise && char.choix?.[c.id] && <span className="block truncate font-ui text-xs text-gold">{char.choix[c.id]}</span>}
@@ -103,9 +109,10 @@ export default function Voies({ char, maj, details }) {
                               <button
                                 type="button"
                                 onClick={() => toggleUse(c)}
-                                className={cx('my-1.5 mr-2 min-h-[44px] w-[76px] shrink-0 rounded-xl font-ui text-xs font-bold uppercase tracking-wide rune-border', used ? 'bg-blood/15 text-blood' : 'bg-leaf/15 text-leaf')}
+                                className={cx('my-1.5 mr-2 flex min-h-[44px] w-[84px] shrink-0 flex-col items-center justify-center rounded-xl font-ui text-[11px] font-bold uppercase tracking-wide rune-border', used ? 'bg-blood/15 text-blood' : 'bg-leaf/15 text-leaf')}
                                 aria-pressed={!!used}
                               >
+                                {used ? <CircleOff size={15} aria-hidden="true" /> : <CircleCheck size={15} aria-hidden="true" />}
                                 {used ? 'Utilisée' : 'Prête'}
                               </button>
                             )}
@@ -162,7 +169,7 @@ function GererVoies({ open, onClose, char, maj, details }) {
           <Card key={voie.id} className="p-3">
             <div className="flex items-center gap-2">
               <button type="button" className="min-h-[44px] min-w-0 flex-1 text-left" onClick={() => details.voie(voie)}>
-                <div className="truncate font-display text-[15px] font-bold">{voie.nom}</div>
+                <div className="truncate font-display text-[16px]">{voie.nom}</div>
                 <div className="truncate font-ui text-xs text-muted">{origineVoie(voie)}</div>
               </button>
               <ConfirmBtn small variant="ghost" className="min-w-[44px]" aria-label={`Retirer ${voie.nom}`} confirmLabel="Retirer ?" onConfirm={() => setRang(voie.id, 0)}>

@@ -33,7 +33,7 @@ describe('Données de règles', () => {
       for (const c of v.capacites) {
         expect(c.nom.length, `${v.nom} rang ${c.rang}`).toBeGreaterThan(2);
         expect(c.description.length, `${v.nom} — ${c.nom}`).toBeGreaterThan(20);
-        expect(c.description, c.nom).not.toMatch(/[\u0000-\u0008�]/);
+        expect(c.description, c.nom).not.toMatch(/[\u0000-\u0008\u0080-\u009F\uE000-\uF8FF\uFFFD]/);
         expect(c.description, c.nom).not.toMatch(/@\S+\.\w+/); // pas de pied de page
       }
     }

@@ -104,7 +104,7 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#14121a' : '#efe3c8');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#121a2f' : '#efebe1');
     try {
       localStorage.setItem('co2-theme', theme);
     } catch {

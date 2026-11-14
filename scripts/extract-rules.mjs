@@ -54,7 +54,7 @@ const FOOTER_RE = /\S+@\S+\s+-\s+\d+\/\d+\/\d+\s*$/; // ligne d'identification d
 function normalizeChars(s) {
   return s
     .replace(/�/g, '')
-    .replace(/[\u0000-\u0008\u000B-\u001F]/g, '')
+    .replace(/[\u0000-\u0008\u000B-\u001F\u007F-\u009F\uE000-\uF8FF]/g, '')
     .replace(/[‑‐]/g, '-')
     .replace(/[   ]/g, ' ')
     .replace(/ﬁ/g, 'fi')

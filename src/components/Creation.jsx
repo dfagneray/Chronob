@@ -7,6 +7,7 @@ import { SAC_AVENTURIER } from '../data/equipement.js';
 import { personnageVide } from '../lib/store.jsx';
 import { IDEAUX, TRAVERS } from '../data/personnalite.js';
 import TraitSelect from './TraitSelect.jsx';
+import { ICONES_FAMILLE, ICONES_CARAC, IconeProfil } from './visuels.jsx';
 import { itemDepuisCatalogue } from '../tabs/Equipement.jsx';
 
 const ETAPES = ['Identité', 'Profil', 'Caractéristiques', 'Voies', 'Finalisation'];
@@ -233,7 +234,7 @@ export default function Creation({ open, onClose, onCreate }) {
                 className={cx('w-full rounded-xl p-3 text-left rune-border', peupleId === p.id ? 'bg-gold/15 border-gold' : 'bg-surface')}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-display font-bold">{p.nom}</span>
+                  <span className="font-display text-[18px]">{p.nom}</span>
                   {peupleId === p.id && <Check size={18} className="text-gold" />}
                 </div>
                 <div className="font-ui text-xs text-muted">{p.modificateurs}</div>
@@ -259,8 +260,8 @@ export default function Creation({ open, onClose, onCreate }) {
       {etape === 1 &&
         Object.entries(familles).map(([fid, fam]) => (
           <div key={fid}>
-            <SectionTitle>
-              {fam.nom} · {fam.pv} PV · d{fam.dr}
+            <SectionTitle icon={ICONES_FAMILLE[fid]}>
+              {fam.nom} <span className="font-num text-[13px] text-muted">· {fam.pv} PV · d{fam.dr}</span>
             </SectionTitle>
             {fam.bonus && <p className="-mt-1 mb-2 px-1 font-ui text-xs text-muted">Bonus de famille : {fam.bonus}</p>}
             <div className="grid grid-cols-2 gap-2">
@@ -276,10 +277,13 @@ export default function Creation({ open, onClose, onCreate }) {
                       setRang2Mage(null);
                       setEquip(null);
                     }}
-                    className={cx('rounded-xl p-3 text-left rune-border', profilId === p.id ? 'bg-gold/15 border-gold' : 'bg-surface')}
+                    className={cx('flex items-start gap-2.5 rounded-xl p-3 text-left rune-border', profilId === p.id ? 'bg-gold/15 border-gold' : 'bg-surface')}
                   >
-                    <div className="font-display font-bold">{p.nom}</div>
+                    <IconeProfil id={p.id} size={20} className="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+                    <span className="min-w-0">
+                    <div className="font-display text-[17px] leading-tight">{p.nom}</div>
                     <div className="font-ui text-[11px] text-muted">[{p.caracteristiques.join(', ').replace('|', '/')}]</div>
+                    </span>
                   </button>
                 ))}
             </div>
@@ -322,7 +326,7 @@ export default function Creation({ open, onClose, onCreate }) {
                       type="button"
                       disabled={!sel}
                       onClick={() => sel && assigner(sel, i)}
-                      className={cx('h-11 w-12 rounded-xl font-display text-lg font-bold rune-border disabled:opacity-60', pris ? 'bg-surface2 text-muted line-through' : 'bg-gold/20 text-gold')}
+                      className={cx('h-11 w-12 rounded-xl font-num text-lg font-semibold rune-border disabled:opacity-60', pris ? 'bg-surface2 text-muted line-through' : 'bg-gold/20 text-gold')}
                     >
                       {fmt(v)}
                     </button>
@@ -337,7 +341,11 @@ export default function Creation({ open, onClose, onCreate }) {
               return (
                 <div key={k} className={cx('flex items-center gap-2 rounded-xl px-3 py-1.5 rune-border', sel === k ? 'bg-gold/15 border-gold' : 'bg-surface')}>
                   <button type="button" className="flex min-h-[44px] flex-1 items-center gap-2 text-left" onClick={() => serie !== 'libre' && setSel(sel === k ? null : k)}>
-                    <span className="w-10 font-display font-bold text-gold">{k}</span>
+                    {(() => {
+                      const I = ICONES_CARAC[k];
+                      return <I size={16} className="shrink-0 text-gold" aria-hidden="true" />;
+                    })()}
+                    <span className="w-9 font-caps font-semibold text-gold">{k}</span>
                     <span className="flex-1 font-ui text-sm">
                       {CARAC_NOMS[k]} {imp && <Badge tone="gold">profil</Badge>}
                     </span>
@@ -345,9 +353,9 @@ export default function Creation({ open, onClose, onCreate }) {
                   {serie === 'libre' ? (
                     <Stepper label={CARAC_NOMS[k]} value={libre[k]} min={-3} max={5} format={fmt} onChange={(v) => setLibre((l) => ({ ...l, [k]: v }))} className="w-40" />
                   ) : (
-                    <span className="w-10 text-right font-display text-xl font-bold">{base[k] === null || base[k] === undefined ? '—' : fmt(base[k])}</span>
+                    <span className="w-10 text-right font-num text-xl font-semibold">{base[k] === null || base[k] === undefined ? '—' : fmt(base[k])}</span>
                   )}
-                  <span className="w-12 text-right font-display text-xl font-bold text-goldsoft">{complet ? fmt(final[k]) : ''}</span>
+                  <span className="w-12 text-right font-num text-xl font-semibold text-goldsoft">{complet ? fmt(final[k]) : ''}</span>
                 </div>
               );
             })}
@@ -399,7 +407,7 @@ export default function Creation({ open, onClose, onCreate }) {
                   className={cx('w-full rounded-xl p-3 text-left rune-border', on ? 'bg-gold/15 border-gold' : 'bg-surface')}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-display font-bold">{v.nom}</span>
+                    <span className="font-display text-[17px]">{v.nom}</span>
                     {on && <Check size={18} className="text-gold" />}
                   </div>
                   <div className="font-ui text-sm">
@@ -414,7 +422,7 @@ export default function Creation({ open, onClose, onCreate }) {
             <>
               <SectionTitle>Spécificités des mages</SectionTitle>
               <Card className="p-3">
-                <div className="font-display font-bold">Voie du mage</div>
+                <div className="font-display text-[17px]">Voie du mage</div>
                 <p className="text-[15px] text-muted">Remplace la voie de peuple : vous gardez seulement son rang 1, en plus du rang 1 de la voie du mage (p. 29).</p>
                 <div className="mt-2 flex gap-2">
                   <Chip
@@ -432,7 +440,7 @@ export default function Creation({ open, onClose, onCreate }) {
                 </div>
               </Card>
               <Card className="mt-2 p-3">
-                <div className="font-display font-bold">Capacité de rang 2 supplémentaire</div>
+                <div className="font-display text-[17px]">Capacité de rang 2 supplémentaire</div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {[...voiesChoisies, ...(voieDuMage ? ['voie-du-mage'] : [])].map((id) => (
                     <Chip key={id} active={rang2Mage === id} onClick={() => setRang2Mage(id)}>
@@ -463,7 +471,7 @@ export default function Creation({ open, onClose, onCreate }) {
             ].map(([l, v]) => (
               <div key={l}>
                 <div className="font-ui text-[11px] uppercase text-muted">{l}</div>
-                <div className="font-display text-xl font-bold">{v}</div>
+                <div className="font-num text-xl font-semibold">{v}</div>
               </div>
             ))}
           </Card>

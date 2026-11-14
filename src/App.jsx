@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
-import { User, BookMarked, TrendingUp, Backpack, Library, Sun, Moon, Users, UserPlus, History } from 'lucide-react';
+import { User, Waypoints, TrendingUp, Backpack, Library, Moon, Users, UserPlus, History, BookOpen } from 'lucide-react';
+import { Hexa, IconeProfil } from './components/visuels.jsx';
 import { useStore } from './lib/store.jsx';
 import { deriver } from './lib/rules.js';
 import { CapaciteSheet, VoieSheet, ProfilSheet, PeupleSheet, EquipSheet, EtatSheet, RegleSheet } from './components/Details.jsx';
@@ -16,7 +17,7 @@ import { peupleById, profilById } from './data/index.js';
 
 const TABS = [
   { id: 'perso', label: 'Personnage', icon: User },
-  { id: 'voies', label: 'Voies', icon: BookMarked },
+  { id: 'voies', label: 'Voies', icon: Waypoints },
   { id: 'plan', label: 'Progression', icon: TrendingUp },
   { id: 'equip', label: 'Équipement', icon: Backpack },
   { id: 'grimoire', label: 'Grimoire', icon: Library },
@@ -79,16 +80,18 @@ export default function App() {
     <>
       <div className="mx-auto flex min-h-[100dvh] max-w-xl flex-col">
         {/* En-tête */}
-        <header className="safe-top sticky top-0 z-30 border-b border-line bg-bg/90 backdrop-blur">
+        <header className="safe-top sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur-md">
           <div className="flex items-center gap-2 px-3 py-2">
             <button type="button" onClick={() => (actif ? setSwitcher(true) : setCreation(true))} className="flex min-h-[48px] min-w-0 flex-1 items-center gap-3 rounded-xl px-1 text-left active:bg-surface2" aria-label="Changer de personnage">
-              <span className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-full bg-gold text-bg">
-                <span className="font-ui text-[9px] font-bold uppercase leading-none">Niv.</span>
-                <span className="font-display text-lg font-bold leading-none">{actif?.niveau ?? '–'}</span>
-              </span>
+              <Hexa taille={46} label={actif ? `Niveau ${actif.niveau}` : undefined}>
+                {actif?.niveau ?? '–'}
+              </Hexa>
               <span className="min-w-0">
-                <span className="block truncate font-display text-[17px] font-bold leading-tight text-goldsoft">{actif?.nom || 'Compagnon CO2'}</span>
-                <span className="block truncate font-ui text-xs text-muted">{actif ? `${peupleById[actif.peupleId]?.nom || ''} · ${profilById[actif.profilId]?.nom || ''} · Niveau ${actif.niveau}` : 'Aucun personnage'}</span>
+                <span className="block truncate font-display text-[21px] leading-tight text-goldsoft">{actif?.nom || 'Chronob'}</span>
+                <span className="flex items-center gap-1.5 truncate font-ui text-[13px] text-muted">
+                  {actif && <IconeProfil id={actif.profilId} size={13} className="shrink-0 text-gold" aria-hidden="true" />}
+                  <span className="truncate">{actif ? `${peupleById[actif.peupleId]?.nom || ''} · ${profilById[actif.profilId]?.nom || ''} · Niveau ${actif.niveau}` : 'Compagnon de Chroniques Oubliées'}</span>
+                </span>
               </span>
             </button>
             {actif && (
@@ -104,11 +107,11 @@ export default function App() {
             )}
             <button
               type="button"
-              aria-label={store.theme === 'dark' ? 'Passer au thème Parchemin' : 'Passer au thème Dark Fantasy'}
+              aria-label={store.theme === 'dark' ? 'Passer au thème Grimoire' : 'Passer au thème Veillée'}
               onClick={() => store.setTheme(store.theme === 'dark' ? 'light' : 'dark')}
               className="flex h-11 w-11 items-center justify-center rounded-xl text-gold active:bg-surface2"
             >
-              {store.theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              {store.theme === 'dark' ? <BookOpen size={20} /> : <Moon size={20} />}
             </button>
           </div>
         </header>
@@ -130,13 +133,14 @@ export default function App() {
         </main>
 
         {/* Barre de navigation inférieure */}
-        <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 backdrop-blur" aria-label="Navigation principale">
+        <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/90 backdrop-blur-md" aria-label="Navigation principale">
           <div className="mx-auto grid max-w-xl grid-cols-5">
             {TABS.map((t) => {
               const on = tab === t.id;
               return (
-                <button key={t.id} type="button" onClick={() => setTab(t.id)} className={cx('flex min-h-[60px] flex-col items-center justify-center gap-0.5 font-ui text-[10.5px] font-semibold', on ? 'text-gold' : 'text-muted')} aria-current={on ? 'page' : undefined}>
-                  <t.icon size={22} strokeWidth={on ? 2.4 : 1.8} />
+                <button key={t.id} type="button" onClick={() => setTab(t.id)} className={cx('relative flex min-h-[62px] flex-col items-center justify-center gap-1 font-ui text-[10.5px] font-semibold', on ? 'text-gold' : 'text-muted')} aria-current={on ? 'page' : undefined}>
+                  {on && <span className="halo absolute top-1.5 h-1 w-6 rounded-full bg-gold" aria-hidden="true" />}
+                  <t.icon size={22} strokeWidth={on ? 2.2 : 1.7} />
                   {t.label}
                 </button>
               );
@@ -178,9 +182,11 @@ export default function App() {
               }}
               className={cx('flex min-h-[56px] w-full items-center gap-3 rounded-xl px-3 text-left rune-border', p.id === actif?.id ? 'border-gold bg-gold/15' : 'bg-surface')}
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface2 font-display font-bold text-gold">{p.niveau}</span>
+              <Hexa taille={36} plein={p.id === actif?.id} petit>
+                {p.niveau}
+              </Hexa>
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-display font-bold">{p.nom}</span>
+                <span className="block truncate font-display text-[17px]">{p.nom}</span>
                 <span className="block truncate font-ui text-xs text-muted">
                   {peupleById[p.peupleId]?.nom} · {profilById[p.profilId]?.nom}
                 </span>

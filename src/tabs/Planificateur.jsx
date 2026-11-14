@@ -4,6 +4,7 @@ import { Card, SectionTitle, Btn, Sheet, Badge, ActionBadge, cx, ConfirmBtn, use
 import { voieById, CARACS, profilById } from '../data/index.js';
 import { NIVEAU_MAX, optionsProgression, voiesApresPlan, simulerPlan, verifierNiveau, validerNiveau, pointsDepenses, coutRang, fmt, deriver, NIVEAU_REQUIS, gainPVPlanifie } from '../lib/rules.js';
 import { origineVoie } from '../components/Details.jsx';
+import { Hexa } from '../components/visuels.jsx';
 
 const ORPHELINS = [
   { id: 'PC', label: '+1 point de chance' },
@@ -118,7 +119,7 @@ export default function Planificateur({ char, maj, details }) {
               key={n}
               type="button"
               onClick={() => setCible(n)}
-              className={cx('relative flex h-12 min-w-[48px] shrink-0 flex-col items-center justify-center rounded-xl font-display font-bold rune-border', n === cible ? 'bg-gold text-bg' : 'bg-surface')}
+              className={cx('relative flex h-12 min-w-[48px] shrink-0 flex-col items-center justify-center rounded-xl font-num font-semibold rune-border', n === cible ? 'bg-gold text-bg' : 'bg-surface')}
               aria-label={`Niveau ${n}`}
             >
               <span className="text-[10px] font-normal leading-none opacity-70">niv.</span>
@@ -132,7 +133,7 @@ export default function Planificateur({ char, maj, details }) {
       <Card className="mt-3 p-3">
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-display text-lg font-bold">Niveau {cible}</div>
+            <div className="font-display text-xl text-goldsoft">Niveau <span className="font-num">{cible}</span></div>
             <div className="font-ui text-xs text-muted">
               +2 points de capacité · attaques {cible <= 10 ? '+1' : 'plafonnées (niveau 10)'} · PV +{gainsPV.find((g) => g.niveau === cible)?.pv ?? '?'} {fmt(d?.carac.CON ?? 0)} CON
             </div>
@@ -149,7 +150,9 @@ export default function Planificateur({ char, maj, details }) {
             return (
               <li key={i} className="flex items-center gap-2 rounded-xl bg-surface2 rune-border">
                 <button type="button" className="flex min-h-[52px] min-w-0 flex-1 items-center gap-2 px-3 text-left" onClick={() => cap && details.cap(cap)}>
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold font-display text-sm font-bold text-bg">{p.rang}</span>
+                  <Hexa taille={30} petit>
+                    {p.rang}
+                  </Hexa>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-semibold">{cap?.nom}</span>
                     <span className="block truncate font-ui text-xs text-muted">
@@ -282,7 +285,9 @@ function ProgressionPicker({ open, onClose, options, onPick, char, details, nive
             {g.liste.map((o) => (
               <li key={o.cap.id} className={cx('flex items-stretch rounded-xl bg-surface rune-border', !o.possible && 'opacity-50')}>
                 <button type="button" className="flex min-h-[56px] min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left" onClick={() => details.cap(o.cap)}>
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-line font-display text-sm font-bold">{o.rang}</span>
+                  <Hexa taille={30} plein={false} petit>
+                    {o.rang}
+                  </Hexa>
                   <span className="min-w-0 flex-1">
                     <span className="block font-semibold leading-tight">{o.cap.nom}</span>
                     <span className="block truncate font-ui text-xs text-muted">

@@ -19,9 +19,11 @@ export default {
         leaf: v('leaf'),
       },
       fontFamily: {
-        display: ['"Cinzel"', 'Georgia', 'serif'],
-        body: ['"Crimson Pro"', 'Georgia', 'serif'],
-        ui: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        // polices pilotées par le thème (variables CSS dans index.css)
+        display: ['var(--f-titre)'],
+        body: ['var(--f-texte)'],
+        ui: ['var(--f-texte)'],
+        num: ['var(--f-chiffre)'],
       },
     },
   },

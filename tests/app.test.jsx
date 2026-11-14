@@ -178,7 +178,7 @@ describe('Saisies manuelles sur la fiche', () => {
     creerLhagva();
     clic(bouton('-5'));
     expect(perso().pv.actuel).toBe(7);
-    clic(screen.getByRole('button', { name: /Récupération \(rapide/ }));
+    clic(screen.getByRole('button', { name: 'Récupération' }));
     const sheet = screen.getByRole('dialog', { name: 'Récupération' });
     // valeur par défaut = moyenne du d10 (6) ; on la baisse à 4
     clic(within(sheet).getAllByRole('button', { name: 'Diminuer' })[0]);

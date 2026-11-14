@@ -69,7 +69,7 @@ test('postures : défense partielle, défense totale, sprint (une seule à la fo
 test('récupération rapide (résultat du dé saisi) puis complète', async ({ page }) => {
   await btn(page, '-5', { exact: true }).click();
   await btn(page, '-5', { exact: true }).click();
-  await btn(page, /Récupération \(rapide/).click();
+  await btn(page, 'Récupération', { exact: true }).click();
   const r = dialog(page, 'Récupération');
   // d10, valeur proposée 6 → on monte à 8
   await r.getByRole('button', { name: 'Augmenter' }).first().click();
@@ -78,7 +78,7 @@ test('récupération rapide (résultat du dé saisi) puis complète', async ({ p
   let c = await perso(page);
   expect([c.pv.actuel, c.dr.actuel]).toEqual([10, 3]);
   await btn(page, '-5', { exact: true }).click();
-  await btn(page, /Récupération \(rapide/).click();
+  await btn(page, 'Récupération', { exact: true }).click();
   await dialog(page, 'Récupération').getByRole('button', { name: /l’utiliser \(\+10 PV\)/ }).click();
   c = await perso(page);
   // +1 DR (4) puis utilisé aussitôt (3) ; PV 5 + 10 plafonné à 12
@@ -103,7 +103,7 @@ test('maximum manuel des PV et bonus manuel de DEF', async ({ page }) => {
   await s.getByRole('button', { name: 'Augmenter' }).nth(1).click();
   await fermer(page);
   await expect(page.getByText('/ 13', { exact: true })).toBeVisible();
-  await expect(page.getByText(/maximum saisi à la main/)).toBeVisible();
+  await expect(page.getByText(/maximum saisi à la main/i)).toBeVisible();
   await btn(page, /^Défense \d/).click();
   await dialog(page, 'Défense').getByRole('button', { name: 'Augmenter' }).click();
   await fermer(page);
@@ -113,6 +113,7 @@ test('maximum manuel des PV et bonus manuel de DEF', async ({ page }) => {
 test('caractéristique modifiée : impacts en chaîne (CON → PV et DR)', async ({ page }) => {
   await btn(page, /^Constitution/).click();
   await dialog(page, /Constitution/).getByRole('button', { name: 'Augmenter' }).first().click();
+  await expect.poll(async () => (await perso(page)).carac.CON).toBe(3);
   await fermer(page);
   // PV max 12 → 13, DR max 4 → 5
   await expect(page.getByText('/ 13', { exact: true })).toBeVisible();

@@ -3045,7 +3045,7 @@
     "nom": "Résistance à la magie",
     "action": "G",
     "sort": false,
-    "description": "Le barbare devient capable de résister à la magie. Lorsqu’il est la cible d’un sort, une fois par round, il peut faire un test d’attaque magique* opposé à celui du sort (si le sort n’en demande pas, faites-en tout de même un à cette occasion).\nEn cas de réussite, il n’en subit pas les effets.\nRAGE ET AUTRES CAPACITÉS La rage du barbare est basée sur une explosion de colère primitive et elle ne s’accorde avec aucune capacité qui nécessite maîtrise et concentration. Pour cette raison, il est impossible de lancer un sort en état de rage, mais il est aussi impossible d’utiliser certaines capacités comme l’Attaque sournoise du voleur.\nLes capacités issues des voies suivantes ne sont pas cumulables avec la rage (ou la furie) du barbare :  Voie du maître d’armes du guerrier  Voie de l’escrime du barde  Voie de la maîtrise, voie de la méditation de moine  Voie du spadassin, voie de l’assassin du voleur La liste exacte des cumuls est laissée à la discrétion du MJ, mais le nom d’une capacité est souvent un bon indice. Par exemple, Attaque puissante ou Attaque brutale sont des cumuls possibles évidents.",
+    "description": "Le barbare devient capable de résister à la magie. Lorsqu’il est la cible d’un sort, une fois par round, il peut faire un test d’attaque magique* opposé à celui du sort (si le sort n’en demande pas, faites-en tout de même un à cette occasion).\nEn cas de réussite, il n’en subit pas les effets.\nRAGE ET AUTRES CAPACITÉS La rage du barbare est basée sur une explosion de colère primitive et elle ne s’accorde avec aucune capacité qui nécessite maîtrise et concentration. Pour cette raison, il est impossible de lancer un sort en état de rage, mais il est aussi impossible d’utiliser certaines capacités comme l’Attaque sournoise du voleur.\nLes capacités issues des voies suivantes ne sont pas cumulables avec la rage (ou la furie) du barbare :\nVoie du maître d’armes du guerrier Voie de l’escrime du barde Voie de la maîtrise, voie de la méditation de moine Voie du spadassin, voie de l’assassin du voleur La liste exacte des cumuls est laissée à la discrétion du MJ, mais le nom d’une capacité est souvent un bon indice. Par exemple, Attaque puissante ou Attaque brutale sont des cumuls possibles évidents.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -4929,7 +4929,7 @@
     "nom": "Golem supérieur",
     "action": null,
     "sort": false,
-    "description": "Le forgesort peut améliorer son golem en choisissant une option parmi les suivantes. Le joueur peut choisir une option différente supplémentaire à chaque fois qu’il atteint le rang 5 dans une voie de forgesort.  Armure : +5 en DEF  Forme de félin : +3 en AGI et en DEF, dé bonus en AGI  Baliste : portée 20 m, [1d4°+AGI] DM  Grande taille : +2 PV par niveau et +1 en FOR et DM  Vol : des « sauts » de 40 m en action limitée  Cerveau amélioré : +2 en INT, PER et CHA, doué de parole  Puissant : +2 en FOR et aux DM, dé bonus en FOR  Arme à deux mains : +1d4° aux DM au contact PARTICULARITÉS LIÉES AU GOLEM Soigner un golem : le golem ne guérit pas naturellement, mais le forgesort peut le réparer au rythme de [1d6 par rang + INT] PV par heure.\nGolem à 0 PV : si le golem est réduit à 0 PV, il cesse de fonctionner, mais le forgesort peut le réparer.\nMort d’un golem : si le golem est détruit ou perdu, le forgesort peut en construire un nouveau en 1d6+3jours (+1d6 jours par amélioration de golem supérieur). Un forgesort peut utiliser tous les matériaux à sa disposition dans son environnement, par exemple pierre et bois s’il est dans une forêt.",
+    "description": "Le forgesort peut améliorer son golem en choisissant une option parmi les suivantes. Le joueur peut choisir une option différente supplémentaire à chaque fois qu’il atteint le rang 5 dans une voie de forgesort.\nArmure : +5 en DEF Forme de félin : +3 en AGI et en DEF, dé bonus en AGI Baliste : portée 20 m, [1d4°+AGI] DM Grande taille : +2 PV par niveau et +1 en FOR et DM Vol : des « sauts » de 40 m en action limitée Cerveau amélioré : +2 en INT, PER et CHA, doué de parole Puissant : +2 en FOR et aux DM, dé bonus en FOR Arme à deux mains : +1d4° aux DM au contact PARTICULARITÉS LIÉES AU GOLEM Soigner un golem : le golem ne guérit pas naturellement, mais le forgesort peut le réparer au rythme de [1d6 par rang + INT] PV par heure.\nGolem à 0 PV : si le golem est réduit à 0 PV, il cesse de fonctionner, mais le forgesort peut le réparer.\nMort d’un golem : si le golem est détruit ou perdu, le forgesort peut en construire un nouveau en 1d6+3jours (+1d6 jours par amélioration de golem supérieur). Un forgesort peut utiliser tous les matériaux à sa disposition dans son environnement, par exemple pierre et bois s’il est dans une forêt.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -5034,7 +5034,7 @@
     "nom": "Rune de garde",
     "action": null,
     "sort": true,
-    "description": "En réalisant un rituel de 10 min, le forgesort inscrit des runes invisibles au sol. Il protège une zone allant jusqu’à 10 m de diamètre pendant 12 h. À chaque fois qu’une créature (de taille au moins très petite) pénètre dans la zone protégée, le sort produit un effet choisi (voir ci-après) au moment où le sort est lancé. Les créatures présentes dans la zone pendant le rituel ne déclenchent pas le sort. Ce sort peut aussi être utilisé sur une porte ou un coffre. Il est automatiquement lancé avec la règle de concentration et coûte seulement 3 PM pour être lancé.  Alarme : un puissant gong retentit et la cible est étourdie pendant 1 round à moins de réussir un test de CON difficulté 15.  Feu : [3d4°+INT] DM de feu (un autre élément peut être choisi parmi foudre, froid, acide).",
+    "description": "En réalisant un rituel de 10 min, le forgesort inscrit des runes invisibles au sol. Il protège une zone allant jusqu’à 10 m de diamètre pendant 12 h. À chaque fois qu’une créature (de taille au moins très petite) pénètre dans la zone protégée, le sort produit un effet choisi (voir ci-après) au moment où le sort est lancé. Les créatures présentes dans la zone pendant le rituel ne déclenchent pas le sort. Ce sort peut aussi être utilisé sur une porte ou un coffre. Il est automatiquement lancé avec la règle de concentration et coûte seulement 3 PM pour être lancé.\nAlarme : un puissant gong retentit et la cible est étourdie pendant 1 round à moins de réussir un test de CON difficulté 15.\nFeu : [3d4°+INT] DM de feu (un autre élément peut être choisi parmi foudre, froid, acide).",
     "effets": {
      "carac": {},
      "mods": [],
@@ -8138,7 +8138,7 @@
     "nom": "Attaque kamikaze",
     "action": "L",
     "sort": false,
-    "description": "Le personnage saute sur sa cible et l’agrippe pour la larder de coups au corps à corps. La cible doit être de taille supérieure à la sienne. Le personnage réalise un test opposé d’AGI contre la créature. En cas d’échec, le personnage se retrouve renversé. En cas de réussite, il est perché sur la créature ce qui lui offre les bonus suivants selon la taille de la cible :  Grande : +2 Att et DEF, +1d4° DM  Énorme : +3 Att et DEF, +1d4° DM  Colossale : +4 Att et DEF, +1d4° DM Pour se débarrasser de lui, la créature doit utiliser une action d’attaque et l’emporter lors d’un test opposé d’AGI.",
+    "description": "Le personnage saute sur sa cible et l’agrippe pour la larder de coups au corps à corps. La cible doit être de taille supérieure à la sienne. Le personnage réalise un test opposé d’AGI contre la créature. En cas d’échec, le personnage se retrouve renversé. En cas de réussite, il est perché sur la créature ce qui lui offre les bonus suivants selon la taille de la cible :\nGrande : +2 Att et DEF, +1d4° DM Énorme : +3 Att et DEF, +1d4° DM Colossale : +4 Att et DEF, +1d4° DM Pour se débarrasser de lui, la créature doit utiliser une action d’attaque et l’emporter lors d’un test opposé d’AGI.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10135,7 +10135,7 @@
     "nom": "Métamorphose d’autrui",
     "action": "A",
     "sort": true,
-    "description": "Le lanceur de sort doit réussir un test opposé d’attaque magique contre une cible à une portée de 20 m. Il la transforme en un animal de taille petite ou inférieure de son choix (grenouille et mouton sont les favoris des magiciens). La créature possède 1 PV (grenouille) ou 2 PV (mouton), et si elle est réduite à 0 PV, elle retrouve sa forme initiale et doit faire un test de CON difficulté 10. En cas d’échec, elle meurt. La durée du sort dépend du NC de la cible :  NC 0 à 1 : permanent  NC 2 : 24 h  NC 3 : 1d6 h  NC 4 : 1d6 minutes  NC 5+ : 1d6 rounds  NC égal ou supérieur au mage : 1 round Une créature ne peut pas être la cible de ce sort (réussi ou raté) plus d’une fois par combat.",
+    "description": "Le lanceur de sort doit réussir un test opposé d’attaque magique contre une cible à une portée de 20 m. Il la transforme en un animal de taille petite ou inférieure de son choix (grenouille et mouton sont les favoris des magiciens). La créature possède 1 PV (grenouille) ou 2 PV (mouton), et si elle est réduite à 0 PV, elle retrouve sa forme initiale et doit faire un test de CON difficulté 10. En cas d’échec, elle meurt. La durée du sort dépend du NC de la cible :\nNC 0 à 1 : permanent NC 2 : 24 h NC 3 : 1d6 h NC 4 : 1d6 minutes NC 5+ : 1d6 rounds NC égal ou supérieur au mage : 1 round Une créature ne peut pas être la cible de ce sort (réussi ou raté) plus d’une fois par combat.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10162,7 +10162,7 @@
     "nom": "Arc-en-ciel",
     "action": "A",
     "sort": true,
-    "description": "Un rayon de lumière arc-en-ciel jaillit de la main du personnage et sur un test opposé d’attaque magique réussi, il percute une cible à une portée de 10 m. Les effets du sort dépendent du niveau de la cible (ou NC pour une créature).  NC 1 ou moins : inconscient 1d6 rounds.  NC 2 ou 3 : aveuglé 1d6 rounds.  NC 4 et plus : affaibli 1d6 rounds.\nAucune créature d’un niveau supérieur ou égal au magicien ne peut être affectée par le sort.",
+    "description": "Un rayon de lumière arc-en-ciel jaillit de la main du personnage et sur un test opposé d’attaque magique réussi, il percute une cible à une portée de 10 m. Les effets du sort dépendent du niveau de la cible (ou NC pour une créature).\nNC 1 ou moins : inconscient 1d6 rounds.\nNC 2 ou 3 : aveuglé 1d6 rounds.\nNC 4 et plus : affaibli 1d6 rounds.\nAucune créature d’un niveau supérieur ou égal au magicien ne peut être affectée par le sort.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10222,7 +10222,7 @@
     "nom": "Sphère multicolore",
     "action": "A",
     "sort": true,
-    "description": "Le magicien invoque une sphère immobile de lumières chatoyantes de 5 m de diamètre autour de lui, pour une durée d’INT heures. Aucun sort ne peut traverser la sphère (dans un sens comme dans l’autre) et les créatures subissent un effet qui dépend de leur NC.  NC inférieur à la moitié du niveau du personnage : téléportation à une distance de 2d4° × 100 km dans une direction aléatoire.  NC inférieur au niveau du personnage : téléportation à une distance de 2d4° km.  NC supérieur ou égal au niveau du personnage : comme le précédent, mais la créature peut résister et réussir à entrer dans la sphère en réussissant un test d’INT difficulté [10 + INT du personnage].\nLe lieu où la créature est téléportée doit être sans danger direct (ni dans un endroit solide ni dans les flammes, etc.). Le magicien peut entrer et sortir à volonté de la sphère ainsi que toute personne qu’il autorise à passer.",
+    "description": "Le magicien invoque une sphère immobile de lumières chatoyantes de 5 m de diamètre autour de lui, pour une durée d’INT heures. Aucun sort ne peut traverser la sphère (dans un sens comme dans l’autre) et les créatures subissent un effet qui dépend de leur NC.\nNC inférieur à la moitié du niveau du personnage : téléportation à une distance de 2d4° × 100 km dans une direction aléatoire.\nNC inférieur au niveau du personnage : téléportation à une distance de 2d4° km.\nNC supérieur ou égal au niveau du personnage : comme le précédent, mais la créature peut résister et réussir à entrer dans la sphère en réussissant un test d’INT difficulté [10 + INT du personnage].\nLe lieu où la créature est téléportée doit être sans danger direct (ni dans un endroit solide ni dans les flammes, etc.). Le magicien peut entrer et sortir à volonté de la sphère ainsi que toute personne qu’il autorise à passer.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10396,7 +10396,7 @@
     "nom": "Métamorphose élémentaire",
     "action": "A",
     "sort": true,
-    "description": "Le personnage peut prendre une seule forme élémentaire de son choix pendant [5 + INT] minutes. La forme élémentaire lui permet de retrancher 5 points à tous les DM subis (RD 5), elle l’immunise aux DM de la forme choisie et lui octroie les capacités suivantes :  Feu : le personnage ajoute +2d4° DM de feu à toutes ses attaques au contact. Une créature qui s’attaque à lui avec des armes naturelles subit 1d4° DM pour chaque attaque réussie.  Eau : le personnage guérit toutes ses blessures au rythme de 1d4° PV par round et il peut déformer son corps pour passer dans le moindre interstice.  Terre : le personnage obtient un bonus de +3 en FOR (+3 attaque et DM au contact et +3 tests de FOR) et en DEF.  Air : le personnage peut voler (à une vitesse de 20 m par action de mouvement), il divise par deux les DM de ses attaques physiques mais pas ceux des sorts) et sa RD passe à 10.",
+    "description": "Le personnage peut prendre une seule forme élémentaire de son choix pendant [5 + INT] minutes. La forme élémentaire lui permet de retrancher 5 points à tous les DM subis (RD 5), elle l’immunise aux DM de la forme choisie et lui octroie les capacités suivantes :\nFeu : le personnage ajoute +2d4° DM de feu à toutes ses attaques au contact. Une créature qui s’attaque à lui avec des armes naturelles subit 1d4° DM pour chaque attaque réussie.\nEau : le personnage guérit toutes ses blessures au rythme de 1d4° PV par round et il peut déformer son corps pour passer dans le moindre interstice.\nTerre : le personnage obtient un bonus de +3 en FOR (+3 attaque et DM au contact et +3 tests de FOR) et en DEF.\nAir : le personnage peut voler (à une vitesse de 20 m par action de mouvement), il divise par deux les DM de ses attaques physiques mais pas ceux des sorts) et sa RD passe à 10.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10578,7 +10578,7 @@
     "nom": "Cryogénisation",
     "action": "A",
     "sort": true,
-    "description": "Le mage projette un rayon de froid absolu sur sa cible. S’il réussit un test opposé d’attaque magique ou si la cible est volontaire, elle est congelée dans une gangue de glace de la forme d’un énorme cristal. La gangue peut être détruite en lui infligeant 50 DM ; sinon, elle se brise d’elle-même après une durée qui dépend du NC de la créature.  NC 1 ou moins : valeur d’INT en siècles  NC 2 : valeur d’INT en années  NC 3 : valeur d’INT en jours  NC 4 : valeur d’INT en heures  NC 5 : valeur d’INT en minutes  NC 6 et + : valeur d’INT en rounds Si la cible est volontaire, la durée du sort est la même que si elle était de NC 1.",
+    "description": "Le mage projette un rayon de froid absolu sur sa cible. S’il réussit un test opposé d’attaque magique ou si la cible est volontaire, elle est congelée dans une gangue de glace de la forme d’un énorme cristal. La gangue peut être détruite en lui infligeant 50 DM ; sinon, elle se brise d’elle-même après une durée qui dépend du NC de la créature.\nNC 1 ou moins : valeur d’INT en siècles NC 2 : valeur d’INT en années NC 3 : valeur d’INT en jours NC 4 : valeur d’INT en heures NC 5 : valeur d’INT en minutes NC 6 et + : valeur d’INT en rounds Si la cible est volontaire, la durée du sort est la même que si elle était de NC 1.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10707,7 +10707,7 @@
     "nom": "Explosion différée",
     "action": "A",
     "sort": true,
-    "description": "Le personnage invoque une bille de feu qui se positionne là où le mage lui en donne l’ordre. La trajectoire peut comporter jusqu’à deux coudes à 90° et la distance totale parcourue ne doit pas dépasser 50 m. Le magicien n’a pas besoin de voir le lieu. La bille explose immédiatement si une des conditions suivantes est remplie.  Quelque chose ou quelqu’un touche la bille.  Le magicien prononce un mot de commande (action gratuite).  Le délai fixé par le magicien est terminé.  Au bout d’un nombre de minutes égal à l’INT du personnage.\nLa bille de feu explose dans un rayon de 5 m et inflige [4d4° + INT] DM. Les créatures qui réussissent un test d’AGI difficulté [10 + INT] ne subissent que la moitié des dégâts. Avant son explosion, la bille de feu produit une lumière équivalant celle d’une torche.",
+    "description": "Le personnage invoque une bille de feu qui se positionne là où le mage lui en donne l’ordre. La trajectoire peut comporter jusqu’à deux coudes à 90° et la distance totale parcourue ne doit pas dépasser 50 m. Le magicien n’a pas besoin de voir le lieu. La bille explose immédiatement si une des conditions suivantes est remplie.\nQuelque chose ou quelqu’un touche la bille.\nLe magicien prononce un mot de commande (action gratuite).\nLe délai fixé par le magicien est terminé.\nAu bout d’un nombre de minutes égal à l’INT du personnage.\nLa bille de feu explose dans un rayon de 5 m et inflige [4d4° + INT] DM. Les créatures qui réussissent un test d’AGI difficulté [10 + INT] ne subissent que la moitié des dégâts. Avant son explosion, la bille de feu produit une lumière équivalant celle d’une torche.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10825,7 +10825,7 @@
     "nom": "Prison mentale",
     "action": "A",
     "sort": true,
-    "description": "Une fois par combat, le personnage peut faire un test opposé d’attaque magique contre une cible à une portée de 20 m. En cas de réussite, la victime est emprisonnée dans un labyrinthe extradimensionnel. La durée d’emprisonnement dépend du NC de la cible :  NC 1 ou moins, valeur d’INT jours ;  NC 2, valeur d’INT heures ;  NC 3, valeur d’INT minutes ;  NC 4 et +, 1d6 rounds.\nLa cible peut faire un test d’INT difficulté [10 + INT] pour diviser par deux sa durée d’emprisonnement (minimum 1 round). Dans tous les cas, si la victime possède une valeur d’INT supérieure ou égale à celle du mage, elle n’est pas affectée par le sort.",
+    "description": "Une fois par combat, le personnage peut faire un test opposé d’attaque magique contre une cible à une portée de 20 m. En cas de réussite, la victime est emprisonnée dans un labyrinthe extradimensionnel. La durée d’emprisonnement dépend du NC de la cible :\nNC 1 ou moins, valeur d’INT jours ;\nNC 2, valeur d’INT heures ;\nNC 3, valeur d’INT minutes ;\nNC 4 et +, 1d6 rounds.\nLa cible peut faire un test d’INT difficulté [10 + INT] pour diviser par deux sa durée d’emprisonnement (minimum 1 round). Dans tous les cas, si la victime possède une valeur d’INT supérieure ou égale à celle du mage, elle n’est pas affectée par le sort.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -10855,7 +10855,7 @@
     "nom": "Contrôle mental",
     "action": "A",
     "sort": true,
-    "description": "Si le personnage réussit un test opposé d’attaque magique contre une cible à une portée de 20 m, il prend le contrôle des actions de sa cible (c’est le joueur qui décide de ses actions comme s’il s’agissait de son PJ). Pendant ce temps-là, le corps du mage est inactif.\nLa durée du contrôle dépend du NC de la cible :  NC 1 ou moins, valeur d’INT heures ;  NC 2, valeur d’INT minutes ;  NC 3, valeur d’INT rounds ;  NC 4 et +, 1d6 rounds.\nLa cible peut faire un test d’INT difficulté [10 + INT] pour diviser par deux la durée de contrôle (minimum 1 round). Dans tous les cas, si la victime possède une valeur d’INT supérieure ou égale à celle du mage, elle n’est pas affectée par le sort. Le mage ne peut contrôler plus d’une créature à la fois.",
+    "description": "Si le personnage réussit un test opposé d’attaque magique contre une cible à une portée de 20 m, il prend le contrôle des actions de sa cible (c’est le joueur qui décide de ses actions comme s’il s’agissait de son PJ). Pendant ce temps-là, le corps du mage est inactif.\nLa durée du contrôle dépend du NC de la cible :\nNC 1 ou moins, valeur d’INT heures ;\nNC 2, valeur d’INT minutes ;\nNC 3, valeur d’INT rounds ;\nNC 4 et +, 1d6 rounds.\nLa cible peut faire un test d’INT difficulté [10 + INT] pour diviser par deux la durée de contrôle (minimum 1 round). Dans tous les cas, si la victime possède une valeur d’INT supérieure ou égale à celle du mage, elle n’est pas affectée par le sort. Le mage ne peut contrôler plus d’une créature à la fois.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -11245,7 +11245,7 @@
     "nom": "Pouvoir unique",
     "action": "L",
     "sort": false,
-    "description": "Le personnage associe à son armure un sort de son choix de rang 1 à 4 de n’importe quelle voie. Il peut utiliser ce sort plus souvent s’il est moins puissant :  Rang 1, 4 fois par combat ;  Rang 2, 3 fois par combat ;  Rang 3, 2 fois par combat ;  Rang 4, 1 fois par combat.",
+    "description": "Le personnage associe à son armure un sort de son choix de rang 1 à 4 de n’importe quelle voie. Il peut utiliser ce sort plus souvent s’il est moins puissant :\nRang 1, 4 fois par combat ;\nRang 2, 3 fois par combat ;\nRang 3, 2 fois par combat ;\nRang 4, 1 fois par combat.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -11275,7 +11275,7 @@
     "nom": "Pouvoir puissant",
     "action": "L",
     "sort": false,
-    "description": "Le personnage associe à son armure un sort de son choix de rang 5 à 7 de n’importe quelle voie. Il peut utiliser ce sort plus souvent s’il est moins puissant, mais dans tous les cas pas plus d’une fois par combat :  Rang 5, 3 fois par jour ;  Rang 6, 2 fois par jour ;  Rang 7, 1 fois par jour.",
+    "description": "Le personnage associe à son armure un sort de son choix de rang 5 à 7 de n’importe quelle voie. Il peut utiliser ce sort plus souvent s’il est moins puissant, mais dans tous les cas pas plus d’une fois par combat :\nRang 5, 3 fois par jour ;\nRang 6, 2 fois par jour ;\nRang 7, 1 fois par jour.",
     "effets": {
      "carac": {},
      "mods": [],
@@ -11491,7 +11491,7 @@
     "nom": "Bourrasque",
     "action": "A",
     "sort": true,
-    "description": "Le personnage prend une grande inspiration et souffle une terrible bourrasque. Toutes les créatures face à lui dans un cône de 30 m de long et de large à son extrémité doivent faire un test de FOR difficulté [10 + rang] ou être renversée et repoussées en arrière à une distance qui dépend de leur taille.  Très petite à moyenne : 20 m, subit 3d4° DM  Grande : 10 m, subit 2d4° DM  Énorme : 5 m subit 1d4° DM  Colossale : seulement renversée",
+    "description": "Le personnage prend une grande inspiration et souffle une terrible bourrasque. Toutes les créatures face à lui dans un cône de 30 m de long et de large à son extrémité doivent faire un test de FOR difficulté [10 + rang] ou être renversée et repoussées en arrière à une distance qui dépend de leur taille.\nTrès petite à moyenne : 20 m, subit 3d4° DM Grande : 10 m, subit 2d4° DM Énorme : 5 m subit 1d4° DM Colossale : seulement renversée",
     "effets": {
      "carac": {},
      "mods": [],

@@ -73,7 +73,7 @@ export default function EditCharacter({ open, onClose, char, maj, d }) {
               <span className="block text-[11px] text-muted">{CARAC_NOMS[k]}</span>
             </span>
             <Stepper className="flex-1" value={char.carac[k]} min={-4} max={10} format={fmt} onChange={(v) => maj((c) => ({ ...c, carac: { ...c.carac, [k]: v } }))} />
-            <span className="w-10 text-right font-display font-bold text-goldsoft">{fmt(d.caracBase[k])}</span>
+            <span className="w-10 text-right font-num font-semibold text-goldsoft">{fmt(d.caracBase[k])}</span>
           </div>
         ))}
       </Card>

@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Heart, Shield, Zap, Clover, Droplet, Swords, Crosshair, Wand2, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { Heart, Shield, Zap, Clover, Droplet, Swords, Crosshair, Wand2, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal, HeartCrack, HeartPulse, Dices, Hand, Hexagon, ShieldPlus, ShieldCheck, Rabbit } from 'lucide-react';
+import { AnneauPV, ICONES_CARAC, ICONES_ETAT } from '../components/visuels.jsx';
+
+const ICONES_POSTURE = { 'defense-partielle': ShieldPlus, 'defense-totale': ShieldCheck, sprint: Rabbit };
 import { Card, SectionTitle, Btn, Stepper, NumPad, Sheet, Chip, cx, useToast, ConfirmBtn, Badge } from '../components/ui.jsx';
 import { EtatSheet } from '../components/Details.jsx';
 import { CARACS, CARAC_NOMS, etats as ETATS, etatById, capaciteById } from '../data/index.js';
@@ -96,63 +99,70 @@ export default function Personnage({ char, d, maj, onEdit }) {
         </Card>
       )}
 
-      {/* Points de vigueur */}
+      {/* Points de vigueur : anneau */}
       <Card className="mt-3 p-4">
         <div className="flex items-center gap-2">
-          <Heart size={20} className="text-blood" />
-          <span className="flex-1 font-display text-sm font-bold uppercase tracking-wider">Points de vigueur</span>
+          <Heart size={18} className="text-blood" aria-hidden="true" />
+          <span className="flex-1 font-display text-[17px] text-goldsoft">Points de vigueur</span>
           {pv === 0 && (
             <Badge tone="blood">
               <Skull size={12} /> Inconscient
             </Badge>
           )}
           {pv === 1 && <Badge tone="blood">Affaibli (dernier PV)</Badge>}
-          <button type="button" aria-label="Modifier les PV" onClick={() => setRessourceEdit('PV')} className="flex h-11 w-11 items-center justify-center rounded-xl text-muted active:bg-surface2">
+          <button type="button" aria-label="Modifier les PV" onClick={() => setRessourceEdit('PV')} className="-mr-2 flex h-11 w-11 items-center justify-center rounded-xl text-muted active:bg-surface2">
             <SlidersHorizontal size={18} />
           </button>
         </div>
-        <button type="button" aria-label="PV actuels" onClick={() => setPad({ title: 'Points de vigueur actuels', initial: pv, onSubmit: (v) => setPV(v) })} className="mt-1 flex w-full items-baseline justify-center gap-2 rounded-xl py-1 active:bg-surface2">
-          <span className={cx('font-display text-6xl font-bold tabular-nums', pct <= 0.25 ? 'text-blood' : '')}>{pv}</span>
-          <span className="font-display text-2xl text-muted">/ {d.pvMax}</span>
-          {temp > 0 && <span className="font-display text-2xl font-bold text-mana">+{temp}</span>}
-        </button>
-        {d.manuel.PV && <div className="text-center font-ui text-[11px] text-muted">maximum saisi à la main (calcul : {d.auto.PV})</div>}
-        <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-surface2">
-          <div className="h-full rounded-full bg-blood transition-all" style={{ width: `${pct * 100}%` }} />
+        <div className="mt-1 flex items-center gap-3">
+          <AnneauPV pv={pv} max={d.pvMax} temp={temp} taille={156}>
+            <button type="button" aria-label="PV actuels" onClick={() => setPad({ title: 'Points de vigueur actuels', initial: pv, onSubmit: (v) => setPV(v) })} className="flex h-24 w-24 flex-col items-center justify-center rounded-full active:bg-surface2">
+              <span className={cx('font-num text-5xl font-semibold leading-none', pct <= 0.25 && 'text-blood')}>{pv}</span>
+              <span className="mt-1 font-num text-sm text-muted">/ {d.pvMax}</span>
+              {temp > 0 && <span className="font-num text-xs font-semibold text-mana">+{temp} temp.</span>}
+            </button>
+          </AnneauPV>
+          <div className="grid min-w-0 flex-1 gap-2">
+            <Btn small className="justify-start" onClick={() => setPad({ title: 'Subir des DM', initial: 0, onSubmit: (v) => degats(Math.abs(v)) })}>
+              <HeartCrack size={16} className="text-blood" /> Subir des DM
+            </Btn>
+            <Btn small className="justify-start" onClick={() => setPad({ title: 'Soigner des PV', initial: 0, onSubmit: (v) => soins(Math.abs(v)) })}>
+              <HeartPulse size={16} className="text-leaf" /> Soigner
+            </Btn>
+            <Btn small className="justify-start" onClick={() => setRecup(true)}>
+              <Moon size={16} className="text-gold" /> Récupération
+            </Btn>
+          </div>
         </div>
+        {d.manuel.PV && <div className="mt-1 font-ui text-[11px] text-muted">Maximum saisi à la main (calcul : {d.auto.PV})</div>}
         <div className="mt-3 grid grid-cols-4 gap-2">
           {[-5, -1, 1, 5].map((n) => (
-            <Btn key={n} className={cx('h-12 font-display text-lg font-bold', n < 0 ? 'text-blood' : 'text-leaf')} onClick={() => (n < 0 ? degats(-n) : soins(n))}>
+            <Btn key={n} className={cx('h-12 font-num text-lg font-semibold', n < 0 ? 'text-blood' : 'text-leaf')} onClick={() => (n < 0 ? degats(-n) : soins(n))}>
               {n > 0 ? `+${n}` : n}
             </Btn>
           ))}
         </div>
-        <div className="mt-2 grid grid-cols-2 gap-2">
-          <Btn small onClick={() => setPad({ title: 'Subir des DM', initial: 0, onSubmit: (v) => degats(Math.abs(v)) })}>
-            <Swords size={16} className="text-blood" /> Subir des DM
-          </Btn>
-          <Btn small onClick={() => setPad({ title: 'Soigner des PV', initial: 0, onSubmit: (v) => soins(Math.abs(v)) })}>
-            <Heart size={16} className="text-leaf" /> Soigner
-          </Btn>
-        </div>
         <div className="mt-3 flex items-center gap-3 border-t border-line pt-3">
-          <span className="flex-1 font-ui text-sm text-muted">PV temporaires</span>
+          <span className="flex flex-1 items-center gap-1.5 font-ui text-sm text-muted">
+            <span className="h-2.5 w-2.5 rounded-full bg-mana" aria-hidden="true" /> PV temporaires
+          </span>
           <Stepper label="PV temporaires" value={temp} min={0} max={LIMITE} onChange={(v) => maj((c) => ({ ...c, pv: { ...c.pv, temp: v } }))} onValueTap={() => setPad({ title: 'PV temporaires', initial: temp, onSubmit: (v) => maj((c) => ({ ...c, pv: { ...c.pv, temp: Math.max(0, v) } })) })} className="w-44" />
         </div>
       </Card>
 
-      {/* Ressources */}
+      {/* Réserves */}
       <div className="mt-3 grid grid-cols-2 gap-3">
-        <Tracker icon={Clover} tone="text-luck" label="Chance (PC)" res={ressources.PC} manuel={d.manuel.PC} onEdit={() => setRessourceEdit('PC')} hint="+10 à un test, 1 PC max par test" />
-        <Tracker icon={Droplet} tone="text-gold" label={`Récup. (DR d${d.drDe})`} res={ressources.DR} manuel={d.manuel.DR} onEdit={() => setRessourceEdit('DR')} hint={`Récup. rapide : 1d${d.drDe} + ${Math.floor(d.niveau / 2)}`} />
+        <Tracker icon={Clover} tone="text-luck" pastille="bg-luck" label="Chance (PC)" res={ressources.PC} manuel={d.manuel.PC} onEdit={() => setRessourceEdit('PC')} hint="+10 à un test · 1 par test" />
+        <Tracker icon={Droplet} tone="text-gold" pastille="bg-gold" label={`Récup. (DR d${d.drDe})`} res={ressources.DR} manuel={d.manuel.DR} onEdit={() => setRessourceEdit('DR')} hint={`Rapide : 1d${d.drDe} + ${Math.floor(d.niveau / 2)}`} />
         {(d.pmMax > 0 || (char.pm?.actuel ?? 0) > 0 || d.manuel.PM) && (
-          <Tracker icon={Zap} tone="text-mana" label="Mana (PM)" res={ressources.PM} manuel={d.manuel.PM} onEdit={() => setRessourceEdit('PM')} hint={`${d.sorts} sort${d.sorts > 1 ? 's' : ''} + VOL`} />
+          <Tracker icon={Zap} tone="text-mana" pastille="bg-mana" label="Mana (PM)" res={ressources.PM} manuel={d.manuel.PM} onEdit={() => setRessourceEdit('PM')} hint={`${d.sorts} sort${d.sorts > 1 ? 's' : ''} + VOL`} />
         )}
         {(char.ressources || []).map((r) => (
           <Tracker
             key={r.id}
             icon={Sparkles}
             tone="text-goldsoft"
+            pastille="bg-goldsoft"
             label={r.nom}
             res={{ label: r.nom, actuel: r.actuel, max: r.max, set: (v) => maj((c) => ({ ...c, ressources: c.ressources.map((x) => (x.id === r.id ? { ...x, actuel: v } : x)) })) }}
             onEdit={() => setRessourceEdit(r.id)}
@@ -163,60 +173,60 @@ export default function Personnage({ char, d, maj, onEdit }) {
         </button>
       </div>
 
-      {(d.pmMax === 0 && !(char.pm?.actuel > 0) && !d.manuel.PM) && (
+      {d.pmMax === 0 && !(char.pm?.actuel > 0) && !d.manuel.PM && (
         <button type="button" className="mt-2 min-h-[44px] px-1 font-ui text-xs text-muted underline" onClick={() => setRessourceEdit('PM')}>
           Ajouter des points de mana manuellement
         </button>
       )}
 
-      <Btn variant="outline" className="mt-3 w-full" onClick={() => setRecup(true)}>
-        <Moon size={18} /> Récupération (rapide / complète)
-      </Btn>
-
       {/* Combat */}
-      <SectionTitle right={<span className="font-ui text-xs text-muted">Toucher pour ajuster</span>}>Combat</SectionTitle>
-      <div className="mb-3">
-        <div className="mb-1.5 px-1 font-ui text-xs text-muted">Posture (1 round · options tactiques p. 216, sprint p. 211)</div>
-        <div className="grid grid-cols-3 gap-2">
-          {Object.entries(POSTURES).map(([id, p]) => {
-            const on = char.posture === id;
-            return (
-              <button
-                key={id}
-                type="button"
-                aria-pressed={on}
-                onClick={() => choisirPosture(id)}
-                className={cx('flex min-h-[56px] flex-col items-center justify-center rounded-xl px-1 font-ui leading-tight rune-border', on ? (p.def > 0 ? 'border-gold bg-gold text-bg' : 'border-blood bg-blood text-white') : 'bg-surface')}
-              >
-                <span className="text-[13px] font-semibold">{p.nom}</span>
-                <span className={cx('text-[11px]', on ? 'opacity-90' : 'text-muted')}>
-                  ({p.action}) {fmt(p.def)} DEF
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        {d.posture && (
-          <p className="mt-1.5 px-1 font-ui text-xs text-muted">
-            <b className={d.posture.def > 0 ? 'text-gold' : 'text-blood'}>{d.posture.nom} :</b> {d.posture.texte} Touchez à nouveau pour la retirer.
-          </p>
-        )}
+      <SectionTitle icon={Swords} right={<span className="font-ui text-xs text-muted">toucher pour ajuster</span>}>
+        Combat
+      </SectionTitle>
+      <div className="grid grid-cols-3 gap-2">
+        {Object.entries(POSTURES).map(([id, p]) => {
+          const on = char.posture === id;
+          const Icone = ICONES_POSTURE[id];
+          return (
+            <button
+              key={id}
+              type="button"
+              aria-pressed={on}
+              onClick={() => choisirPosture(id)}
+              className={cx('flex min-h-[64px] flex-col items-center justify-center gap-0.5 rounded-xl px-1 font-ui leading-tight rune-border', on ? (p.def > 0 ? 'border-gold bg-gold text-bg' : 'border-blood bg-blood text-white') : 'bg-surface')}
+            >
+              <Icone size={17} aria-hidden="true" className={on ? '' : p.def > 0 ? 'text-gold' : 'text-blood'} />
+              <span className="text-[13px] font-semibold">{p.nom}</span>
+              <span className={cx('font-num text-[11px]', on ? 'opacity-90' : 'text-muted')}>
+                ({p.action}) {fmt(p.def)} DEF
+              </span>
+            </button>
+          );
+        })}
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      {d.posture && (
+        <p className="mt-1.5 px-1 font-ui text-xs text-muted">
+          <b className={d.posture.def > 0 ? 'text-gold' : 'text-blood'}>{d.posture.nom} :</b> {d.posture.texte} Touchez à nouveau pour la retirer.
+        </p>
+      )}
+      <div className="mt-3 grid grid-cols-2 gap-3">
         <StatTile icon={Shield} label="Défense" value={d.def} base={d.defBase} raw bonus={char.bonus?.DEF} onClick={() => setStatEdit('DEF')} />
         <StatTile icon={Zap} label="Initiative" value={d.init} base={d.initBase} raw bonus={char.bonus?.INIT} onClick={() => setStatEdit('INIT')} />
         <StatTile icon={Swords} label="Attaque au contact" value={d.attaques.contact} base={d.attaquesBase.contact} malus={d.deMalus.attaque} bonus={char.bonus?.CONTACT} onClick={() => setStatEdit('CONTACT')} />
         <StatTile icon={Crosshair} label="Attaque à distance" value={d.attaques.distance} base={d.attaquesBase.distance} malus={d.deMalus.attaque} bonus={char.bonus?.DISTANCE} onClick={() => setStatEdit('DISTANCE')} />
         <StatTile icon={Wand2} label="Attaque magique" value={d.attaques.magique} base={d.attaquesBase.magique} malus={d.deMalus.attaque} bonus={char.bonus?.MAGIQUE} onClick={() => setStatEdit('MAGIQUE')} />
-        <Card className="flex flex-col justify-center gap-1 p-3 font-ui">
+        <Card className="flex flex-col justify-center gap-1.5 p-3 font-ui">
           {[
-            ['Dé évolutif', `d4° = d${d.d4}`],
-            ['Malus d’armure', d.malusArmure ? `-${d.malusArmure} aux tests d’AGI` : 'aucun'],
-            ['Mains nues', `1d3${fmt(d.carac.FOR)} (temp.)`],
-          ].map(([l, v]) => (
-            <div key={l} className="leading-tight">
-              <div className="text-[10.5px] font-semibold uppercase tracking-wide text-muted">{l}</div>
-              <div className="text-sm font-bold">{v}</div>
+            [Dices, 'Dé évolutif', `d4° = d${d.d4}`],
+            [Shield, 'Malus d’armure', d.malusArmure ? `-${d.malusArmure} aux tests d’AGI` : 'aucun'],
+            [Hand, 'Mains nues', `1d3${fmt(d.carac.FOR)} (temp.)`],
+          ].map(([I, l, v]) => (
+            <div key={l} className="flex items-start gap-2 leading-tight">
+              <I size={14} className="mt-0.5 shrink-0 text-muted" aria-hidden="true" />
+              <div>
+                <div className="text-[10.5px] font-semibold uppercase tracking-wide text-muted">{l}</div>
+                <div className="font-ui text-[14px] font-semibold">{v}</div>
+              </div>
             </div>
           ))}
         </Card>
@@ -228,44 +238,61 @@ export default function Personnage({ char, d, maj, onEdit }) {
       )}
 
       {/* Caractéristiques */}
-      <SectionTitle right={<span className="font-ui text-xs text-muted">Toucher pour modifier</span>}>Caractéristiques</SectionTitle>
+      <SectionTitle icon={Hexagon} right={<span className="font-ui text-xs text-muted">toucher pour modifier</span>}>
+        Caractéristiques
+      </SectionTitle>
       <div className="grid grid-cols-4 gap-2">
-        {CARACS.map((k) => (
-          <button
-            key={k}
-            type="button"
-            onClick={() => setCaracEdit(k)}
-            className="flex min-h-[72px] flex-col items-center justify-center rounded-2xl bg-surface rune-border active:bg-surface2"
-            aria-label={`${CARAC_NOMS[k]} ${fmt(d.carac[k])}`}
-          >
-            <span className="font-display text-xs font-bold tracking-widest text-gold">{k}</span>
-            <span className="font-display text-2xl font-bold tabular-nums">{fmt(d.carac[k])}</span>
-            {d.carac[k] !== d.caracBase[k] && <span className="font-ui text-[10px] text-blood">({fmt(d.caracBase[k])})</span>}
-          </button>
-        ))}
-        <button type="button" onClick={onEdit} className="flex min-h-[72px] flex-col items-center justify-center rounded-2xl border border-dashed border-line font-ui text-xs text-muted active:bg-surface2">
+        {CARACS.map((k) => {
+          const I = ICONES_CARAC[k];
+          return (
+            <button
+              key={k}
+              type="button"
+              onClick={() => setCaracEdit(k)}
+              className="flex min-h-[80px] flex-col items-center justify-center gap-0.5 rounded-2xl bg-surface rune-border active:bg-surface2"
+              aria-label={`${CARAC_NOMS[k]} ${fmt(d.carac[k])}`}
+            >
+              <I size={15} className="text-gold" aria-hidden="true" />
+              <span className="font-caps text-[11px] font-semibold tracking-widest text-muted">{k}</span>
+              <span className="font-num text-[22px] font-semibold leading-none">{fmt(d.carac[k])}</span>
+              {d.carac[k] !== d.caracBase[k] && <span className="font-num text-[10px] text-blood">({fmt(d.caracBase[k])})</span>}
+            </button>
+          );
+        })}
+        <button type="button" onClick={onEdit} className="flex min-h-[80px] flex-col items-center justify-center gap-1 rounded-2xl border border-dashed border-line font-ui text-xs text-muted active:bg-surface2">
           <Pencil size={18} /> Fiche
         </button>
       </div>
 
       {/* États préjudiciables */}
-      <SectionTitle>États préjudiciables</SectionTitle>
+      <SectionTitle icon={AlertTriangle}>États préjudiciables</SectionTitle>
       <div className="flex flex-wrap gap-2">
-        {ETATS.map((e) => (
-          <Chip key={e.id} tone="blood" active={d.etats.includes(e.id)} onClick={() => (e.id === 'affaibli' && pv === 1 ? setEtatInfo(e) : toggleEtat(e.id))}>
-            {e.nom}
-          </Chip>
-        ))}
+        {ETATS.map((e) => {
+          const I = ICONES_ETAT[e.id];
+          const on = d.etats.includes(e.id);
+          return (
+            <Chip key={e.id} tone="blood" active={on} onClick={() => (e.id === 'affaibli' && pv === 1 ? setEtatInfo(e) : toggleEtat(e.id))} className="inline-flex items-center gap-1.5">
+              {I && <I size={14} aria-hidden="true" className={on ? '' : 'text-muted'} />}
+              {e.nom}
+            </Chip>
+          );
+        })}
       </div>
       {etatsActifs.length > 0 && (
-        <Card className="mt-3 divide-y divide-line border-blood/40">
-          {etatsActifs.map((e) => (
-            <button key={e.id} type="button" onClick={() => setEtatInfo(e)} className="block w-full px-3 py-2.5 text-left">
-              <span className="font-display text-sm font-bold text-blood">{e.nom}</span>
-              {e.id === 'affaibli' && pv === 1 && <span className="font-ui text-xs text-muted"> (automatique à 1 PV)</span>}
-              <span className="block text-[15px] leading-snug">{e.description}</span>
-            </button>
-          ))}
+        <Card className="mt-3 divide-y divide-line border-blood/50">
+          {etatsActifs.map((e) => {
+            const I = ICONES_ETAT[e.id] || AlertTriangle;
+            return (
+              <button key={e.id} type="button" onClick={() => setEtatInfo(e)} className="flex w-full gap-3 px-3 py-2.5 text-left">
+                <I size={18} className="mt-0.5 shrink-0 text-blood" aria-hidden="true" />
+                <span>
+                  <span className="font-display text-[15px] text-blood">{e.nom}</span>
+                  {e.id === 'affaibli' && pv === 1 && <span className="font-ui text-xs text-muted"> (automatique à 1 PV)</span>}
+                  <span className="block text-[15px] leading-snug">{e.description}</span>
+                </span>
+              </button>
+            );
+          })}
         </Card>
       )}
 
@@ -313,27 +340,37 @@ export default function Personnage({ char, d, maj, onEdit }) {
   );
 }
 
-function Tracker({ icon: Icon, tone, label, res, hint, onEdit, manuel }) {
+/** Réserve (PC, DR, PM…) : valeur, pastilles quand la réserve est petite, boutons − / +. */
+function Tracker({ icon: Icon, tone, pastille = 'bg-gold', label, res, hint, onEdit, manuel }) {
+  const pastilles = res.max > 0 && res.max <= 10 && res.actuel <= 12;
+  const n = Math.max(res.max, res.actuel);
   return (
-    <Card className="p-3">
+    <Card className="flex flex-col p-3">
       <div className="flex items-center gap-1.5">
-        <Icon size={16} className={tone} />
+        <Icon size={16} className={tone} aria-hidden="true" />
         <span className="min-w-0 flex-1 truncate font-ui text-xs font-semibold uppercase tracking-wide text-muted">{label}</span>
       </div>
-      <button type="button" onClick={onEdit} aria-label={`Modifier ${label}`} className="my-1 min-h-[44px] w-full rounded-lg text-center font-display tabular-nums active:bg-surface2">
-        <span className="text-3xl font-bold">{res.actuel}</span>
-        <span className="text-lg text-muted"> / {res.max}</span>
+      <button type="button" onClick={onEdit} aria-label={`Modifier ${label}`} className="my-1 min-h-[44px] w-full rounded-lg text-center active:bg-surface2">
+        <span className="font-num text-3xl font-semibold">{res.actuel}</span>
+        <span className="font-num text-base text-muted"> / {res.max}</span>
         {manuel && <span className="block font-ui text-[10px] text-muted">max. manuel</span>}
       </button>
-      <div className="grid grid-cols-2 gap-1.5">
-        <Btn small className="font-display text-lg font-bold" onClick={() => res.set(Math.max(0, res.actuel - 1))} aria-label={`Retirer 1 — ${label}`}>
+      {pastilles && (
+        <div className="mb-2 flex flex-wrap justify-center gap-1" aria-hidden="true">
+          {Array.from({ length: n }, (_, i) => (
+            <span key={i} className={cx('h-2.5 w-2.5 rotate-45 rounded-[2px] transition-colors', i < res.actuel ? pastille : 'border border-line bg-transparent')} />
+          ))}
+        </div>
+      )}
+      <div className="mt-auto grid grid-cols-2 gap-1.5">
+        <Btn small className="font-num text-lg" onClick={() => res.set(Math.max(0, res.actuel - 1))} aria-label={`Retirer 1 — ${label}`}>
           −
         </Btn>
-        <Btn small className="font-display text-lg font-bold" onClick={() => res.set(res.actuel >= res.max ? res.actuel : res.actuel + 1)} aria-label={`Ajouter 1 — ${label}`}>
+        <Btn small className="font-num text-lg" onClick={() => res.set(res.actuel >= res.max ? res.actuel : res.actuel + 1)} aria-label={`Ajouter 1 — ${label}`}>
           +
         </Btn>
       </div>
-      {hint && <div className="mt-1 text-center font-ui text-[11px] leading-tight text-muted">{hint}</div>}
+      {hint && <div className="mt-1.5 text-center font-ui text-[11px] leading-tight text-muted">{hint}</div>}
     </Card>
   );
 }
@@ -518,13 +555,19 @@ function Recuperation({ open, onClose, d, dr, onRapide, onComplete }) {
 function StatTile({ icon: Icon, label, value, base, onClick, malus, raw, bonus }) {
   const diff = value - base;
   return (
-    <button type="button" onClick={onClick} className="flex items-center gap-3 rounded-2xl bg-surface p-3 text-left rune-border active:bg-surface2">
-      <Icon size={22} className="shrink-0 text-gold" />
+    <button
+      type="button"
+      onClick={onClick}
+      className={cx('flex items-center gap-3 rounded-2xl bg-surface p-3 text-left rune-border active:bg-surface2', diff < 0 && '!border-blood/60', diff > 0 && '!border-gold/70')}
+    >
+      <span className={cx('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', diff < 0 ? 'bg-blood/15 text-blood' : 'bg-gold/15 text-gold')}>
+        <Icon size={20} aria-hidden="true" />
+      </span>
       <div className="min-w-0 flex-1">
         <div className="font-ui text-[11px] font-semibold uppercase leading-tight tracking-wide text-muted">{label}</div>
         <div className="flex items-baseline gap-1.5">
-          <span className={cx('font-display text-2xl font-bold tabular-nums', diff < 0 && 'text-blood')}>{raw ? value : fmt(value)}</span>
-          {diff !== 0 && <span className="font-ui text-xs text-muted">({raw ? base : fmt(base)})</span>}
+          <span className={cx('font-num text-2xl font-semibold', diff < 0 && 'text-blood', diff > 0 && 'text-gold')}>{raw ? value : fmt(value)}</span>
+          {diff !== 0 && <span className="font-num text-xs text-muted">({raw ? base : fmt(base)})</span>}
         </div>
         {bonus ? <div className="font-ui text-[11px] text-gold">bonus manuel {fmt(bonus)}</div> : null}
         {malus && <div className="font-ui text-[11px] text-blood">dé malus</div>}
