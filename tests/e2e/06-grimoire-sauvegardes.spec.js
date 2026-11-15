@@ -87,10 +87,12 @@ test('import d’un fichier invalide : message d’erreur, aucune perte', async 
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('co2-personnages')).length)).toBe(1);
 });
 
-test('thème Grimoire conservé après rechargement', async ({ page }) => {
+test('papier par défaut ; thème Veillée conservé après rechargement', async ({ page }) => {
   await creerPerso(page);
-  await btn(page, 'Passer au thème Grimoire').click();
-  await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  await expect(btn(page, 'Passer au thème Veillée')).toBeVisible();
+  await btn(page, 'Passer au thème Veillée').click();
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await btn(page, 'Passer au thème Papier').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 });

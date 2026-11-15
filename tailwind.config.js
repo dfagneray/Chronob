@@ -18,6 +18,15 @@ export default {
         luck: v('luck'),
         leaf: v('leaf'),
       },
+      // arrondis pilotés par le thème : quasi nuls sur le papier (comme la fiche), plus doux la nuit
+      borderRadius: {
+        md: 'var(--r-md)',
+        lg: 'var(--r-lg)',
+        xl: 'var(--r-xl)',
+        '2xl': 'var(--r-2xl)',
+        '3xl': 'var(--r-3xl)',
+        full: 'var(--r-full)',
+      },
       fontFamily: {
         // polices pilotées par le thème (variables CSS dans index.css)
         display: ['var(--f-titre)'],

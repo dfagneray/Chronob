@@ -132,6 +132,21 @@ export function Hexa({ children, taille = 44, plein = true, className, label, pe
 }
 
 // ---------------------------------------------------------------------------
+// Filet à hexagone (haut des pages du livre et de la fiche)
+// ---------------------------------------------------------------------------
+export function FiletHexa({ className }) {
+  return (
+    <div className={cx('flex items-center gap-1.5 text-gold', className)} aria-hidden="true">
+      <span className="h-[4px] flex-1 border-y border-current opacity-80" />
+      <svg width="14" height="14" viewBox="0 0 14 14" className="shrink-0">
+        <path d="M7 1 L12.2 4 V10 L7 13 L1.8 10 V4 Z" fill="none" stroke="currentColor" strokeWidth="1.4" />
+      </svg>
+      <span className="h-[4px] flex-1 border-y border-current opacity-80" />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Anneau des PV
 // ---------------------------------------------------------------------------
 /**

@@ -246,7 +246,7 @@ describe('Progression', () => {
     clic(screen.getByRole('button', { name: /Forcer le passage au niveau 2/ }));
     clic(screen.getByRole('button', { name: /Forcer le niveau 2/ }));
     onglet('Personnage');
-    clic(screen.getByRole('button', { name: /Fiche/ }));
+    clic(screen.getByRole('button', { name: /Modifier la fiche/ }));
     const sheet = screen.getByRole('dialog', { name: 'Modifier le personnage' });
     const ligne = within(sheet).getByText('Niveau 2', { selector: 'span' }).parentElement;
     clic(within(ligne).getByRole('button', { name: 'Diminuer' }));

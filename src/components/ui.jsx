@@ -76,14 +76,14 @@ export function Card({ className, children, ...p }) {
   );
 }
 
-/** Titre de section avec ornement (filet qui s'efface la nuit, double filet doré façon livre le jour). */
+/** Titre de section : bandeau doré en capitales (papier) ou titre et filet qui s'efface (Veillée). */
 export function SectionTitle({ children, right, className, icon: Icon }) {
   return (
-    <div className={cx('mb-2.5 mt-6 flex items-center gap-2.5 px-1', className)}>
-      {Icon && <Icon size={17} className="shrink-0 text-gold" aria-hidden="true" />}
-      <h2 className="shrink-0 font-display text-[18px] leading-tight text-goldsoft">{children}</h2>
+    <div className={cx('titre-section mb-2.5 mt-6 flex items-center gap-2.5 px-1', className)}>
+      {Icon && <Icon size={17} className="ts-icone shrink-0 text-gold" aria-hidden="true" />}
+      <h2 className="ts-texte shrink-0 font-display text-[18px] leading-tight text-goldsoft">{children}</h2>
       <span className="orn-ligne" aria-hidden="true" />
-      {right}
+      {right && <span className="ts-droite min-w-0 truncate">{right}</span>}
     </div>
   );
 }

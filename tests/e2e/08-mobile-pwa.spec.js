@@ -56,7 +56,7 @@ test('zones tactiles d’au moins 44 px dans les tiroirs', async ({ page }) => {
   await verifier('PV');
   await btn(page, 'Récupération', { exact: true }).click();
   await verifier('Récupération');
-  await btn(page, /Fiche/).click();
+  await btn(page, /Modifier la fiche/).click();
   await verifier('Fiche');
   await btn(page, 'Journal').click();
   await verifier('Journal');

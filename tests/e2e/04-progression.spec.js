@@ -90,7 +90,7 @@ test('PV de base d’un niveau corrigés après coup dans la fiche', async ({ pa
   await choisir(page, 'Défier la mort');
   await valider(page, 2);
   await nav(page, 'Personnage').click();
-  await btn(page, /Fiche/).click();
+  await btn(page, /Modifier la fiche/).click();
   const s = dialog(page, 'Modifier le personnage');
   const ligne = s.locator('div.px-3.py-2', { hasText: 'Niveau 2' });
   await ligne.getByRole('button', { name: 'Diminuer' }).click();

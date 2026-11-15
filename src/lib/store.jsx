@@ -91,11 +91,13 @@ const Ctx = createContext(null);
 export function StoreProvider({ children }) {
   const [persos, setPersos] = useState(() => lire(KEY, []).filter(valider).map(normaliser));
   const [actifId, setActifId] = useState(() => lire(KEY_ACTIF, null));
+  // Le style papier (fiche du livre) est le thème principal ; « Veillée » reste disponible.
+  // Nouvelle clé : tout le monde repasse une fois au papier après le changement d'identité visuelle.
   const [theme, setThemeState] = useState(() => {
     try {
-      return localStorage.getItem('co2-theme') || 'dark';
+      return localStorage.getItem('co2-theme-v2') || 'light';
     } catch {
-      return 'dark';
+      return 'light';
     }
   });
   const [saveOk, setSaveOk] = useState(true);
@@ -108,9 +110,9 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#121a2f' : '#efebe1');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#121a2f' : '#f8f6f0');
     try {
-      localStorage.setItem('co2-theme', theme);
+      localStorage.setItem('co2-theme-v2', theme);
     } catch {
       /* stockage indisponible */
     }

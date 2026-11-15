@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useEquipement, EquipementCombat, SacEtBourse } from './Equipement.jsx';
-import { Heart, Shield, Zap, Clover, Droplet, Swords, Crosshair, Wand2, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal, HeartCrack, HeartPulse, Dices, Hand, Hexagon, ShieldPlus, ShieldCheck, Rabbit, Brain, Backpack, ChevronDown } from 'lucide-react';
-import { AnneauPV, ICONES_CARAC, ICONES_ETAT } from '../components/visuels.jsx';
+import { Heart, Shield, Zap, Clover, Droplet, Swords, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal, HeartCrack, HeartPulse, ShieldPlus, ShieldCheck, Rabbit, Brain, Backpack, ChevronDown } from 'lucide-react';
+import { AnneauPV, ICONES_ETAT } from '../components/visuels.jsx';
 
 const ICONES_POSTURE = { 'defense-partielle': ShieldPlus, 'defense-totale': ShieldCheck, sprint: Rabbit };
 import { Card, SectionTitle, Btn, Stepper, NumPad, Sheet, Chip, cx, useToast, ConfirmBtn, Badge } from '../components/ui.jsx';
@@ -120,17 +120,17 @@ export default function Personnage({ char, d, maj, onEdit }) {
       )}
 
       {/* Points de vigueur : anneau */}
-      <Card className="mt-3 p-4">
-        <div className="flex items-center gap-2">
-          <Heart size={18} className="text-blood" aria-hidden="true" />
-          <span className="flex-1 font-display text-[17px] text-goldsoft">Points de vigueur</span>
+      <Card className="mt-3 overflow-hidden p-4">
+        <div className="etiquette-or -mx-4 -mt-4 mb-2 flex min-h-[44px] items-center gap-2 pl-4 pr-2 text-[15px]">
+          <Heart size={17} aria-hidden="true" />
+          <span className="flex-1">Points de vigueur</span>
           {pv === 0 && (
             <Badge tone="blood">
               <Skull size={12} /> Inconscient
             </Badge>
           )}
           {pv === 1 && <Badge tone="blood">Affaibli (dernier PV)</Badge>}
-          <button type="button" aria-label="Modifier les PV" onClick={() => setRessourceEdit('PV')} className="-mr-2 flex h-11 w-11 items-center justify-center rounded-xl text-muted active:bg-surface2">
+          <button type="button" aria-label="Modifier les PV" onClick={() => setRessourceEdit('PV')} className="flex h-11 w-11 items-center justify-center rounded-xl active:bg-black/10">
             <SlidersHorizontal size={18} />
           </button>
         </div>
@@ -202,6 +202,9 @@ export default function Personnage({ char, d, maj, onEdit }) {
         </button>
       )}
 
+      {/* Caractéristiques, INIT./DEF. et attaques disposées comme sur la fiche de personnage officielle */}
+      <BlocFiche d={d} char={char} onCarac={setCaracEdit} onStat={setStatEdit} onEdit={onEdit} />
+
       {/* Combat */}
       <SectionTitle icon={Swords} right={<span className="font-ui text-xs text-muted">toucher pour ajuster</span>}>
         Combat
@@ -232,61 +235,12 @@ export default function Personnage({ char, d, maj, onEdit }) {
           <b className={d.posture.def > 0 ? 'text-gold' : 'text-blood'}>{d.posture.nom} :</b> {d.posture.texte} Touchez à nouveau pour la retirer.
         </p>
       )}
-      <div className="mt-3 grid grid-cols-2 gap-3">
-        <StatTile icon={Shield} label="Défense" value={d.def} base={d.defBase} raw bonus={char.bonus?.DEF} onClick={() => setStatEdit('DEF')} />
-        <StatTile icon={Zap} label="Initiative" value={d.init} base={d.initBase} raw bonus={char.bonus?.INIT} onClick={() => setStatEdit('INIT')} />
-        <StatTile icon={Swords} label="Attaque au contact" value={d.attaques.contact} base={d.attaquesBase.contact} malus={d.deMalus.attaque} bonus={char.bonus?.CONTACT} onClick={() => setStatEdit('CONTACT')} />
-        <StatTile icon={Crosshair} label="Attaque à distance" value={d.attaques.distance} base={d.attaquesBase.distance} malus={d.deMalus.attaque} bonus={char.bonus?.DISTANCE} onClick={() => setStatEdit('DISTANCE')} />
-        <StatTile icon={Wand2} label="Attaque magique" value={d.attaques.magique} base={d.attaquesBase.magique} malus={d.deMalus.attaque} bonus={char.bonus?.MAGIQUE} onClick={() => setStatEdit('MAGIQUE')} />
-        <Card className="flex flex-col justify-center gap-1.5 p-3 font-ui">
-          {[
-            [Dices, 'Dé évolutif', `d4° = d${d.d4}`],
-            [Shield, 'Malus d’armure', d.malusArmure ? `-${d.malusArmure} aux tests d’AGI` : 'aucun'],
-            [Hand, 'Mains nues', `1d3${fmt(d.carac.FOR)} (temp.)`],
-          ].map(([I, l, v]) => (
-            <div key={l} className="flex items-start gap-2 leading-tight">
-              <I size={14} className="mt-0.5 shrink-0 text-muted" aria-hidden="true" />
-              <div>
-                <div className="text-[10.5px] font-semibold uppercase tracking-wide text-muted">{l}</div>
-                <div className="font-ui text-[14px] font-semibold">{v}</div>
-              </div>
-            </div>
-          ))}
-        </Card>
-      </div>
       {d.deMalus.tous && (
         <p className="mt-2 px-1 font-ui text-xs text-blood">
           {[d.etats.includes('affaibli') && 'Affaibli', d.posture?.deMalus && 'Sprint'].filter(Boolean).join(' + ')} : dé malus à tous les tests (lancer 2d20, garder le pire).
         </p>
       )}
       <EquipementCombat eq={eq} />
-
-      {/* Caractéristiques */}
-      <SectionTitle icon={Hexagon} right={<span className="font-ui text-xs text-muted">toucher pour modifier</span>}>
-        Caractéristiques
-      </SectionTitle>
-      <div className="grid grid-cols-4 gap-2">
-        {CARACS.map((k) => {
-          const I = ICONES_CARAC[k];
-          return (
-            <button
-              key={k}
-              type="button"
-              onClick={() => setCaracEdit(k)}
-              className="flex min-h-[80px] flex-col items-center justify-center gap-0.5 rounded-2xl bg-surface rune-border active:bg-surface2"
-              aria-label={`${CARAC_NOMS[k]} ${fmt(d.carac[k])}`}
-            >
-              <I size={15} className="text-gold" aria-hidden="true" />
-              <span className="font-caps text-[11px] font-semibold tracking-widest text-muted">{k}</span>
-              <span className="font-num text-[22px] font-semibold leading-none">{fmt(d.carac[k])}</span>
-              {d.carac[k] !== d.caracBase[k] && <span className="font-num text-[10px] text-blood">({fmt(d.caracBase[k])})</span>}
-            </button>
-          );
-        })}
-        <button type="button" onClick={onEdit} className="flex min-h-[80px] flex-col items-center justify-center gap-1 rounded-2xl border border-dashed border-line font-ui text-xs text-muted active:bg-surface2">
-          <Pencil size={18} /> Fiche
-        </button>
-      </div>
 
       {/* États préjudiciables */}
       <SectionTitle icon={AlertTriangle}>États préjudiciables</SectionTitle>
@@ -387,27 +341,24 @@ export default function Personnage({ char, d, maj, onEdit }) {
 
 /** Réserve (PC, DR, PM…) : valeur, pastilles quand la réserve est petite, boutons − / +. */
 function Tracker({ icon: Icon, tone, pastille = 'bg-gold', label, res, hint, onEdit, manuel }) {
-  const pastilles = res.max > 0 && res.max <= 10 && res.actuel <= 12;
+  const losanges = res.max > 0 && res.max <= 12 && res.actuel <= 12;
   const n = Math.max(res.max, res.actuel);
   return (
-    <Card className="flex flex-col p-3">
-      <div className="flex items-center gap-1.5">
-        <Icon size={16} className={tone} aria-hidden="true" />
-        <span className="min-w-0 flex-1 truncate font-ui text-xs font-semibold uppercase tracking-wide text-muted">{label}</span>
-      </div>
-      <button type="button" onClick={onEdit} aria-label={`Modifier ${label}`} className="my-1 min-h-[44px] w-full rounded-lg text-center active:bg-surface2">
+    <Card className="flex flex-col overflow-hidden">
+      <button type="button" onClick={onEdit} aria-label={`Modifier ${label}`} className="min-h-[52px] w-full px-3 pt-2 text-center active:bg-surface2">
         <span className="font-num text-3xl font-semibold">{res.actuel}</span>
         <span className="font-num text-base text-muted"> / {res.max}</span>
         {manuel && <span className="block font-ui text-[10px] text-muted">max. manuel</span>}
       </button>
-      {pastilles && (
-        <div className="mb-2 flex flex-wrap justify-center gap-1" aria-hidden="true">
+      {losanges && (
+        // rangée de losanges à cocher, comme sur la fiche de personnage
+        <div className="flex flex-wrap justify-center gap-x-2.5 gap-y-2 px-3 py-2" aria-hidden="true">
           {Array.from({ length: n }, (_, i) => (
-            <span key={i} className={cx('h-2.5 w-2.5 rotate-45 rounded-[2px] transition-colors', i < res.actuel ? pastille : 'border border-line bg-transparent')} />
+            <span key={i} className={cx('losange-compteur', i < res.actuel && 'plein')} />
           ))}
         </div>
       )}
-      <div className="mt-auto grid grid-cols-2 gap-1.5">
+      <div className="mt-auto grid grid-cols-2 gap-1.5 px-3 pb-2">
         <Btn small className="font-num text-lg" onClick={() => res.set(Math.max(0, res.actuel - 1))} aria-label={`Retirer 1 — ${label}`}>
           −
         </Btn>
@@ -415,7 +366,11 @@ function Tracker({ icon: Icon, tone, pastille = 'bg-gold', label, res, hint, onE
           +
         </Btn>
       </div>
-      {hint && <div className="mt-1.5 text-center font-ui text-[11px] leading-tight text-muted">{hint}</div>}
+      <div className="etiquette-or flex items-center justify-center gap-1.5 px-2 py-1.5 text-center text-[12px] leading-tight">
+        <Icon size={13} aria-hidden="true" />
+        <span className="min-w-0 truncate">{label}</span>
+      </div>
+      {hint && <div className="px-2 py-1 text-center font-ui text-[11px] leading-tight text-muted">{hint}</div>}
     </Card>
   );
 }
@@ -598,26 +553,106 @@ function Recuperation({ open, onClose, d, dr, onRapide, onComplete }) {
   );
 }
 
-function StatTile({ icon: Icon, label, value, base, onClick, malus, raw, bonus }) {
+/**
+ * Haut de la fiche officielle, adapté au téléphone : colonne des caractéristiques (étiquette dorée +
+ * case valeur) à gauche ; cases INIT. / DEF. puis attaques (« 1d20 + ») à droite. Tout se touche.
+ */
+function BlocFiche({ d, char, onCarac, onStat, onEdit }) {
+  const ecart = (v, base) => (v === base ? null : v < base ? 'baisse' : 'hausse');
+  const attaques = [
+    ['CONTACT', 'Contact', 'Attaque au contact', 'contact'],
+    ['DISTANCE', 'Distance', 'Attaque à distance', 'distance'],
+    ['MAGIQUE', 'Magique', 'Attaque magique', 'magique'],
+  ];
+  return (
+    <section className="mt-5 grid grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-3" aria-label="Caractéristiques et valeurs de combat">
+      <div className="min-w-0">
+        <h2 className="etiquette-or px-2 py-1.5 text-center text-[13.5px] leading-tight">Caractéristiques</h2>
+        <div className="mt-2 grid gap-1.5">
+          {CARACS.map((k) => {
+            const e = ecart(d.carac[k], d.caracBase[k]);
+            return (
+              <button
+                key={k}
+                type="button"
+                onClick={() => onCarac(k)}
+                aria-label={`${CARAC_NOMS[k]} ${fmt(d.carac[k])}`}
+                className="flex min-h-[46px] items-stretch overflow-hidden rounded-xl bg-surface rune-border active:bg-surface2"
+              >
+                <span className="etiquette-or flex w-[54px] shrink-0 items-center justify-center text-[15px]">{k}</span>
+                <span className="flex min-w-0 flex-1 flex-col items-center justify-center leading-none">
+                  <span className={cx('font-num text-[22px] font-semibold', e === 'baisse' && 'text-blood')}>{fmt(d.carac[k])}</span>
+                  {e && <span className="font-num text-[10px] text-muted">({fmt(d.caracBase[k])})</span>}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="flex min-w-0 flex-col gap-2">
+        <div className="grid grid-cols-2 gap-2">
+          <CaseValeur label="Init." nom="Initiative" value={d.init} base={d.initBase} bonus={char.bonus?.INIT} onClick={() => onStat('INIT')} />
+          <CaseValeur label="Déf." nom="Défense" value={d.def} base={d.defBase} bonus={char.bonus?.DEF} onClick={() => onStat('DEF')} />
+        </div>
+        <h2 className="mt-1 flex items-baseline justify-between px-0.5 font-display text-[15px] font-bold uppercase leading-tight text-goldsoft">
+          Attaques <span className="font-ui text-[11px] font-semibold normal-case text-muted">1d20 +</span>
+        </h2>
+        {attaques.map(([cle, label, nom, k]) => {
+          const v = d.attaques[k];
+          const e = ecart(v, d.attaquesBase[k]);
+          return (
+            <button
+              key={cle}
+              type="button"
+              onClick={() => onStat(cle)}
+              aria-label={`${nom} ${fmt(v)}`}
+              className="flex min-h-[46px] items-stretch overflow-hidden rounded-xl bg-surface rune-border active:bg-surface2"
+            >
+              <span className="etiquette-or flex min-w-0 flex-1 items-center px-2 text-[13.5px]">{label}</span>
+              <span className="flex w-[62px] shrink-0 flex-col items-center justify-center leading-none">
+                <span className={cx('font-num text-[22px] font-semibold', (e === 'baisse' || d.deMalus.attaque) && 'text-blood')}>{fmt(v)}</span>
+                {d.deMalus.attaque ? <span className="font-ui text-[9.5px] text-blood">dé malus</span> : char.bonus?.[cle] ? <span className="font-ui text-[9.5px] text-goldsoft">bonus {fmt(char.bonus[cle])}</span> : null}
+              </span>
+            </button>
+          );
+        })}
+        <dl className="grid gap-1 rounded-xl bg-surface px-2.5 py-2 font-ui rune-border">
+          {[
+            ['Dé évolutif', `d4° = d${d.d4}`],
+            ['Malus d’armure', d.malusArmure ? `-${d.malusArmure} aux tests d’AGI` : 'aucun'],
+            ['Mains nues', `1d3${fmt(d.carac.FOR)} (temp.)`],
+          ].map(([l, v]) => (
+            <div key={l} className="leading-tight">
+              <dt className="text-[10px] font-semibold uppercase tracking-wide text-muted">{l}</dt>
+              <dd className="text-[13.5px] font-semibold">{v}</dd>
+            </div>
+          ))}
+        </dl>
+        <button type="button" onClick={onEdit} className="mt-auto flex min-h-[46px] items-center justify-center gap-1.5 rounded-xl border border-dashed border-line font-ui text-sm text-muted active:bg-surface2">
+          <Pencil size={15} /> Modifier la fiche
+        </button>
+      </div>
+    </section>
+  );
+}
+
+/** Case INIT. / DEF. de la fiche : grande valeur, étiquette dorée en dessous. */
+function CaseValeur({ label, nom, value, base, onClick, bonus }) {
   const diff = value - base;
   return (
     <button
       type="button"
       onClick={onClick}
-      className={cx('flex items-center gap-3 rounded-2xl bg-surface p-3 text-left rune-border active:bg-surface2', diff < 0 && '!border-blood/60', diff > 0 && '!border-gold/70')}
+      aria-label={`${nom} ${value}`}
+      className={cx('flex flex-col items-stretch overflow-hidden rounded-xl bg-surface text-center rune-border active:bg-surface2', diff < 0 && '!border-blood/60')}
     >
-      <span className={cx('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', diff < 0 ? 'bg-blood/15 text-blood' : 'bg-gold/15 text-gold')}>
-        <Icon size={20} aria-hidden="true" />
+      <span className="flex min-h-[54px] w-full flex-col items-center justify-center py-1 leading-none">
+        <span className={cx('font-num text-[28px] font-semibold', diff < 0 && 'text-blood', diff > 0 && 'text-goldsoft')}>{value}</span>
+        {diff !== 0 && <span className="font-num text-[10px] text-muted">({base})</span>}
+        {bonus ? <span className="font-ui text-[9.5px] text-goldsoft">bonus {fmt(bonus)}</span> : null}
       </span>
-      <div className="min-w-0 flex-1">
-        <div className="font-ui text-[11px] font-semibold uppercase leading-tight tracking-wide text-muted">{label}</div>
-        <div className="flex items-baseline gap-1.5">
-          <span className={cx('font-num text-2xl font-semibold', diff < 0 && 'text-blood', diff > 0 && 'text-gold')}>{raw ? value : fmt(value)}</span>
-          {diff !== 0 && <span className="font-num text-xs text-muted">({raw ? base : fmt(base)})</span>}
-        </div>
-        {bonus ? <div className="font-ui text-[11px] text-gold">bonus manuel {fmt(bonus)}</div> : null}
-        {malus && <div className="font-ui text-[11px] text-blood">dé malus</div>}
-      </div>
+      <span className={cx('etiquette-or w-full py-1 text-[13px] leading-tight', diff < 0 && '!bg-blood')}>{label}</span>
     </button>
   );
 }

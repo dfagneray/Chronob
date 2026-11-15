@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { User, Waypoints, TrendingUp, Library, Moon, Users, UserPlus, History, BookOpen } from 'lucide-react';
-import { Hexa, IconeProfil } from './components/visuels.jsx';
+import { Hexa, IconeProfil, FiletHexa } from './components/visuels.jsx';
 import { useStore } from './lib/store.jsx';
 import { deriver } from './lib/rules.js';
 import { CapaciteSheet, VoieSheet, ProfilSheet, PeupleSheet, EquipSheet, EtatSheet, RegleSheet } from './components/Details.jsx';
@@ -84,7 +84,7 @@ export default function App() {
     <>
       <div className="mx-auto flex min-h-[100dvh] max-w-xl flex-col">
         {/* En-tête */}
-        <header className="safe-top sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur-md">
+        <header className="safe-top sticky top-0 z-30 bg-bg/90 backdrop-blur-md">
           <div className="flex items-center gap-2 px-3 py-2">
             <button type="button" onClick={() => (actif ? setSwitcher(true) : setCreation(true))} className="flex min-h-[48px] min-w-0 flex-1 items-center gap-3 rounded-xl px-1 text-left active:bg-surface2" aria-label="Changer de personnage">
               <Hexa taille={46} label={actif ? `Niveau ${actif.niveau}` : undefined}>
@@ -111,13 +111,14 @@ export default function App() {
             )}
             <button
               type="button"
-              aria-label={store.theme === 'dark' ? 'Passer au thème Grimoire' : 'Passer au thème Veillée'}
+              aria-label={store.theme === 'dark' ? 'Passer au thème Papier' : 'Passer au thème Veillée'}
               onClick={() => store.setTheme(store.theme === 'dark' ? 'light' : 'dark')}
               className="flex h-11 w-11 items-center justify-center rounded-xl text-gold active:bg-surface2"
             >
               {store.theme === 'dark' ? <BookOpen size={20} /> : <Moon size={20} />}
             </button>
           </div>
+          <FiletHexa className="px-2 pb-1" />
         </header>
 
         <main className="flex-1 px-4 pb-[calc(84px+env(safe-area-inset-bottom,0px))]">
@@ -142,7 +143,7 @@ export default function App() {
               const on = tab === t.id;
               return (
                 <button key={t.id} type="button" onClick={() => setTab(t.id)} className={cx('relative flex min-h-[62px] flex-col items-center justify-center gap-1 font-ui text-[10.5px] font-semibold', on ? 'text-gold' : 'text-muted')} aria-current={on ? 'page' : undefined}>
-                  {on && <span className="halo absolute top-1.5 h-1 w-6 rounded-full bg-gold" aria-hidden="true" />}
+                  {on && <span className="halo absolute inset-x-2 top-0 h-[3px] bg-gold" aria-hidden="true" />}
                   <t.icon size={22} strokeWidth={on ? 2.2 : 1.7} />
                   {t.label}
                 </button>

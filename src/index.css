@@ -4,35 +4,45 @@
 
 /*
  * Deux thèmes, mêmes composants :
- *  - « Veillée » (sombre, par défaut) : nuit d'Osgild, laiton et braise, voies en constellations.
- *  - « Grimoire » (clair) : la maquette du livre de règles — papier, or, filets à hexagone, losanges.
- * Les couleurs sont des triplets RGB (utilisables avec l'opacité Tailwind), les polices des variables.
+ *  - « Papier » (clair, par défaut) : l'identité du livre et de la fiche de personnage — papier,
+ *    or plein, angles droits, bandeaux dorés en capitales, filets à hexagone, losanges.
+ *  - « Veillée » (sombre) : nuit d'Osgild, laiton et braise.
+ * Les couleurs sont des triplets RGB (utilisables avec l'opacité Tailwind), les polices et les
+ * arrondis des variables.
  */
 
-/* ---------- Grimoire (clair) ---------- */
+/* ---------- Papier (clair) ---------- */
 :root {
-  --bg: 239 235 225;
-  --surface: 248 245 237;
-  --surface2: 236 229 213;
-  --ink: 52 50 46;
-  --muted: 118 111 98;
-  --line: 214 200 168;
-  --gold: 176 136 58;
-  --goldsoft: 150 112 40;
+  --bg: 248 246 240;
+  --surface: 255 255 255;
+  --surface2: 244 240 231;
+  --ink: 63 60 55;
+  --muted: 119 113 106;
+  --line: 222 208 176;
+  --gold: 176 136 64;
+  --goldsoft: 138 102 38;
   --blood: 168 64 44;
   --mana: 52 92 160;
   --luck: 56 120 82;
   --leaf: 84 120 44;
 
-  --f-titre: 'Alegreya', Georgia, serif;
-  --f-texte: 'Alegreya Sans', 'Segoe UI', system-ui, sans-serif;
-  --f-chiffre: 'Alegreya Sans', 'Segoe UI', system-ui, sans-serif;
-  --f-capitales: 'Alegreya Sans SC', 'Alegreya Sans', sans-serif;
+  /* Vollkorn remplace Mendl Serif (titres, étiquettes), Cabin remplace Hypatia Sans (texte) */
+  --f-titre: 'Vollkorn', Georgia, serif;
+  --f-texte: 'Cabin', 'Segoe UI', system-ui, sans-serif;
+  --f-chiffre: 'Cabin', 'Segoe UI', system-ui, sans-serif;
+  --f-capitales: 'Vollkorn', Georgia, serif;
 
-  --carte-bord: rgb(var(--gold) / 0.45);
-  --carte-ombre: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 1px 2px rgb(90 70 30 / 0.12);
+  --r-md: 1px;
+  --r-lg: 2px;
+  --r-xl: 2px;
+  --r-2xl: 2px;
+  --r-3xl: 3px;
+  --r-full: 2px;
+
+  --carte-bord: rgb(var(--gold) / 0.55);
+  --carte-ombre: none;
   --halo: none;
-  --fond: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .4 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fond: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .4 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: light;
 }
 
@@ -55,6 +65,13 @@
   --f-texte: 'Figtree', 'Segoe UI', system-ui, sans-serif;
   --f-chiffre: 'JetBrains Mono', ui-monospace, monospace;
   --f-capitales: 'Figtree', system-ui, sans-serif;
+
+  --r-md: 6px;
+  --r-lg: 8px;
+  --r-xl: 12px;
+  --r-2xl: 16px;
+  --r-3xl: 24px;
+  --r-full: 9999px;
 
   --carte-bord: rgb(var(--line));
   --carte-ombre: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px -16px rgb(0 0 0 / 0.6);
@@ -88,9 +105,9 @@ body {
   font-synthesis: none;
   letter-spacing: 0.01em;
 }
-/* Alegreya : titres gras comme dans le livre */
+/* Vollkorn : titres gras comme dans le livre */
 :root:not([data-theme='dark']) .font-display {
-  font-weight: 800;
+  font-weight: 700;
 }
 .font-num {
   font-variant-numeric: lining-nums tabular-nums;
@@ -162,6 +179,58 @@ select {
   background:
     linear-gradient(rgb(var(--gold) / 0.8), rgb(var(--gold) / 0.8)) 0 0 / 100% 1px no-repeat,
     linear-gradient(rgb(var(--gold) / 0.45), rgb(var(--gold) / 0.45)) 0 4px / 70% 1px no-repeat;
+}
+
+/* ---------- Identité du livre ---------- */
+/* Titre de section : bandeau doré en capitales, extrémité en pointe (papier) ; titre et filet (Veillée) */
+.titre-section .ts-texte {
+  font-family: var(--f-titre);
+}
+:root:not([data-theme='dark']) .titre-section {
+  background: rgb(var(--gold));
+  color: rgb(255 255 255);
+  padding: 6px 22px 6px 10px;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+}
+:root:not([data-theme='dark']) .titre-section .ts-texte {
+  color: rgb(255 255 255);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 15px;
+  font-weight: 700;
+}
+:root:not([data-theme='dark']) .titre-section .ts-icone,
+:root:not([data-theme='dark']) .titre-section .ts-droite,
+:root:not([data-theme='dark']) .titre-section .ts-droite * {
+  color: rgb(255 255 255 / 0.85) !important;
+}
+:root:not([data-theme='dark']) .titre-section .orn-ligne {
+  visibility: hidden;
+}
+
+/* Étiquette dorée pleine (AGI, INIT., PTS DE VIGUEUR…) */
+.etiquette-or {
+  background: rgb(var(--gold));
+  color: rgb(var(--bg));
+  font-family: var(--f-titre);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+:root:not([data-theme='dark']) .etiquette-or {
+  color: rgb(255 255 255);
+}
+
+/* Losange de compteur (points de chance, DR…) : vide = contour doré, plein = or */
+.losange-compteur {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgb(var(--gold));
+  transform: rotate(45deg);
+  flex: none;
+}
+.losange-compteur.plein {
+  background: rgb(var(--gold));
 }
 
 /* Puces losange du livre */
