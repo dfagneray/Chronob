@@ -1,6 +1,6 @@
 import { BookOpen, CheckCircle2, Circle, Sparkles } from 'lucide-react';
 import { Sheet, Badge, ActionBadge, RuleText, Btn, cx } from './ui.jsx';
-import { Hexa, VoieTrace, IconeProfil, ICONES_CATEGORIE, ICONES_ETAT } from './visuels.jsx';
+import { IconeProfil, ICONES_CATEGORIE, ICONES_ETAT, PiedPage } from './visuels.jsx';
 import { voieById, profilById, peupleById, ACTIONS, CATEGORIES_PRESTIGE, CATEGORIES_RECETTES, familles, CARAC_NOMS, refPage, sourceDe } from '../data/index.js';
 import { NIVEAU_REQUIS, coutCapacite, frequence, modApplique, fmt, estPsionique } from '../lib/rules.js';
 import { CATEGORIES_EQUIPEMENT, formatPrix } from '../data/equipement.js';
@@ -23,6 +23,7 @@ export function BadgeSource({ x }) {
 }
 
 const FREQ = { combat: '1 fois / combat', jour: '1 fois / jour' };
+const ouvrageDe = (x) => (sourceDe(x) === 'compagnon' ? 'Compagnon du joueur' : 'Livre des règles');
 
 /** Fiche détaillée d'une capacité. */
 export function CapaciteSheet({ cap, open, onClose, char, onToggleUse, onToggleMod, onOpenVoie, onChoix, footer }) {
@@ -56,6 +57,7 @@ export function CapaciteSheet({ cap, open, onClose, char, onToggleUse, onToggleM
         </span>
       </button>
       <RuleText text={cap.description} />
+      <PiedPage page={voie?.page} ouvrage={ouvrageDe(voie)} />
       {acquise && onChoix && (
         <label className="mt-4 block font-ui text-sm text-muted">
           Choix / notes (capacité choisie, domaines, familier…)
@@ -122,25 +124,25 @@ export function VoieSheet({ voie, open, onClose, char, onOpenCap }) {
           {voie.armePrivilegiee && <Badge>Arme privilégiée : {voie.armePrivilegiee}</Badge>}
         </div>
       )}
-      <div className="mb-3 rounded-xl bg-surface2 px-3 py-2">
-        <VoieTrace voie={voie} rang={rang} />
-      </div>
       {voie.presentation && <RuleText text={voie.presentation} className="mb-3 text-muted" />}
       {voie.intro && <RuleText text={voie.intro} className="mb-3 text-muted" />}
       <div className="space-y-2">
         {voie.capacites.map((c) => (
-          <button key={c.id} type="button" onClick={() => onOpenCap?.(c)} className={cx('w-full rounded-xl p-3 text-left rune-border active:brightness-95', rang >= c.rang ? 'bg-gold/10' : 'bg-surface2')}>
-            <div className="flex items-center gap-2">
-              <Hexa taille={30} plein={rang >= c.rang} petit>
-                {c.rang}
-              </Hexa>
-              <span className="flex-1 font-semibold">{c.nom}</span>
-              <ActionBadge action={c.action} sort={c.sort} />
-            </div>
-            <p className="mt-1.5 line-clamp-3 text-[15px] text-muted">{c.description}</p>
+          <button key={c.id} type="button" onClick={() => onOpenCap?.(c)} className="flex w-full items-start gap-2.5 rounded-xl bg-surface p-3 text-left rune-border active:bg-surface2">
+            {/* « ☐ Rang 1 : » comme sur la fiche */}
+            <span className={cx('case-rang mt-0.5', rang >= c.rang && 'cochee')} aria-hidden="true" />
+            <span className="min-w-0 flex-1">
+              <span className="flex flex-wrap items-baseline gap-x-1.5">
+                <span className="font-ui text-[13px] font-bold text-muted">Rang {c.rang} :</span>
+                <span className="font-display text-[16px] font-bold leading-tight">{c.nom}</span>
+                <ActionBadge action={c.action} sort={c.sort} />
+              </span>
+              <span className="mt-1 line-clamp-3 text-[15px] leading-snug text-muted">{c.description}</span>
+            </span>
           </button>
         ))}
       </div>
+      <PiedPage page={voie.page} ouvrage={ouvrageDe(voie)} />
     </Sheet>
   );
 }
@@ -309,6 +311,7 @@ export function RegleSheet({ regle, open, onClose }) {
         {regle.chapitre} · {refPage(regle)}
       </div>
       <RuleText text={regle.texte} />
+      <PiedPage page={regle.page} ouvrage={ouvrageDe(regle)} />
     </Sheet>
   );
 }

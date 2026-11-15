@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, createContext, useContext, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Minus, Plus, X, Delete, Check, Sparkles } from 'lucide-react';
-import { ICONES_ACTION } from './visuels.jsx';
+import { ICONES_ACTION, FiletHexa } from './visuels.jsx';
 
 export const cx = (...a) => a.filter(Boolean).join(' ');
 
@@ -284,6 +284,7 @@ export function Sheet({ open, onClose, title, children, footer, tall, label }) {
             <div className="min-w-0 flex-1 font-display text-xl leading-tight text-goldsoft">{title}</div>
             <IconBtn icon={X} label="Fermer" onClick={onClose} />
           </div>
+          <FiletHexa className="mt-1" />
         </div>
         <div className="scroll-thin min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4">{children}</div>
         {footer && <div className="safe-bottom shrink-0 border-t border-line bg-surface px-4 py-3">{footer}</div>}
@@ -390,9 +391,29 @@ export function RuleText({ text, className }) {
   if (!text) return null;
   return (
     <div className={cx('prose-co text-[16.5px] leading-relaxed', className)}>
-      {text.split('\n').map((p, i) => (
-        <p key={i}>{p}</p>
-      ))}
+      {text.split('\n').map((p, i) => {
+        const puce = p.match(/^[•▪◆]\s*(.*)$/);
+        const ligne = puce ? puce[1] : p;
+        // « Aveuglé : … », « Niveau requis : … » : intitulé en gras, comme dans le livre
+        const m = ligne.match(/^([^:.!?]{2,42}?) ?: (.+)$/);
+        const contenu = m ? (
+          <>
+            <b className="font-semibold text-ink">{m[1]} :</b> {m[2]}
+          </>
+        ) : (
+          ligne
+        );
+        return puce ? (
+          <p key={i} className="flex gap-2.5">
+            <span className="losange mt-[0.55em]" aria-hidden="true" />
+            <span>{contenu}</span>
+          </p>
+        ) : (
+          <p key={i} className="alinea">
+            {contenu}
+          </p>
+        );
+      })}
     </div>
   );
 }

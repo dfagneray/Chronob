@@ -146,6 +146,31 @@ export function FiletHexa({ className }) {
   );
 }
 
+/** Numéro de rang dans un carré doré (plein : acquis ou choisi ; vide : à venir). */
+export function RangCarre({ rang, plein = true, className }) {
+  return (
+    <span
+      className={cx('flex h-8 w-8 shrink-0 items-center justify-center font-display text-[16px] font-bold', plein ? 'etiquette-or' : 'border-2 border-gold/70 text-goldsoft', className)}
+      aria-hidden="true"
+    >
+      {rang}
+    </span>
+  );
+}
+
+/** Pied de page à la manière du livre : « PAGE 87 ◆ LIVRE DES RÈGLES ». */
+export function PiedPage({ page, ouvrage }) {
+  if (page == null) return null;
+  return (
+    <div className="mt-6 flex items-center gap-2 text-gold" aria-label={`Page ${page}, ${ouvrage}`}>
+      <span className="h-px flex-1 bg-current opacity-70" />
+      <span className="font-display text-[12px] font-bold uppercase tracking-wider">
+        Page {page} ◆ {ouvrage}
+      </span>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Anneau des PV
 // ---------------------------------------------------------------------------

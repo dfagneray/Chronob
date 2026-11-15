@@ -4,7 +4,7 @@ import { Card, SectionTitle, Btn, Sheet, Badge, ActionBadge, cx, ConfirmBtn, use
 import { voieById, CARACS, profilById } from '../data/index.js';
 import { NIVEAU_MAX, optionsProgression, voiesApresPlan, simulerPlan, verifierNiveau, validerNiveau, pointsDepenses, coutCapacite, fmt, deriver, NIVEAU_REQUIS, gainPVPlanifie, rangsRecettes, revenirAuNiveau } from '../lib/rules.js';
 import { origineVoie } from '../components/Details.jsx';
-import { Hexa } from '../components/visuels.jsx';
+import { RangCarre } from '../components/visuels.jsx';
 
 const ORPHELINS = [
   { id: 'PC', label: '+1 point de chance' },
@@ -181,17 +181,13 @@ export default function Planificateur({ char, maj, details }) {
       {ficheAcquis}
       {vu === null && (
       <>
-      <Card className="mt-3 p-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="font-display text-xl text-goldsoft">Niveau <span className="font-num">{cible}</span></div>
-            <div className="font-ui text-xs text-muted">
-              +2 points de capacité · attaques {cible <= 10 ? '+1' : 'plafonnées (niveau 10)'} · PV +{gainsPV.find((g) => g.niveau === cible)?.pv ?? '?'} {fmt(d?.carac.CON ?? 0)} CON
-            </div>
-          </div>
-          <Badge tone={restant === 0 ? "leaf" : "gold"} className="whitespace-nowrap text-sm">
-            {restant} / 2 pts
-          </Badge>
+      <Card className="mt-3 overflow-hidden p-3">
+        <div className="etiquette-or -mx-3 -mt-3 flex min-h-[44px] items-center justify-between gap-2 px-3 py-1.5">
+          <span className="text-[17px]">Niveau {cible}</span>
+          <span className="whitespace-nowrap font-ui text-[13px] normal-case tracking-normal">{restant} / 2 pts</span>
+        </div>
+        <div className="mt-2 font-ui text-xs text-muted">
+          +2 points de capacité · attaques {cible <= 10 ? '+1' : 'plafonnées (niveau 10)'} · PV +{gainsPV.find((g) => g.niveau === cible)?.pv ?? '?'} {fmt(d?.carac.CON ?? 0)} CON
         </div>
 
         <ul className="mt-3 space-y-2">
@@ -201,9 +197,7 @@ export default function Planificateur({ char, maj, details }) {
             return (
               <li key={i} className="flex items-center gap-2 rounded-xl bg-surface2 rune-border">
                 <button type="button" className="flex min-h-[52px] min-w-0 flex-1 items-center gap-2 px-3 text-left" onClick={() => cap && details.cap(cap)}>
-                  <Hexa taille={30} petit>
-                    {p.rang}
-                  </Hexa>
+                  <RangCarre rang={p.rang} />
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-semibold">{cap?.nom}</span>
                     <span className="block truncate font-ui text-xs text-muted">
@@ -341,9 +335,7 @@ function ProgressionPicker({ open, onClose, options, onPick, char, details, nive
             {g.liste.map((o) => (
               <li key={o.cap.id} className={cx('flex items-stretch rounded-xl bg-surface rune-border', !o.possible && 'opacity-50')}>
                 <button type="button" className="flex min-h-[56px] min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left" onClick={() => details.cap(o.cap)}>
-                  <Hexa taille={30} plein={false} petit>
-                    {o.rang}
-                  </Hexa>
+                  <RangCarre rang={o.rang} plein={false} />
                   <span className="min-w-0 flex-1">
                     <span className="block font-semibold leading-tight">{o.cap.nom}</span>
                     <span className="block truncate font-ui text-xs text-muted">
@@ -394,13 +386,11 @@ function NiveauAcquis({ char, n, details, onRevenir }) {
   const nb = char.niveau - n + 1;
   const orph = ORPHELINS.find((o) => o.id === h?.orphelin);
   return (
-    <Card className="mt-3 p-3">
-      <div className="flex items-center gap-2">
-        <span className="font-display text-xl text-goldsoft">
-          Niveau <span className="font-num">{n}</span>
-        </span>
-        <Badge tone="leaf">acquis</Badge>
-        {h?.date && <span className="ml-auto font-ui text-xs text-muted">{new Date(h.date).toLocaleDateString('fr-FR')}</span>}
+    <Card className="mt-3 overflow-hidden p-3">
+      <div className="etiquette-or -mx-3 -mt-3 flex min-h-[44px] items-center gap-2 px-3 py-1.5">
+        <span className="text-[17px]">Niveau {n}</span>
+        <span className="font-ui text-[12px] normal-case tracking-normal opacity-90">acquis</span>
+        {h?.date && <span className="ml-auto font-ui text-[12px] normal-case tracking-normal opacity-90">{new Date(h.date).toLocaleDateString('fr-FR')}</span>}
       </div>
       {h ? (
         <>
@@ -411,9 +401,7 @@ function NiveauAcquis({ char, n, details, onRevenir }) {
               return (
                 <li key={i}>
                   <button type="button" className="flex min-h-[52px] w-full items-center gap-2 rounded-xl bg-surface2 px-3 text-left rune-border" onClick={() => cap && details.cap(cap)}>
-                    <Hexa taille={30} petit>
-                      {p.rang}
-                    </Hexa>
+                    <RangCarre rang={p.rang} />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-semibold">{cap?.nom || p.voieId}</span>
                       <span className="block truncate font-ui text-xs text-muted">{v?.nom}</span>

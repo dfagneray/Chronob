@@ -105,6 +105,13 @@ body {
   font-synthesis: none;
   letter-spacing: 0.01em;
 }
+/* Chiffres alignés partout (Vollkorn utilise par défaut des chiffres elzéviriens : « 1 » ressemble à « I ») */
+.font-display,
+.etiquette-or,
+.etiquette-voie,
+.titre-section {
+  font-variant-numeric: lining-nums;
+}
 /* Vollkorn : titres gras comme dans le livre */
 :root:not([data-theme='dark']) .font-display {
   font-weight: 700;
@@ -287,6 +294,13 @@ select {
 
 .prose-co p + p {
   margin-top: 0.6em;
+}
+/* alinéas comme dans le livre (papier) */
+:root:not([data-theme='dark']) .prose-co p.alinea {
+  text-indent: 1em;
+}
+:root:not([data-theme='dark']) .prose-co p + p {
+  margin-top: 0.25em;
 }
 
 @keyframes sheet-in {
