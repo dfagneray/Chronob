@@ -4,7 +4,6 @@ import { Card, SectionTitle, Btn, ActionBadge, Badge, Sheet, Stepper, Empty, cx,
 import { voies as VOIES, profilById, voiesDomaine, voieById } from '../data/index.js';
 import { voiesPossedees, capaciteSuivie, frequence, premierRang, rangsRecettes } from '../lib/rules.js';
 import { origineVoie } from '../components/Details.jsx';
-import { Hexa, VoieTrace } from '../components/visuels.jsx';
 
 const FREQ = { combat: '1/combat', jour: '1/jour' };
 
@@ -14,11 +13,11 @@ export default function Voies({ char, maj, details }) {
   const [gerer, setGerer] = useState(false);
   const possedees = voiesPossedees(char);
   const groupes = [
-    { titre: 'Voie de peuple', icon: Users, liste: possedees.filter((x) => ['peuple', 'mage', 'domaine'].includes(x.voie.type)) },
-    { titre: 'Voies de profil', icon: Sparkle, liste: possedees.filter((x) => x.voie.type === 'profil') },
-    { titre: 'Voie de prestige', icon: Crown, liste: possedees.filter((x) => x.voie.type === 'prestige') },
-    { titre: 'Voies d’artisan', icon: Hammer, liste: possedees.filter((x) => x.voie.type === 'artisan') },
-    { titre: 'Voies de recettes', icon: ScrollText, liste: possedees.filter((x) => x.voie.type === 'recette'), recettes: true },
+    { titre: 'Voie de peuple', icon: Users, libelle: () => 'Peuple', liste: possedees.filter((x) => ['peuple', 'mage', 'domaine'].includes(x.voie.type)) },
+    { titre: 'Voies de profil', icon: Sparkle, libelle: (i) => `Voie ${i + 1}`, liste: possedees.filter((x) => x.voie.type === 'profil') },
+    { titre: 'Voie de prestige', icon: Crown, libelle: () => 'Prestige', liste: possedees.filter((x) => x.voie.type === 'prestige') },
+    { titre: 'Voies d’artisan', icon: Hammer, libelle: () => 'Artisan', liste: possedees.filter((x) => x.voie.type === 'artisan') },
+    { titre: 'Voies de recettes', icon: ScrollText, libelle: () => 'Recettes', liste: possedees.filter((x) => x.voie.type === 'recette'), recettes: true },
   ].filter((g) => g.liste.length);
   const recettes = rangsRecettes(char.voies);
 
@@ -60,15 +59,16 @@ export default function Voies({ char, maj, details }) {
             {g.titre}
           </SectionTitle>
           <div className="space-y-2.5">
-            {g.liste.map(({ voie, rang }) => {
+            {g.liste.map(({ voie, rang }, iVoie) => {
               const open = ouvertes.has(voie.id);
               const caps = voie.capacites.filter((c) => (filtre === 'combat' ? c.rang <= rang && (capaciteSuivie(c) || c.action) : true));
               if (filtre === 'combat' && !caps.length) return null;
               return (
                 <Card key={voie.id} className="overflow-hidden">
+                  {/* en-tête façon page 2 de la fiche : bandeau doré « VOIE 1 : », nom de la voie, cases de rang */}
                   <button
                     type="button"
-                    className="flex min-h-[56px] w-full items-center gap-3 px-3 py-2 text-left active:bg-surface2"
+                    className="etiquette-voie flex min-h-[56px] w-full items-center gap-3 px-3 py-2 text-left"
                     onClick={() =>
                       setOuvertes((s) => {
                         const n = new Set(s);
@@ -80,13 +80,19 @@ export default function Voies({ char, maj, details }) {
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-baseline gap-2">
-                        <span className="truncate font-display text-[17px] leading-tight">{voie.nom}</span>
-                        <span className="shrink-0 font-num text-xs text-gold">rang {rang}</span>
+                        <span className="shrink-0 font-display text-[13px] font-bold uppercase tracking-wide opacity-90">{g.libelle(iVoie)} :</span>
+                        <span className="truncate font-display text-[17px] font-bold leading-tight">{voie.nom}</span>
                       </div>
-                      <div className="truncate font-ui text-xs text-muted">{origineVoie(voie)}</div>
-                      <VoieTrace voie={voie} rang={rang} className="mt-1.5" />
+                      <div className="mt-0.5 flex items-center gap-2">
+                        <span className="flex gap-1" aria-label={`Rang ${rang} sur ${voie.capacites[voie.capacites.length - 1].rang}`}>
+                          {voie.capacites.map((c) => (
+                            <span key={c.rang} className={cx('case-rang petite', c.rang <= rang && 'cochee')} aria-hidden="true" />
+                          ))}
+                        </span>
+                        <span className="min-w-0 truncate font-ui text-xs opacity-85">{origineVoie(voie)}</span>
+                      </div>
                     </div>
-                    <ChevronDown size={18} className={cx('shrink-0 text-muted transition-transform', open && 'rotate-180')} />
+                    <ChevronDown size={18} className={cx('shrink-0 transition-transform', open && 'rotate-180')} />
                   </button>
                   {open && (
                     <ul className="divide-y divide-line border-t border-line">
@@ -96,12 +102,15 @@ export default function Voies({ char, maj, details }) {
                         const used = char.utilise?.[c.id];
                         return (
                           <li key={c.id} className={cx('flex items-stretch', !acquise && 'opacity-45')}>
-                            <button type="button" onClick={() => details.cap(c)} className="flex min-h-[56px] min-w-0 flex-1 items-center gap-2.5 px-3 py-2 text-left active:bg-surface2">
-                              <Hexa taille={30} plein={acquise} petit>
-                                {c.rang}
-                              </Hexa>
+                            <button type="button" onClick={() => details.cap(c)} className="flex min-h-[56px] min-w-0 flex-1 items-start gap-2.5 px-3 py-2.5 text-left active:bg-surface2">
+                              {/* case à cocher du rang, comme « ☐ Rang 1 : » sur la fiche */}
+                              <span className={cx('case-rang mt-0.5', acquise && 'cochee')} aria-hidden="true" />
                               <span className="min-w-0 flex-1">
-                                <span className={cx('block font-semibold leading-tight', used && 'line-through decoration-blood/70')}>{c.nom}</span>
+                                <span className="flex flex-wrap items-baseline gap-x-1.5">
+                                  <span className="font-ui text-[13px] font-bold text-muted">Rang {c.rang} :</span>
+                                  <span className={cx('font-display text-[16px] font-bold leading-tight', used && 'line-through decoration-blood/70')}>{c.nom}</span>
+                                </span>
+                                <span className="mt-0.5 line-clamp-2 text-[13.5px] leading-snug text-muted">{c.description}</span>
                                 {acquise && char.choix?.[c.id] && <span className="block truncate font-ui text-xs text-gold">{char.choix[c.id]}</span>}
                                 <span className="mt-0.5 flex flex-wrap gap-1">
                                   <ActionBadge action={c.action} sort={c.sort} />

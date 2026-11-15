@@ -9,8 +9,8 @@ test.beforeEach(async ({ page }) => {
 test('voies affichées par groupe, capacités acquises et à venir', async ({ page }) => {
   await expect(page.getByText('Voie de peuple', { exact: true })).toBeVisible();
   await expect(page.getByText('Voies de profil', { exact: true })).toBeVisible();
-  await expect(btn(page, /^1 Réflexes éclair/)).toBeVisible();
-  await expect(btn(page, /^2 Charge.*à venir/)).toBeVisible();
+  await expect(btn(page, /^Rang 1 : Réflexes éclair/)).toBeVisible();
+  await expect(btn(page, /^Rang 2 : Charge.*à venir/)).toBeVisible();
 });
 
 test('suivi d’utilisation : Cri de guerre utilisé puis rechargé par une récupération rapide', async ({ page }) => {
@@ -26,7 +26,7 @@ test('suivi d’utilisation : Cri de guerre utilisé puis rechargé par une réc
 });
 
 test('fiche d’une capacité : texte complet, effet désactivable, note de choix', async ({ page }) => {
-  await btn(page, /^1 Réflexes éclair/).click();
+  await btn(page, /^Rang 1 : Réflexes éclair/).click();
   const s = dialog(page, 'Réflexes éclair');
   await expect(s.getByText(/il gagne \+3 en Init/)).toBeVisible();
   await s.getByRole('button', { name: /^DEF \+1/ }).click();
@@ -55,5 +55,5 @@ test('gérer les voies manuellement : ajout, rang, retrait', async ({ page }) =>
 test('filtre « À suivre en combat »', async ({ page }) => {
   await btn(page, 'À suivre en combat').click();
   await expect(btn(page, /Cri de guerre/)).toBeVisible();
-  await expect(btn(page, /^2 Charge/)).toHaveCount(0);
+  await expect(btn(page, /^Rang 2 : Charge/)).toHaveCount(0);
 });

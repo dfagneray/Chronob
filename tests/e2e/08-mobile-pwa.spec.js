@@ -65,7 +65,7 @@ test('zones tactiles d’au moins 44 px dans les tiroirs', async ({ page }) => {
   await nav(page, 'Voies').click();
   await btn(page, /Gérer les voies/).click();
   await verifier('Gérer les voies');
-  await btn(page, /^1 Réflexes éclair/).click();
+  await btn(page, /^Rang 1 : Réflexes éclair/).click();
   await verifier('Capacité');
   await nav(page, 'Progression').click();
   await btn(page, /Choisir une capacité/).click();
