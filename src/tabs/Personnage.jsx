@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Heart, Shield, Zap, Clover, Droplet, Swords, Crosshair, Wand2, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal, HeartCrack, HeartPulse, Dices, Hand, Hexagon, ShieldPlus, ShieldCheck, Rabbit, Brain } from 'lucide-react';
+import { useEquipement, EquipementCombat, SacEtBourse } from './Equipement.jsx';
+import { Heart, Shield, Zap, Clover, Droplet, Swords, Crosshair, Wand2, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal, HeartCrack, HeartPulse, Dices, Hand, Hexagon, ShieldPlus, ShieldCheck, Rabbit, Brain, Backpack, ChevronDown } from 'lucide-react';
 import { AnneauPV, ICONES_CARAC, ICONES_ETAT } from '../components/visuels.jsx';
 
 const ICONES_POSTURE = { 'defense-partielle': ShieldPlus, 'defense-totale': ShieldCheck, sprint: Rabbit };
@@ -20,6 +21,24 @@ export default function Personnage({ char, d, maj, onEdit }) {
   const [pad, setPad] = useState(null); // { title, initial, onSubmit, allowNegative }
   const [recup, setRecup] = useState(false);
   const [etatInfo, setEtatInfo] = useState(null);
+  const eq = useEquipement(char, d, maj);
+  // section « Sac & bourse » repliée par défaut ; l'état est retenu sur cet appareil
+  const [sacOuvert, setSacOuvert] = useState(() => {
+    try {
+      return localStorage.getItem('co2-sac-ouvert') === '1';
+    } catch {
+      return false;
+    }
+  });
+  const basculerSac = () =>
+    setSacOuvert((o) => {
+      try {
+        localStorage.setItem('co2-sac-ouvert', o ? '0' : '1');
+      } catch {
+        /* stockage indisponible */
+      }
+      return !o;
+    });
   const [nouvelleRes, setNouvelleRes] = useState(false);
   const [ressourceEdit, setRessourceEdit] = useState(null); // 'PV' | 'PC' | 'PM' | 'PE' | 'DR'
   const [statEdit, setStatEdit] = useState(null); // clé de bonus
@@ -240,6 +259,7 @@ export default function Personnage({ char, d, maj, onEdit }) {
           {[d.etats.includes('affaibli') && 'Affaibli', d.posture?.deMalus && 'Sprint'].filter(Boolean).join(' + ')} : dé malus à tous les tests (lancer 2d20, garder le pire).
         </p>
       )}
+      <EquipementCombat eq={eq} />
 
       {/* Caractéristiques */}
       <SectionTitle icon={Hexagon} right={<span className="font-ui text-xs text-muted">toucher pour modifier</span>}>
@@ -299,6 +319,27 @@ export default function Personnage({ char, d, maj, onEdit }) {
           })}
         </Card>
       )}
+
+      {/* Sac & bourse (ancien onglet Équipement), replié par défaut */}
+      <button
+        type="button"
+        onClick={basculerSac}
+        aria-expanded={sacOuvert}
+        className="mt-6 flex min-h-[56px] w-full items-center gap-3 rounded-2xl bg-surface px-3 text-left rune-border active:bg-surface2"
+      >
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+          <Backpack size={20} aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-display text-[17px] text-goldsoft">Sac & bourse</span>
+          <span className="block truncate font-ui text-xs text-muted">
+            {eq.inv.length} objet{eq.inv.length > 1 ? 's' : ''} · {eq.resumeBourse}
+          </span>
+        </span>
+        <ChevronDown size={20} className={cx('shrink-0 text-muted transition-transform', sacOuvert && 'rotate-180')} aria-hidden="true" />
+      </button>
+      {sacOuvert && <SacEtBourse eq={eq} />}
+      {eq.feuilles}
 
       <NumPad open={!!pad} onClose={() => setPad(null)} title={pad?.title} initial={pad?.initial ?? 0} allowNegative={pad?.allowNegative ?? false} onSubmit={(v) => pad?.onSubmit(v)} />
 

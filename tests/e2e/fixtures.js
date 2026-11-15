@@ -64,3 +64,10 @@ export async function tuile(page, label) {
   const t = await btn(page, new RegExp(`^${label} [+-]?\\d`)).textContent();
   return parseInt(t.replace(label, '').replace(/^[^\d+-]*/, ''), 10);
 }
+
+/** Ouvre la section « Sac & bourse » de la fiche (ancien onglet Équipement). */
+export async function ouvrirSac(page) {
+  await nav(page, 'Personnage').click();
+  const b = btn(page, /^Sac & bourse/);
+  if ((await b.getAttribute('aria-expanded')) !== 'true') await b.click();
+}

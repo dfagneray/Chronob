@@ -45,7 +45,7 @@ se gère avec le mode libre du planificateur.
 - `scripts/pdf-commun.mjs` : outils d’analyse partagés (voies, capacités, effets chiffrés)
 - `src/data/equipement.js` : catalogue d'équipement (tableaux p. 183-191)
 - `src/lib/rules.js` : calculs (DEF, Init., attaques, PV, PM, PC, DR, d4°) et règles de progression
-- `src/tabs/` : les 5 onglets (Personnage, Voies, Progression, Équipement, Grimoire)
+- `src/tabs/` : les 4 onglets (Personnage — avec armes en main, consommables et « Sac & bourse » —, Voies, Progression, Grimoire) ; `Equipement.jsx` fournit les sections d’équipement de la fiche
 - `tests/` : tests Vitest (`rules`, `compagnon`, `data`, `store`, `journal`, `app`)
 - `tests/e2e/` : tests d'intégration Playwright (rapport HTML dans `playwright-report/`)
 

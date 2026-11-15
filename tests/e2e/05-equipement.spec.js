@@ -1,9 +1,9 @@
-import { test, expect, btn, nav, creerPerso, perso, tuile, dialog, fermer } from './fixtures.js';
+import { test, expect, btn, nav, creerPerso, perso, tuile, dialog, fermer , ouvrirSac } from './fixtures.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await creerPerso(page);
-  await nav(page, 'Équipement').click();
+  await ouvrirSac(page);
 });
 
 const ligneObjet = (page, nom) =>
@@ -54,7 +54,8 @@ test('changer d’armure recalcule la DEF et signale l’armure trop lourde pour
 });
 
 test('arme : bonus magique, qualité, non maîtrisée ; objet personnalisé', async ({ page }) => {
-  await btn(page, /^Hache à deux mains/).click();
+  // l'arme en main apparaît aussi dans la section Combat de la fiche
+  await btn(page, /^Hache à deux mains/).first().click();
   const s = dialog(page, 'Hache à deux mains');
   await s.getByRole('button', { name: 'Augmenter' }).first().click();
   await s.getByRole('button', { name: /Non maîtrisée/ }).click();
@@ -78,8 +79,8 @@ test('potion de soins : le joueur saisit son jet', async ({ page }) => {
   await fermer(page);
   await nav(page, 'Personnage').click();
   await btn(page, '-5', { exact: true }).click();
-  await nav(page, 'Équipement').click();
-  await btn(page, 'Boire').click();
+  await ouvrirSac(page);
+  await btn(page, /^Boire/).first().click();
   const pad = dialog(page, /Potion de soins/);
   await pad.getByRole('button', { name: 'Effacer' }).click();
   await pad.getByRole('button', { name: '4', exact: true }).click();
@@ -87,4 +88,24 @@ test('potion de soins : le joueur saisit son jet', async ({ page }) => {
   const c = await perso(page);
   expect(c.pv.actuel).toBe(11);
   expect(c.inventaire.some((i) => i.refId === 'potion-de-soins')).toBe(false);
+});
+
+test('fiche fusionnée : armes en main et consommables dans Combat, sac replié par défaut et mémorisé', async ({ page }) => {
+  // le beforeEach a ouvert le sac : on le referme, l'état est retenu au rechargement
+  const sac = btn(page, /^Sac & bourse/);
+  await sac.click();
+  await page.reload();
+  await nav(page, 'Personnage').click();
+  await expect(sac).toHaveAttribute('aria-expanded', 'false');
+  await expect(sac).toContainText('7 pa');
+  // arme en main : attaque et DM visibles sans ouvrir le sac
+  await expect(btn(page, /^Hache à deux mains/)).toContainText('Att +4 · DM 2d6+3');
+  await expect(btn(page, /^Javelot/)).toHaveCount(0); // rangé : seulement dans le sac
+  // consommable utilisé depuis la fiche
+  await btn(page, 'Utiliser : Torche').click();
+  expect((await perso(page)).inventaire.some((i) => i.refId === 'torche')).toBe(false);
+  await sac.click();
+  await expect(btn(page, /^Javelot/)).toBeVisible();
+  await page.reload();
+  await expect(btn(page, /^Sac & bourse/)).toHaveAttribute('aria-expanded', 'true');
 });

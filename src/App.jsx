@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
-import { User, Waypoints, TrendingUp, Backpack, Library, Moon, Users, UserPlus, History, BookOpen } from 'lucide-react';
+import { User, Waypoints, TrendingUp, Library, Moon, Users, UserPlus, History, BookOpen } from 'lucide-react';
 import { Hexa, IconeProfil } from './components/visuels.jsx';
 import { useStore } from './lib/store.jsx';
 import { deriver } from './lib/rules.js';
@@ -8,7 +8,6 @@ import { Btn, cx, Sheet, Empty } from './components/ui.jsx';
 import Personnage from './tabs/Personnage.jsx';
 import Voies from './tabs/Voies.jsx';
 import Planificateur from './tabs/Planificateur.jsx';
-import Equipement from './tabs/Equipement.jsx';
 import Grimoire from './tabs/Grimoire.jsx';
 import Creation from './components/Creation.jsx';
 import EditCharacter from './components/EditCharacter.jsx';
@@ -19,7 +18,6 @@ const TABS = [
   { id: 'perso', label: 'Personnage', icon: User },
   { id: 'voies', label: 'Voies', icon: Waypoints },
   { id: 'plan', label: 'Progression', icon: TrendingUp },
-  { id: 'equip', label: 'Équipement', icon: Backpack },
   { id: 'grimoire', label: 'Grimoire', icon: Library },
 ];
 
@@ -28,7 +26,8 @@ export default function App() {
   const { actif, maj } = store;
   const [tab, setTab] = useState(() => {
     try {
-      return sessionStorage.getItem('co2-onglet') || 'perso';
+      const t = sessionStorage.getItem('co2-onglet');
+      return t && t !== 'equip' ? t : 'perso'; // l'ancien onglet Équipement est intégré à la fiche
     } catch {
       return 'perso';
     }
@@ -133,13 +132,12 @@ export default function App() {
           {actif && ongletEffectif === 'perso' && <Personnage char={actif} d={d} maj={maj} onEdit={() => setEdit(true)} />}
           {actif && ongletEffectif === 'voies' && <Voies char={actif} maj={maj} details={details} />}
           {actif && ongletEffectif === 'plan' && <Planificateur char={actif} maj={maj} details={details} />}
-          {actif && ongletEffectif === 'equip' && <Equipement char={actif} d={d} maj={maj} />}
           {ongletEffectif === 'grimoire' && <Grimoire details={details} onNouveau={() => setCreation(true)} />}
         </main>
 
         {/* Barre de navigation inférieure */}
         <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/90 backdrop-blur-md" aria-label="Navigation principale">
-          <div className="mx-auto grid max-w-xl grid-cols-5">
+          <div className="mx-auto grid max-w-xl grid-cols-4">
             {TABS.map((t) => {
               const on = tab === t.id;
               return (

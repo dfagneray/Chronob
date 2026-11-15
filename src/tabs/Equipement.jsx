@@ -41,7 +41,11 @@ export function itemDepuisCatalogue(ref, qte = 1) {
   return { uid: uid(), refId: ref.id, ...ref, id: undefined, qte, equipe: false, magie: 0 };
 }
 
-export default function Equipement({ char, d, maj }) {
+/**
+ * État et actions de l'équipement, partagés par la section Combat de la fiche (armes en main,
+ * consommables) et la section « Sac & bourse ». `feuilles` contient les tiroirs à rendre une fois.
+ */
+export function useEquipement(char, d, maj) {
   const toast = useToast();
   const [catalogue, setCatalogue] = useState(false);
   const [perso, setPerso] = useState(false);
@@ -89,42 +93,135 @@ export default function Equipement({ char, d, maj }) {
     .map((cat) => ({ cat, items: inv.filter((i) => (i.categorie || 'divers') === cat) }))
     .filter((g) => g.items.length);
 
-  return (
-    <div className="pb-6">
-      {/* Défense */}
-      <Card className="mt-3 p-3">
-        <div className="flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/15 text-gold">
-            <Shield size={26} aria-hidden="true" />
-          </span>
-          <div className="flex-1">
-            <div className="font-ui text-xs font-semibold uppercase tracking-wide text-muted">Défense</div>
-            <div className="font-num text-3xl font-semibold">{d.def}</div>
-          </div>
-          <div className="text-right font-ui text-xs leading-relaxed text-muted">
-            10 + AGI {fmt(d.carac.AGI)}
-            {d.armure && (
-              <div>
-                {d.armure.nom} +{(d.armure.def || 0) + (d.armure.magie || 0)}
-              </div>
-            )}
-            {d.bouclier && (
-              <div>
-                {d.bouclier.nom} +{(d.bouclier.def || 0) + (d.bouclier.magie || 0)}
-              </div>
-            )}
-            {d.penalites.DEF !== 0 && <div className="text-blood">États {fmt(d.penalites.DEF)}</div>}
-            {d.posture && <div className={d.posture.def > 0 ? 'text-gold' : 'text-blood'}>{d.posture.nom} {fmt(d.posture.def)}</div>}
-          </div>
-        </div>
-        {d.malusArmure > 0 && <p className="mt-2 font-ui text-xs text-muted">Malus d’armure : ajoutez {d.malusArmure} à la difficulté de vos tests d’AGI.</p>}
-        {d.avertissements.map((w, i) => (
-          <p key={i} className="mt-1 font-ui text-xs text-blood">
-            {w}
-          </p>
-        ))}
-      </Card>
+  // consommable utilisé : -1 (retiré de l'inventaire au dernier)
+  const utiliser = (it) => {
+    if (it.refId === 'potion-de-soins') return utiliserPotion(it);
+    majInv((l) => l.flatMap((x) => (x.uid === it.uid ? (x.qte > 1 ? [{ ...x, qte: x.qte - 1 }] : []) : [x])));
+    toast(it.qte > 1 ? `${it.nom} utilisé (reste ${it.qte - 1}).` : `${it.nom} utilisé : il n’en reste plus.`);
+  };
 
+  const feuilles = (
+    <>
+      <Catalogue open={catalogue} onClose={() => setCatalogue(false)} onAdd={(ref, q) => ajouter([itemDepuisCatalogue(ref, q)])} onBuy={acheter} />
+      <ObjetPerso open={perso} onClose={() => setPerso(false)} onAdd={(it) => ajouter([it])} />
+      <EditItem
+        item={edit && inv.find((x) => x.uid === edit.uid)}
+        d={d}
+        onClose={() => setEdit(null)}
+        onChange={(patch) => majInv((l) => l.map((x) => (x.uid === edit.uid ? { ...x, ...patch } : x)))}
+        onDelete={() => {
+          majInv((l) => l.filter((x) => x.uid !== edit.uid));
+          setEdit(null);
+        }}
+      />
+      <NumPad
+        open={!!pad}
+        onClose={() => setPad(null)}
+        title={pad?.nom}
+        initial={pad?.initial ?? 0}
+        allowNegative={false}
+        onSubmit={(v) => (pad.potion ? boirePotion(pad.potion, Math.max(0, v)) : maj((c) => ({ ...c, bourse: { ...c.bourse, [pad.k]: Math.max(0, v) } })))}
+      />
+    </>
+  );
+
+  const resumeBourse = `${(totalPc(bourse) / 10).toLocaleString('fr-FR')} pa`;
+  return { char, d, maj, inv, bourse, resumeBourse, groupes, ajouter, equiper, utiliser, utiliserPotion, setEdit, setCatalogue, setPerso, setPad, feuilles };
+}
+
+/** Ligne d'objet : arme (attaque, DM), armure, consommable. */
+function LigneObjet({ eq, it }) {
+  const { d } = eq;
+  const Icon = ICONES[it.categorie] || Package;
+  const arme = it.categorie === 'contact' || it.categorie === 'distance';
+  const portable = arme || it.categorie === 'armure' || it.categorie === 'bouclier';
+  return (
+    <div className="flex items-center">
+      <button type="button" className="flex min-h-[60px] min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left active:bg-surface2" onClick={() => eq.setEdit(it)}>
+        <span className={cx('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', it.equipe ? 'bg-gold/20 text-gold' : 'bg-surface2 text-muted')}>
+          <Icon size={19} aria-hidden="true" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate font-semibold">
+            {it.nom}
+            {it.magie ? ` +${it.magie}` : ''}
+            {it.qte > 1 ? ` ×${it.qte}` : ''}
+          </span>
+          <span className="block truncate font-ui text-xs text-muted">
+            {arme && `Att ${fmt(attaqueArme(it, d))}${it.nonMaitrisee ? ' (dé malus)' : ''} · DM ${dmArme(it, d, it.deuxMainsUse)}${it.portee ? ` · ${it.portee} m` : ''}${it.critique ? ` · crit ${it.critique}-20` : ''}${it.explosif ? ' · dé explosif' : ''}`}
+            {it.categorie === 'armure' && `DEF +${it.def} · AGI max ${fmt(it.agiMax)}`}
+            {it.categorie === 'bouclier' && `DEF +${it.def}`}
+            {!arme && !portable && (it.notes || formatPrix(it.prix))}
+          </span>
+        </span>
+      </button>
+      {portable && (
+        <button
+          type="button"
+          onClick={() => eq.equiper(it)}
+          aria-pressed={!!it.equipe}
+          className={cx('mr-2 min-h-[44px] w-[84px] shrink-0 rounded-xl py-2.5 font-ui text-xs font-bold uppercase tracking-wide rune-border', it.equipe ? 'bg-gold text-bg' : 'bg-surface2 text-muted')}
+        >
+          {it.equipe ? (arme ? 'En main' : 'Équipé') : arme ? 'Rangée' : 'Rangé'}
+        </button>
+      )}
+      {it.categorie === 'consommable' && (
+        <button
+          type="button"
+          onClick={() => eq.utiliser(it)}
+          aria-label={`${it.refId === 'potion-de-soins' ? 'Boire' : 'Utiliser'} : ${it.nom}`}
+          className="mr-2 min-h-[44px] w-[84px] shrink-0 rounded-xl bg-leaf/15 py-2.5 font-ui text-xs font-bold uppercase tracking-wide text-leaf rune-border"
+        >
+          {it.refId === 'potion-de-soins' ? 'Boire' : 'Utiliser'}
+        </button>
+      )}
+    </div>
+  );
+}
+
+/** Dans la section Combat de la fiche : armes en main, armure portée et consommables. */
+export function EquipementCombat({ eq }) {
+  const { inv } = eq;
+  const armes = inv.filter((i) => (i.categorie === 'contact' || i.categorie === 'distance') && i.equipe);
+  const protections = inv.filter((i) => (i.categorie === 'armure' || i.categorie === 'bouclier') && i.equipe);
+  const consommables = inv.filter((i) => i.categorie === 'consommable');
+  return (
+    <>
+      <div className="mb-1.5 mt-4 flex items-center gap-2 px-1 font-caps text-[13px] font-semibold tracking-wide text-muted">
+        <span className="losange" aria-hidden="true" />
+        Armes en main {protections.length > 0 && '& protections'}
+      </div>
+      {armes.length + protections.length ? (
+        <Card className="divide-y divide-line">
+          {[...armes, ...protections].map((it) => (
+            <LigneObjet key={it.uid} eq={eq} it={it} />
+          ))}
+        </Card>
+      ) : (
+        <p className="px-1 font-ui text-sm text-muted">Aucune arme en main : équipez-en une dans « Sac & bourse », plus bas.</p>
+      )}
+      {consommables.length > 0 && (
+        <>
+          <div className="mb-1.5 mt-4 flex items-center gap-2 px-1 font-caps text-[13px] font-semibold tracking-wide text-muted">
+            <span className="losange" aria-hidden="true" />
+            Consommables
+          </div>
+          <Card className="divide-y divide-line">
+            {consommables.map((it) => (
+              <LigneObjet key={it.uid} eq={eq} it={it} />
+            ))}
+          </Card>
+        </>
+      )}
+    </>
+  );
+}
+
+/** Section « Sac & bourse » : bourse et inventaire complet. */
+export function SacEtBourse({ eq }) {
+  const { char, maj, inv, bourse, groupes, ajouter, setCatalogue, setPerso, setPad } = eq;
+  return (
+    <>
       {/* Bourse */}
       <SectionTitle icon={Coins} right={<span className="font-num text-xs text-muted">{(totalPc(bourse) / 10).toLocaleString('fr-FR')} pa</span>}>
         Bourse
@@ -194,73 +291,12 @@ export default function Equipement({ char, d, maj }) {
             {CATEGORIES_EQUIPEMENT[g.cat]}
           </div>
           <Card className="divide-y divide-line">
-            {g.items.map((it) => {
-              const Icon = ICONES[it.categorie] || Package;
-              const arme = it.categorie === 'contact' || it.categorie === 'distance';
-              const portable = arme || it.categorie === 'armure' || it.categorie === 'bouclier';
-              return (
-                <div key={it.uid} className="flex items-center">
-                  <button type="button" className="flex min-h-[60px] min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left active:bg-surface2" onClick={() => setEdit(it)}>
-                    <span className={cx('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', it.equipe ? 'bg-gold/20 text-gold' : 'bg-surface2 text-muted')}>
-                      <Icon size={19} aria-hidden="true" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate font-semibold">
-                        {it.nom}
-                        {it.magie ? ` +${it.magie}` : ''}
-                        {it.qte > 1 ? ` ×${it.qte}` : ''}
-                      </span>
-                      <span className="block truncate font-ui text-xs text-muted">
-                        {arme && `Att ${fmt(attaqueArme(it, d))}${it.nonMaitrisee ? ' (dé malus)' : ''} · DM ${dmArme(it, d, it.deuxMainsUse)}${it.portee ? ` · ${it.portee} m` : ''}${it.critique ? ` · crit ${it.critique}-20` : ''}${it.explosif ? ' · dé explosif' : ''}`}
-                        {it.categorie === 'armure' && `DEF +${it.def} · AGI max ${fmt(it.agiMax)}`}
-                        {it.categorie === 'bouclier' && `DEF +${it.def}`}
-                        {!arme && !portable && (it.notes || formatPrix(it.prix))}
-                      </span>
-                    </span>
-                  </button>
-                  {portable && (
-                    <button
-                      type="button"
-                      onClick={() => equiper(it)}
-                      aria-pressed={!!it.equipe}
-                      className={cx('mr-2 min-h-[44px] w-[84px] shrink-0 rounded-xl py-2.5 font-ui text-xs font-bold uppercase tracking-wide rune-border', it.equipe ? 'bg-gold text-bg' : 'bg-surface2 text-muted')}
-                    >
-                      {it.equipe ? (arme ? 'En main' : 'Équipé') : arme ? 'Rangée' : 'Rangé'}
-                    </button>
-                  )}
-                  {it.refId === 'potion-de-soins' && (
-                    <button type="button" onClick={() => utiliserPotion(it)} className="mr-2 w-[84px] shrink-0 rounded-xl bg-leaf/15 py-2.5 font-ui text-xs font-bold uppercase tracking-wide text-leaf rune-border">
-                      Boire
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+            {g.items.map((it) => <LigneObjet key={it.uid} eq={eq} it={it} />)}
           </Card>
         </div>
       ))}
 
-      <Catalogue open={catalogue} onClose={() => setCatalogue(false)} onAdd={(ref, q) => ajouter([itemDepuisCatalogue(ref, q)])} onBuy={acheter} />
-      <ObjetPerso open={perso} onClose={() => setPerso(false)} onAdd={(it) => ajouter([it])} />
-      <EditItem
-        item={edit && inv.find((x) => x.uid === edit.uid)}
-        d={d}
-        onClose={() => setEdit(null)}
-        onChange={(patch) => majInv((l) => l.map((x) => (x.uid === edit.uid ? { ...x, ...patch } : x)))}
-        onDelete={() => {
-          majInv((l) => l.filter((x) => x.uid !== edit.uid));
-          setEdit(null);
-        }}
-      />
-      <NumPad
-        open={!!pad}
-        onClose={() => setPad(null)}
-        title={pad?.nom}
-        initial={pad?.initial ?? 0}
-        allowNegative={false}
-        onSubmit={(v) => (pad.potion ? boirePotion(pad.potion, Math.max(0, v)) : maj((c) => ({ ...c, bourse: { ...c.bourse, [pad.k]: Math.max(0, v) } })))}
-      />
-    </div>
+    </>
   );
 }
 

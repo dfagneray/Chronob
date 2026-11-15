@@ -1,6 +1,6 @@
-import { test, expect, btn, nav, creerPerso, perso, sansDebordement, fermer } from './fixtures.js';
+import { test, expect, btn, nav, creerPerso, perso, sansDebordement, fermer , ouvrirSac } from './fixtures.js';
 
-const ONGLETS = ['Personnage', 'Voies', 'Progression', 'Équipement', 'Grimoire'];
+const ONGLETS = ['Personnage', 'Voies', 'Progression', 'Grimoire'];
 
 /** Boutons visibles plus petits que `min` px (hauteur ou largeur). */
 async function petitesCibles(page, min = 44) {
@@ -22,7 +22,7 @@ test.beforeEach(async ({ page }) => {
   await creerPerso(page);
 });
 
-test('aucun débordement horizontal sur les 5 onglets et les tiroirs principaux', async ({ page }) => {
+test('aucun débordement horizontal sur les 4 onglets et les tiroirs principaux', async ({ page }) => {
   for (const o of ONGLETS) {
     await nav(page, o).click();
     await sansDebordement(page, o);
@@ -70,7 +70,7 @@ test('zones tactiles d’au moins 44 px dans les tiroirs', async ({ page }) => {
   await nav(page, 'Progression').click();
   await btn(page, /Choisir une capacité/).click();
   await verifier('Choix de capacité');
-  await nav(page, 'Équipement').click();
+  await ouvrirSac(page);
   await btn(page, /^Catalogue/).click();
   await verifier('Catalogue');
   await btn(page, /Objet perso/).click();
