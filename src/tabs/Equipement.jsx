@@ -139,10 +139,10 @@ function LigneObjet({ eq, it }) {
   return (
     <div className="flex items-center">
       <button type="button" className="flex min-h-[60px] min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left active:bg-surface2" onClick={() => eq.setEdit(it)}>
-        <span className={cx('flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl', it.equipe ? 'bg-gold/20 text-gold ring-1 ring-gold' : 'bg-surface2 text-muted')}
+        <span className={cx('flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl', it.equipe ? 'bg-surface2 text-gold ring-2 ring-gold' : 'bg-surface2 text-muted')}
           aria-hidden="true"
         >
-          <IllustrationObjet refId={it.refId} nom={it.nom} className="h-full w-full p-0.5" repli={<Icon size={19} aria-hidden="true" />} />
+          <IllustrationObjet refId={it.refId} nom={it.nom} className="h-full w-full p-0.5" vignette repli={<Icon size={19} aria-hidden="true" />} />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block truncate font-semibold">
@@ -345,7 +345,7 @@ function Catalogue({ open, onClose, onAdd, onBuy }) {
                 const I = ICONES[e.categorie] || Package;
                 return (
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface2 text-gold" aria-hidden="true">
-                    <IllustrationObjet refId={e.id} nom={e.nom} className="h-full w-full p-0.5" repli={<I size={17} aria-hidden="true" />} />
+                    <IllustrationObjet refId={e.id} nom={e.nom} className="h-full w-full p-0.5" vignette repli={<I size={17} aria-hidden="true" />} />
                   </span>
                 );
               })()}

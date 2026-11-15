@@ -33,10 +33,12 @@ export async function ouvrirPdf(pdf) {
  * (images couvrant presque toute la page).
  * @param opts.max   plus grand côté en pixels (réduction éventuelle)
  * @param opts.qualite qualité WebP
+ * @param opts.rogner  recadre sur le dessin (marges blanches ou transparentes retirées)
+ * @param opts.gamma   > 1 fonce les traits (dessins au crayon pâles)
  */
-export async function illustrationsDePage(page, numero, { max = 900, qualite = 0.8, surfaceMin = 6000 } = {}) {
+export async function illustrationsDePage(page, numero, { max = 900, qualite = 0.8, surfaceMin = 6000, rogner = false, gamma = 1 } = {}) {
   return page.evaluate(
-    async ({ numero, max, qualite, surfaceMin }) => {
+    async ({ numero, max, qualite, surfaceMin, rogner, gamma }) => {
       const { lib, doc } = window;
       const pg = await doc.getPage(numero);
       const ops = await pg.getOperatorList();
@@ -119,6 +121,46 @@ export async function illustrationsDePage(page, numero, { max = 900, qualite = 0
           for (let i = 0; i < id.data.length; i += 4) id.data[i + 3] = Math.round((id.data[i + 3] * md[i]) / 255);
           ctx.putImageData(id, 0, 0);
         }
+        // traits au crayon foncés (gamma) : plus lisibles en vignette et une fois inversés (Veillée)
+        if (gamma !== 1) {
+          const ctx = c.getContext('2d');
+          const id = ctx.getImageData(0, 0, c.width, c.height);
+          const lut = Array.from({ length: 256 }, (_, v) => Math.round(255 * Math.pow(v / 255, gamma)));
+          for (let i = 0; i < id.data.length; i += 4) {
+            id.data[i] = lut[id.data[i]];
+            id.data[i + 1] = lut[id.data[i + 1]];
+            id.data[i + 2] = lut[id.data[i + 2]];
+          }
+          ctx.putImageData(id, 0, 0);
+        }
+        // recadrage sur le dessin : on retire les marges transparentes ou blanches (papier)
+        if (rogner) {
+          const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+          let x0 = c.width, y0 = c.height, x1 = -1, y1 = -1;
+          for (let y = 0; y < c.height; y += 2)
+            for (let x = 0; x < c.width; x += 2) {
+              const i = (y * c.width + x) * 4;
+              const encre = d[i + 3] > 40 && (d[i] + d[i + 1] + d[i + 2]) / 3 < 228;
+              if (encre) {
+                if (x < x0) x0 = x;
+                if (x > x1) x1 = x;
+                if (y < y0) y0 = y;
+                if (y > y1) y1 = y;
+              }
+            }
+          if (x1 > x0 && y1 > y0) {
+            const marge = Math.round(Math.max(x1 - x0, y1 - y0) * 0.04);
+            x0 = Math.max(0, x0 - marge);
+            y0 = Math.max(0, y0 - marge);
+            x1 = Math.min(c.width - 1, x1 + marge);
+            y1 = Math.min(c.height - 1, y1 + marge);
+            const r = document.createElement('canvas');
+            r.width = x1 - x0 + 1;
+            r.height = y1 - y0 + 1;
+            r.getContext('2d').drawImage(c, x0, y0, r.width, r.height, 0, 0, r.width, r.height);
+            c = r;
+          }
+        }
         // réduction
         const k = Math.min(1, max / Math.max(c.width, c.height));
         if (k < 1) {
@@ -132,7 +174,7 @@ export async function illustrationsDePage(page, numero, { max = 900, qualite = 0
       }
       return sortie;
     },
-    { numero, max, qualite, surfaceMin },
+    { numero, max, qualite, surfaceMin, rogner, gamma },
   );
 }
 

@@ -15,7 +15,7 @@ function IconeType({ x }) {
   const vignette =
     x.type === 'peuple' && aPortrait(x.ref.id) ? <PortraitPeuple id={x.ref.id} nom={x.ref.nom} cadrage="object-cover object-top" className="h-full w-full" />
     : x.type === 'profil' && aIllustrationProfil(x.ref.id) ? <IllustrationProfil id={x.ref.id} nom={x.ref.nom} cadrage="object-cover object-top" className="h-full w-full" />
-    : x.type === 'equipement' && aIllustrationObjet(x.ref.id) ? <IllustrationObjet refId={x.ref.id} nom={x.ref.nom} className="h-full w-full p-0.5" />
+    : x.type === 'equipement' && aIllustrationObjet(x.ref.id) ? <IllustrationObjet refId={x.ref.id} nom={x.ref.nom} className="h-full w-full p-0.5" vignette />
     : null;
   if (vignette) {
     return (

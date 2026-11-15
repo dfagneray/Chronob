@@ -96,7 +96,11 @@ export default function App() {
                 <span className="block truncate font-display text-[21px] leading-tight text-goldsoft">{actif?.nom || 'Chronob'}</span>
                 <span className="flex items-center gap-1.5 truncate font-ui text-[13px] text-muted">
                   {actif && <IconeProfil id={actif.profilId} size={13} className="shrink-0 text-gold" aria-hidden="true" />}
-                  <span className="truncate">{actif ? `${peupleById[actif.peupleId]?.nom || ''} · ${profilById[actif.profilId]?.nom || ''} · Niveau ${actif.niveau}` : 'Compagnon de Chroniques Oubliées'}</span>
+                  {/* le niveau est dans l'hexagone : sous-titre plus court (lu par les lecteurs d'écran) */}
+                  <span className="truncate">
+                    {actif ? `${peupleById[actif.peupleId]?.nom || ''} · ${profilById[actif.profilId]?.nom || ''}` : 'Compagnon de Chroniques Oubliées'}
+                    {actif && <span className="sr-only"> · Niveau {actif.niveau}</span>}
+                  </span>
                 </span>
               </span>
             </button>

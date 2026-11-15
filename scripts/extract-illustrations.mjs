@@ -107,9 +107,9 @@ async function main() {
     console.log(`Lecture de ${path.basename(src.pdf)}…`);
     const { navigateur, page } = await ouvrirPdf(src.pdf);
     const cache = new Map();
-    const image = async ([p, i], max) => {
-      const cle = `${p}:${max}`;
-      if (!cache.has(cle)) cache.set(cle, await illustrationsDePage(page, p, { max, qualite: 0.8 }));
+    const image = async ([p, i], max, rogner = false, gamma = 1) => {
+      const cle = `${p}:${max}:${rogner}:${gamma}`;
+      if (!cache.has(cle)) cache.set(cle, await illustrationsDePage(page, p, { max, qualite: 0.8, rogner, gamma }));
       const im = cache.get(cle)[i];
       if (!im) avertissements.push(`Image absente : page ${p}, n° ${i}`);
       return im;
@@ -123,7 +123,7 @@ async function main() {
       const portrait = await image(refs.portrait, 720);
       if (portrait) entree.portrait = ecrire(`peuples/${id}.webp`, portrait);
       if (refs.silhouette) {
-        const s = await image(refs.silhouette, 480);
+        const s = await image(refs.silhouette, 480, true);
         if (s) entree.silhouette = ecrire(`peuples/${id}-silhouette.webp`, s);
       }
       table.peuples[id] = entree;
@@ -133,7 +133,7 @@ async function main() {
       if (im) table.profils[id] = ecrire(`profils/${id}.webp`, im);
     }
     for (const [ref, ids] of src.equipement) {
-      const im = await image(ref, 600);
+      const im = await image(ref, 600, true, 1.9); // dessins d'objets au crayon pâle : traits foncés
       if (!im) continue;
       const fichier = ecrire(`equipement/${ids[0]}.webp`, im);
       for (const id of ids) table.equipement[id] = fichier;

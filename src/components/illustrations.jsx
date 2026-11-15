@@ -11,9 +11,12 @@ export const aIllustrationProfil = (profilId) => !!ILLUSTRATIONS.profils[profilI
 export const aIllustrationObjet = (refId) => !!(ILLUSTRATIONS.equipement[refId] || DESSINS[refId]);
 
 /** Image d'illustration ; `cadrage` = classe object-fit / object-position. */
-function Img({ ill, alt, className, cadrage = 'object-contain', eager }) {
-  return <img src={url(ill.src)} width={ill.largeur} height={ill.hauteur} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" className={cx(cadrage, className)} />;
+function Img({ ill, alt, className, cadrage = 'object-contain', eager, style }) {
+  return <img src={url(ill.src)} width={ill.largeur} height={ill.hauteur} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" className={cx(cadrage, className)} style={style} />;
 }
+
+/** Objet long et fin (bâton, lance, rapière) : en vignette, posé en diagonale comme dans le livre. */
+const enDiagonale = (ill) => ill.hauteur / ill.largeur > 2.2;
 
 /** Portrait (ou silhouette) d'un peuple. */
 export function PortraitPeuple({ id, nom = '', variante = 'portrait', className, cadrage, eager }) {
@@ -30,9 +33,12 @@ export function IllustrationProfil({ id, nom = '', className, cadrage, eager }) 
 }
 
 /** Illustration d'un objet : dessin du livre, sinon dessin au trait, sinon `repli`. */
-export function IllustrationObjet({ refId, nom = '', className, repli = null }) {
+export function IllustrationObjet({ refId, nom = '', className, repli = null, vignette = false }) {
   const ill = ILLUSTRATIONS.equipement[refId];
-  if (ill) return <Img ill={ill} alt={`Illustration : ${nom}`} className={cx('illus-crayon', className)} />;
+  if (ill) {
+    const style = vignette && enDiagonale(ill) ? { transform: 'rotate(-45deg) scale(1.3)' } : undefined;
+    return <Img ill={ill} alt={`Illustration : ${nom}`} className={cx('illus-crayon', className)} style={style} />;
+  }
   if (DESSINS[refId]) return <DessinObjet id={refId} className={className} />;
   return repli;
 }
@@ -42,7 +48,10 @@ export function MedaillonPeuple({ id, nom, taille = 46 }) {
   if (!aPortrait(id)) return null;
   return (
     <span className="medaillon shrink-0" style={{ width: taille, height: taille }} aria-hidden="true">
-      <PortraitPeuple id={id} nom={nom} cadrage="object-cover object-top" className="h-full w-full" eager />
+      {/* fond propre au médaillon : le portrait s'y fond (papier) ou s'y inverse en trait clair (Veillée) */}
+      <span className="medaillon-fond">
+        <PortraitPeuple id={id} nom={nom} cadrage="object-cover object-top" className="h-full w-full" eager />
+      </span>
     </span>
   );
 }

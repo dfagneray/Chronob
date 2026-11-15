@@ -45,7 +45,7 @@
    "silhouette": {
     "src": "illustrations/peuples/elfe-sylvain-silhouette.webp",
     "largeur": 307,
-    "hauteur": 393
+    "hauteur": 390
    }
   },
   "gnome": {
@@ -69,7 +69,7 @@
    "silhouette": {
     "src": "illustrations/peuples/halfelin-silhouette.webp",
     "largeur": 384,
-    "hauteur": 355
+    "hauteur": 352
    }
   },
   "humain": {
@@ -92,7 +92,7 @@
    },
    "silhouette": {
     "src": "illustrations/peuples/nain-silhouette.webp",
-    "largeur": 446,
+    "largeur": 443,
     "hauteur": 286
    }
   },
@@ -316,168 +316,168 @@
  "equipement": {
   "marteau": {
    "src": "illustrations/equipement/marteau.webp",
-   "largeur": 333,
-   "hauteur": 468
+   "largeur": 283,
+   "hauteur": 403
   },
   "masse": {
    "src": "illustrations/equipement/marteau.webp",
-   "largeur": 333,
-   "hauteur": 468
+   "largeur": 283,
+   "hauteur": 403
   },
   "hache": {
    "src": "illustrations/equipement/hache.webp",
-   "largeur": 305,
-   "hauteur": 519
+   "largeur": 277,
+   "hauteur": 497
   },
   "hache-a-deux-mains": {
    "src": "illustrations/equipement/hache.webp",
-   "largeur": 305,
-   "hauteur": 519
+   "largeur": 277,
+   "hauteur": 497
   },
   "epee-longue": {
    "src": "illustrations/equipement/epee-longue.webp",
-   "largeur": 450,
+   "largeur": 452,
    "hauteur": 600
   },
   "epee-batarde": {
    "src": "illustrations/equipement/epee-longue.webp",
-   "largeur": 450,
+   "largeur": 452,
    "hauteur": 600
   },
   "epee-a-deux-mains": {
    "src": "illustrations/equipement/epee-longue.webp",
-   "largeur": 450,
+   "largeur": 452,
    "hauteur": 600
   },
   "epee-courte": {
    "src": "illustrations/equipement/epee-longue.webp",
-   "largeur": 450,
+   "largeur": 452,
    "hauteur": 600
   },
   "rapiere": {
    "src": "illustrations/equipement/rapiere.webp",
-   "largeur": 109,
-   "hauteur": 565
+   "largeur": 102,
+   "hauteur": 505
   },
   "vivelame": {
    "src": "illustrations/equipement/vivelame.webp",
-   "largeur": 163,
-   "hauteur": 458
+   "largeur": 110,
+   "hauteur": 395
   },
   "baton": {
    "src": "illustrations/equipement/baton.webp",
-   "largeur": 93,
+   "largeur": 87,
    "hauteur": 600
   },
   "baton-ferre": {
    "src": "illustrations/equipement/baton.webp",
-   "largeur": 93,
+   "largeur": 87,
    "hauteur": 600
   },
   "tribaton": {
    "src": "illustrations/equipement/baton.webp",
-   "largeur": 93,
+   "largeur": 87,
    "hauteur": 600
   },
   "lance": {
    "src": "illustrations/equipement/lance.webp",
-   "largeur": 141,
+   "largeur": 70,
    "hauteur": 600
   },
   "epieu": {
    "src": "illustrations/equipement/lance.webp",
-   "largeur": 141,
+   "largeur": 70,
    "hauteur": 600
   },
   "pique": {
    "src": "illustrations/equipement/lance.webp",
-   "largeur": 141,
+   "largeur": 70,
    "hauteur": 600
   },
   "lance-lancer": {
    "src": "illustrations/equipement/lance.webp",
-   "largeur": 141,
+   "largeur": 70,
    "hauteur": 600
   },
   "lance-de-cavalerie": {
    "src": "illustrations/equipement/lance.webp",
-   "largeur": 141,
+   "largeur": 70,
    "hauteur": 600
   },
   "arc-court": {
    "src": "illustrations/equipement/arc-court.webp",
-   "largeur": 460,
+   "largeur": 386,
    "hauteur": 600
   },
   "arc-long": {
    "src": "illustrations/equipement/arc-court.webp",
-   "largeur": 460,
+   "largeur": 386,
    "hauteur": 600
   },
   "arbalete-legere": {
    "src": "illustrations/equipement/arbalete-legere.webp",
-   "largeur": 505,
-   "hauteur": 497
+   "largeur": 457,
+   "hauteur": 466
   },
   "arbalete-lourde": {
    "src": "illustrations/equipement/arbalete-legere.webp",
-   "largeur": 505,
-   "hauteur": 497
+   "largeur": 457,
+   "hauteur": 466
   },
   "arbalete-de-poing": {
    "src": "illustrations/equipement/arbalete-legere.webp",
-   "largeur": 505,
-   "hauteur": 497
+   "largeur": 457,
+   "hauteur": 466
   },
   "fronde": {
    "src": "illustrations/equipement/fronde.webp",
-   "largeur": 540,
+   "largeur": 404,
    "hauteur": 600
   },
   "lance-pierre": {
    "src": "illustrations/equipement/fronde.webp",
-   "largeur": 540,
+   "largeur": 404,
    "hauteur": 600
   },
   "javelot": {
    "src": "illustrations/equipement/fronde.webp",
-   "largeur": 540,
+   "largeur": 404,
    "hauteur": 600
   },
   "hachette": {
    "src": "illustrations/equipement/fronde.webp",
-   "largeur": 540,
+   "largeur": 404,
    "hauteur": 600
   },
   "petoire": {
    "src": "illustrations/equipement/petoire.webp",
-   "largeur": 394,
-   "hauteur": 303
+   "largeur": 355,
+   "hauteur": 243
   },
   "mousquet": {
    "src": "illustrations/equipement/petoire.webp",
-   "largeur": 394,
-   "hauteur": 303
+   "largeur": 355,
+   "hauteur": 243
   },
   "petit-bouclier": {
    "src": "illustrations/equipement/petit-bouclier.webp",
-   "largeur": 600,
-   "hauteur": 463
+   "largeur": 495,
+   "hauteur": 425
   },
   "grand-bouclier": {
    "src": "illustrations/equipement/petit-bouclier.webp",
-   "largeur": 600,
-   "hauteur": 463
+   "largeur": 495,
+   "hauteur": 425
   },
   "armure-de-plaques": {
    "src": "illustrations/equipement/armure-de-plaques.webp",
-   "largeur": 600,
-   "hauteur": 337
+   "largeur": 537,
+   "hauteur": 365
   },
   "plaque-complete": {
    "src": "illustrations/equipement/armure-de-plaques.webp",
-   "largeur": 600,
-   "hauteur": 337
+   "largeur": 537,
+   "hauteur": 365
   },
   "tissus-matelasses": {
    "src": "illustrations/equipement/tissus-matelasses.webp",
@@ -506,88 +506,88 @@
   },
   "materiel-ecriture": {
    "src": "illustrations/equipement/materiel-ecriture.webp",
-   "largeur": 284,
-   "hauteur": 406
+   "largeur": 243,
+   "hauteur": 263
   },
   "potion-de-soins": {
    "src": "illustrations/equipement/potion-de-soins.webp",
-   "largeur": 474,
-   "hauteur": 303
+   "largeur": 467,
+   "hauteur": 243
   },
   "sac-a-dos": {
    "src": "illustrations/equipement/potion-de-soins.webp",
-   "largeur": 474,
-   "hauteur": 303
+   "largeur": 467,
+   "hauteur": 243
   },
   "carquois": {
    "src": "illustrations/equipement/carquois.webp",
-   "largeur": 248,
-   "hauteur": 464
+   "largeur": 185,
+   "hauteur": 383
   },
   "couverture": {
    "src": "illustrations/equipement/couverture.webp",
-   "largeur": 423,
-   "hauteur": 255
+   "largeur": 261,
+   "hauteur": 205
   },
   "lanterne": {
    "src": "illustrations/equipement/lanterne.webp",
-   "largeur": 204,
-   "hauteur": 406
+   "largeur": 137,
+   "hauteur": 335
   },
   "huile": {
    "src": "illustrations/equipement/lanterne.webp",
-   "largeur": 204,
-   "hauteur": 406
+   "largeur": 137,
+   "hauteur": 335
   },
   "grappin": {
    "src": "illustrations/equipement/grappin.webp",
-   "largeur": 283,
-   "hauteur": 464
+   "largeur": 163,
+   "hauteur": 319
   },
   "corde": {
    "src": "illustrations/equipement/grappin.webp",
-   "largeur": 283,
-   "hauteur": 464
+   "largeur": 163,
+   "hauteur": 319
   },
   "mule": {
    "src": "illustrations/equipement/mule.webp",
-   "largeur": 396,
-   "hauteur": 403
+   "largeur": 373,
+   "hauteur": 303
   },
   "poney": {
    "src": "illustrations/equipement/mule.webp",
-   "largeur": 396,
-   "hauteur": 403
+   "largeur": 373,
+   "hauteur": 303
   },
   "cheval-de-selle": {
    "src": "illustrations/equipement/cheval-de-selle.webp",
-   "largeur": 414,
-   "hauteur": 395
+   "largeur": 357,
+   "hauteur": 337
   },
   "cheval-de-guerre": {
    "src": "illustrations/equipement/cheval-de-guerre.webp",
-   "largeur": 343,
-   "hauteur": 411
+   "largeur": 322,
+   "hauteur": 357
   },
   "caparacon-mailles": {
    "src": "illustrations/equipement/cheval-de-guerre.webp",
-   "largeur": 343,
-   "hauteur": 411
+   "largeur": 322,
+   "hauteur": 357
   },
   "barde-plaque": {
    "src": "illustrations/equipement/cheval-de-guerre.webp",
-   "largeur": 343,
-   "hauteur": 411
+   "largeur": 322,
+   "hauteur": 357
   },
   "ration": {
    "src": "illustrations/equipement/ration.webp",
-   "largeur": 339,
-   "hauteur": 218
+   "largeur": 317,
+   "hauteur": 143
   },
   "gamelle": {
    "src": "illustrations/equipement/ration.webp",
-   "largeur": 339,
-   "hauteur": 218
+   "largeur": 317,
+   "hauteur": 143
   }
  }
 }

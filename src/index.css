@@ -302,25 +302,25 @@ select {
 /* Illustrations au crayon : sur fond sombre, on éclaircit le papier */
 :root[data-theme='dark'] .illus-crayon {
   /* blanc → noir (absorbé par « screen »), trait gris → trait clair */
-  filter: invert(1) sepia(0.2) brightness(0.92);
+  filter: invert(1) contrast(1.2) brightness(1.08) sepia(0.18);
   mix-blend-mode: screen;
 }
 
-/* Médaillon hexagonal (portrait du peuple dans l'en-tête) */
+/* Médaillon hexagonal (portrait du peuple dans l'en-tête) : cadre doré, fond de carte, portrait */
 .medaillon {
   display: inline-block;
-  overflow: hidden;
   clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
   background: rgb(var(--gold));
   padding: 2px;
 }
-.medaillon img.illus-crayon {
-  mix-blend-mode: normal;
-  filter: none;
-}
-.medaillon img {
+.medaillon-fond {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
   background: rgb(var(--surface));
+  isolation: isolate;
 }
 
 /* Puces losange du livre */
