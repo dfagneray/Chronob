@@ -1,0 +1,11 @@
+{
+ "peuples": {
+  "demi-elfe": {
+   "voies": [
+    "voie-du-demi-elfe"
+   ],
+   "noteCompagnon": "Par défaut, le Livre des règles propose d’assigner au demi-elfe une voie entre celle de son ascendance elfique (elfe haut ou elfe sylvain) et celle de l’humain. Toutefois, il existe des demielfes qui ont quitté très tôt leur communauté ou qui se situent à l’int er section de leurs deux cultures sans en avoir assimilé aucune complètement. Ces demi-elfes utilisent la voie optionnelle suivante.",
+   "pageCompagnon": 10
+  }
+ }
+}

@@ -1,0 +1,507 @@
+[
+ {
+  "id": "ame-forgee",
+  "nom": "Âme forgée",
+  "page": 6,
+  "description": "Les âmes forgées constituent un peuple créé il y a bien longtemps dans un seul et unique but : faire la guerre. Ce sont des créatures mécaniques, nées de la fusion du métal et d’une magie désormais perdue. On les découvre généralement au milieu des ruines semi-enterrées d’une civilisation disparue, sur les sites de batailles depuis longtemps oubliées. Lorsqu’elle s’éveille, une âme forgée ne connaît rien du monde qui l’entoure, et ceux qui devaient l’envoyer combattre ont disparu depuis longtemps.\nLe caractère de celui qui découvre une âme forgée influe donc beaucoup sur la personnalité de cette dernière et sur sa vision du monde. La qualité que partagent toutes les âmes forgées est leur insatiable curiosité. Elles s’orientent donc naturellement vers une vie de voyages et d’aventures.\nPersonne n’a encore rencontré de communauté d’âmes forgées ; elles semblent préférer la compagnie des autres peuples et, surtout, elles sont incapables de se poser bien longtemps au même endroit.\nLes âmes forgées ont été fabriquées à partir de la plupart des métaux existants : acier, bronze, cuivre, argent, airain, etc. Leurs yeux de cristal sont généralement de couleurs claires (vert, bleu, gris…). On en trouve de toutes les tailles, celle-ci dépendant du rôle que l’on souhait ait les voir remplir au cours d’un conflit, du colosse de métal au petit automate dédié à l’infiltration ou faisant office de sapeur.\nAvec l’âge, leur corps commence à se piquer de rouille, un mal qui finit par les ronger complètement. Certaines âmes forgées cherchent le remède à ce mal, sans succès jusqu’à présent.\nDans les Terres d’Osgild. Les âmes forgées apparaissent souvent, perdues et sans souvenir, en bordure de la Forêt sombre et parfois encore dans la baronnie de Bordant ou le Protectorat de fer. Cela laisse à penser qu’elles furent utilisées, il y a bien longtemps, dans les guerres du Roi-Sorcier de Tor-Angul. Mais dans quel camp ?\nPersonne ne le sait plus.\nInterpréter une âme forgée La première question à laquelle il vous faut répondre est la suivante : qui vous a trouvé ? Une âme forgée élevée par des fermiers et une autre éduquée par des brigands n’auront pas le même comportement.\nVous êtes avide de découvert es et de rencontres. De plus, vous avez certainement développé un talent artistique quelconque : la calligraphie, le dessin, le conte, etc. Certaines âmes forgées finissent même par devenir des artistes renommés. Leurs créateurs ont sans doute programmé cette disposition en eux, estimant qu’une âme ne pouvait pas dédier toute son existence à la guerre… Préjugés typiques : les âmes forgées sont des machines de guerre.\nElles sont parfaitement capables de vous tuer du jour au lendemain sans raison apparente : gardez toujours un œil sur elles !",
+  "reperes": {
+   "Âge de départ": "0 à 5 ans. Les âmes forgées sont déjà adultes lorsque leur vie commence.",
+   "Espérance de vie": "150 ans",
+   "Taille": "1,30 m à 2,10 m",
+   "Poids": "100 à 300 kg",
+   "Traits": "métal et pierre, angles ou rondeurs, rouages et engrenages, or, cuivre, acier, cristaux oculaires (couleur selon le rang 4 de la voie de peuple)"
+  },
+  "particularites": "Créature non vivante. Une âme forgée n’a pas besoin de boire, ni de se nourrir, ni même de respirer. Elle a toutefois besoin de rêver quatre heures par jour (sans quoi elle subit -1 à ses tests ; ce malus est cumulatif). Elle est naturellement immunisée aux poisons et aux maladies.\nLes âmes forgées sont incapables de nager, mais elles peuvent marcher au fond de l’eau (considéré comme un terrain difficile).\nL’âme forgée possède une âme et une essence qui lui permettent de bénéficier de la magie des soins, mais son corps artificiel en réduit l’efficacité. Elle divise par deux tous les PV récupérés par des soins magiques (sorts, potions, etc.). En revanche, un forgesort capable de réparer un golem peut réparer une âme forgée, bien que deux fois plus lentement.",
+  "source": "compagnon",
+  "modificateurs": "+1 en CON, -1 en CHA ou INT",
+  "mods": {
+   "plus": [
+    "CON"
+   ],
+   "moins": [
+    "CHA",
+    "INT"
+   ]
+  },
+  "voies": [
+   "voie-de-l-ame-forgee"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "cambion",
+  "nom": "Cambion",
+  "page": 8,
+  "description": "Les cambions sont dotés d’une ascendance qui plonge ses racines dans les plans maléfiques.\nQuelque part dans leur arbre généa logique, un démon s’est accouplé avec un humain. L’ancêtre démoniaque peut remonter à plusieurs générations et le caractère héréditaire s’exprimer chez un individu alors qu’il est resté dormant chez les générations précédentes.\nPhysiquement, un cambion se distingue par une ou deux caractéristiques démoniaques (au choix du joueur ou à déterminer au hasard) : de petites cornes, une queue fourchue, une odeur de soufre, des yeux jaunes, des griffes noires, etc. Les cambions ont conscience de leur mauvaise réputation et, contrairement aux nephilims, ils cherchent généralement à cacher leurs mutations. Enfin, ils ont conservé de leur ascendance démoniaque une grande résistance et une volonté tenace.\nDans les Terres d’Osgild. Les cambions sont particulièrement rares dans les Terres NON HUMAIN ?\nPar défaut, nous considérons que le cambion et son équivalent angélique, le nephilim, sont d’ascendance humaine. Toutefois, bien que ce soit beaucoup plus rare, il existe des cambions et des nephilims dont l’ascendance principale est elfe, naine ou liée à d’autres peuples jouables laissés à l’approbation du MJ (les âmes forgées ne peuvent pas avoir d’ascendance).\nDans ce cas, le joueur sera amené à cumuler les deux parties techniques (la partie interprétation est moins problématique). Au niveau des caractéristiques, s’il est possible de cumuler les malus liés au peuple (une valeur finale de -2 est possible), il n’est pas autorisé de cumuler deux bonus. Il n’est donc pas possible d’obtenir +2 sur une caractéristique, et le choix qui est laissé dans l’application de chaque +1 permettra de les répartir sur deux caractéristiques différentes.\nEn ce qui concerne la voie de peuple, le rang 1 sera celui de cambion ou de nephilim, et à chaque rang suivant, le joueur devra choisir entre les deux voies disponibles. On pourrait imaginer un individu qui n’aurait pas conscience de son sang et qui le découvrir ait à l’occasion de l’acquisition du rang 2 de sa voie de peuple ou un peu plus tard, à un moment clé dans sa carrière d’aventurier. Un beau moment d’interprétation en perspective.\nLe MJ devra toutefois rester attentif : ce type de bidouillage peut correspondre à une volonté sincère d’interprétation, mais aussi à une volonté plus contestable d’optimisation. Dans ce dernier cas, le MJ peut décider que la capacité obtenue à chaque rang de la voie de peuple sera déterminée au hasard entre les deux voies possibles. D’Osgild, cariln’y a pas eu de grande invasion démoniaque depuis bien longtemps. La plupart des cambions d’aujourd’hui pourraient tracer leur ascendancejusqu’àl’époque du Roi-Sorcier, dernier grand tyr an à avoir ouvert les portes des enfers. La seule exception notoire se situe au royaume de Cobis, où une forêt tout entière futplongée dans les ténèbres et placée sous domi - nation démoniaque pendant plusieurs décennies.\nInterpréter un cambion Comme souvent pour les personnes victimes de préjugés, les cambions ont tendance à adopter un comportement assez extrême : soit ils font tout leur possible pour être irréprochab les et dissimuler à tout prix ce qu’ils estiment être un par ticularisme honteux, soit ils en jouent et tombent dans la caricature d’euxmêmes, adoptant un comportement sulfureux.\nÀ vous de décider de quel côté vous penchez, ou si ces deux aspects luttent en vous. Dans tous les cas, le sang de démon qui coule dans vos veines est le prétexte à mettre en scène une lutte intérieure. Parfois, des pulsions que vous ne comprenez pas tentent de prendre le contrôle de vos actions. Allez-vous les combattre ou adopter une attitude nihiliste ?\nPréjugés typiques : les cambions sont habités par le mal. Certains d’entre eux arrivent à le contenir… jusqu’au moment où le mal reprend le dessus.",
+  "reperes": {
+   "Âge de départ": "15 à 18 ans. Il est rare que les cambions restent longtemps sur le lieu qui les a vus naître. La plupart du temps, ils ont une jeunesse tumultueuse et fuient rapidement l’endroit où ils ont grandi.",
+   "Espérance de vie": "de 10 à 100 ans de plus qu’un humain, en fonction de la proximité généalogique de l’ascendance démoniaque.",
+   "Taille": "1,5 m à 2 m (comme un humain ordinaire)",
+   "Poids": "40 à 120kg (comme un humain ordinaire)",
+   "Traits": "choisir une ou plusieurs particularités parmi tache de naissance, yeux rouges ou jaunes, petites cornes, queue atrophiée ou fourchue, langue fourchue, odeur de soufre, etc."
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 VOL ou CON, -1 CHA",
+  "mods": {
+   "plus": [
+    "VOL",
+    "CON"
+   ],
+   "moins": [
+    "CHA"
+   ]
+  },
+  "voies": [
+   "voie-du-cambion"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "demi-ogre",
+  "nom": "Demi-ogre",
+  "page": 11,
+  "description": "Les demi-ogres mesurent tous plus de deux mètres et peuvent culminer jusqu’à deux mètres cinquante. Ils sont épais et glabres, souvent très corpulents. Leur mâchoire est trop large pour être humaine et leurs canines inférieures sont généralement proéminentes.\nLe demi-ogre est une brute monumentale en proie à un violent conflit intérieur. Cette lutte reflète sa double personnalité, et certains individus, qui ont cédé à leur tempérament bestial, sont devenus pires que leur géant géniteur, utilisant leur intelligence supérieure pour tuer, piller et dévorer jusqu’à ce que mort s’ensuive.\nPlutôt que d’incarner ces individus qui mènent généralement une vie courte et violente, nous vous proposons plutôt d’incarner ceux qui n’ont pas (encore) perdu le combat contre eux-mêmes et essayent de s’intégrer dans la société. Ces malheur eu ses créatures sont généralement très policées, au point de parfois passer pour des simples d’esprit. Ainsi prisent-ils par-dessus tout les bonnes manières, les costumes raffinés et une diction digne d’une pièce de théâtre. Leurs tentatives désespéré es pour ne pas sombrer dans la bestialité impliquent de tels efforts que le ridicule l’emporte bien souvent.\nDans les Terres d’Osgild. Pour une raison inconnue, les demi-ogres sont assez courants dans le duché de Périk, où on les considère comme une main-d’œuvre efficace. Ce qui était, jusqu’il y a peu, une particularité de cette nation isolée commence à se répandre aux alentours. Il est à présent possible de croiser des demi-ogres dans toutes les grandes cités situées sur les rives de la mer des Roseaux.\nOn rencontre aussi des demi-ogres dans le comté de Ponant, le comte Nosra du Ponant ayant fait venir des ogres de l’extrême Ouest pour former sa police. On dit d’eux qu’ils sont étonnements civilisés pour des ogres (et, en réalité, des demi-ogres). Ce sont des sortes de mousquetaires du mal qui manient rapières lourdes et mousquets.\nInterpréter un demi-ogre Interpréter un demi-ogre est un défi. Simple d’esprit et violent de nature, vous fournissez des efforts fantastiques pour garder le contrôle et ne pas sombrer du côté obscur. Vous savez, cet état second où ne subsiste que la joie sauvage de tuer et massacrer ! Les plaisirs de la table, en revanche, ne vous sont pas interdits, alors profitez-en.\nPréjugés typiques : les demi-ogres sont des brutes déguisées en aimables simples d’esprit. Ils semblent civilisés, mais au premier mot de trop, ils vous arrachent la tête pour vous dévorer les yeux.\nNe vous fiez jamais à eux, et si vous vous moquez (c’est assez tentant !), assurez-vous d’être assez loin pour ne pas être rattrapé.",
+  "reperes": {
+   "Âge de départ": "15+",
+   "Espérance de vie": "60 ans",
+   "Taille": "de 2 m à 2,50 m",
+   "Poids": "de 200 à 350 kg",
+   "Traits": "peu de pilosité, énorme, puissant, mâchoire prognathe, front bas, grandes mains Caractéristiques +2 FOR, +1 CON, -1 AGI, INT, CHA et VOL Taille grande : le demi-ogre est considéré comme de taille grande pour résister aux capacités des créatures (saisie et autres). Il peut manier d’une seule main les épées bâtardes et les épées à deux mains, et inflige alors 1d12 DM. Il peut utiliser des armes à deux mains adaptées à sa taille qui infligent 2d8 DM. Les mous qu’et air es du Ponant utilisent des vivelames en guise de rapière (DM 1d8, critique sur 19-20) et des mousquets qui infligent 2d8 DM."
+  },
+  "particularites": "Taille grande : le demi-ogre est considéré comme de taille grande pour résister aux capacités des créatures (saisie et autres). Il peut manier d’une seule main les épées bâtardes et les épées à deux mains, et inflige alors 1d12 DM. Il peut utiliser des armes à deux mains adaptées à sa taille qui infligent 2d8 DM. Les mous qu’et air es du Ponant utilisent des vivelames en guise de rapière (DM 1d8, critique sur 19-20) et des mousquets qui infligent 2d8 DM.\nToutefois, être une armoire à glace ne comporte pas que des avantages, le demiogre se sent bien souvent à l’étroit : dans la plupart des constructions à taille humaine, un demi-ogre subit -1 à tous les tests de FOR, d’AGI et d’attaque. Dans les espaces exigus (escalier en colimaçon, tunnels de gobelins, etc.), il reçoit un malus égal à sa FOR et ne peut pas y manier d’arme à deux mains.",
+  "source": "compagnon",
+  "modificateurs": "+2 FOR, +1 CON, -1 AGI, INT, CHA et VOL",
+  "mods": {
+   "plus": [],
+   "moins": [],
+   "fixes": {
+    "FOR": 2,
+    "CON": 1,
+    "AGI": -1,
+    "INT": -1,
+    "CHA": -1,
+    "VOL": -1
+   }
+  },
+  "voies": [
+   "voie-du-demi-ogre"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "drakonide",
+  "nom": "Drakonide",
+  "page": 13,
+  "description": "Les drakonides sont des humanoïdes robustes, mi-hommes, mi-dragons. Leur tête rappelle très fortement celle d’un dragon et ils sont pourvus d’écailles dont la couleur va du doré au bronze et du brun à l’écarlate. Ils ne possèdent que rarement une queue et, généralement, leurs ailes atrophiées ne leur permettent pas de voler.\nToutefois, il existe des exceptions et certains d’entre eux sont pourvus d’ailes plus puissantes. Après de longues heures d’entraînement pour les muscler, ils réussissent parfois à apprendre à voler, bien que de façon très limitée.\nLes drakonides sont les héritiers d’un sang d’une puissance exceptionnelle, mais leur anatomie hybride les rend parfois mal a droits.\nCréés pour servir les grands vers, ils sont désormais émancipés de leurs maîtres, mais conservent de leur origine un sens de la loyauté et de l’honneur qu’il leur est impossible de renier. Fiers et perfection nistes, ils parcourent le monde à la recherche de l’excellence. Ils font des gardes du corps et des capitaines hors pair. Toutefois, les subtilités de la politique leur échappent et leurs employeurs les trouvent parfois difficiles à contrôler.\nDans les Terres d’Osgild. Les drakonides sont rares et ils ne passent pas inaperçus. Ils constituent un peuple très ancien, issu du premier âge, bien avant l’arrivée des humains.\nSurtout, ils sont désor mais très désorientés, car sur les Terres d’Osgild, on n’a plus vu de dragon du bien depuis plusieurs décennies. Cette absence, pour ne pas parler de disparition, qui les perturbe considérable ment ; chacun d’eux nourrit la quête secrète de comprendre ce qui se trame.\nInterpréter un drakonide Votre apparence effraye les bonnes gens.\nVotre morphologie, notamment vos ailes, vous gêne dans la plupart des bâtiments des peuples civilisés. Vos valeurs semblent assez peu partagées par les autres peuples. Bref, vous vivez dans un monde dans lequel vous ne vous sentez pas adapté.\nVous êtes une sorte de fossile vivant, une créature d’un autre temps, dans un monde à présent dominé par des créatures que vous avez du mal à comprendre. Vous êtes une créature de principe, une créature à sang froid, lente à prendre une décision, lente à agir, mais capable de tenir ensuite contre vents et marées pendant des décennies. Pre nez votre temps… Préjugés typiques : le sens de l’honneur exacerbé de ces fan a tiques les rend tout aussi dangereux pour leurs amis que pour leurs ennemis. Toutefois, cela les rend pré visibles et faciles à manipuler… si vous êtes patient.",
+  "reperes": {
+   "Âge de départ": "30+",
+   "Espérance de vie": "300 ans",
+   "Taille": "de 1,80 m à 2m",
+   "Poids": "de 100 à 160 kg",
+   "Traits": "yeux de reptiles, langue bifide, écailles, ailes atrophiées, pieds griffus Caractéristiques +1 en FOR et +1 VOL, -1 en AGI et en PER"
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 en FOR et +1 VOL, -1 en AGI et en PER",
+  "mods": {
+   "plus": [],
+   "moins": [],
+   "fixes": {
+    "FOR": 1,
+    "VOL": 1,
+    "AGI": -1,
+    "PER": -1
+   }
+  },
+  "voies": [
+   "voie-du-drakonide"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "elfe-pale",
+  "nom": "Elfe pâle",
+  "page": 14,
+  "description": "Les elfes pâles sont une spécificité des Terres d’Osgild, une variation sur l’elfe des profondeurs.\nIls sont tous natifs de l’immense et bien nommée Forêt sombre, située au nord-est du Mitan.\nSouvent aussi appelés les Indécis, ce sont les descendants des elfes qui ont refusé de passer sous le joug de Maëdra, la déesse des insectes et de l’obéissance (voir Atlas d’Osgild & règles optionnelles, p. 20). Ils ressemble nt à s’y méprendre aux elfes des profondeurs, mais leur culture est très différente. Ils ont appris à composer avec une nature hostile et corrompue et vouent encore un culte aux anciennes Puissances (Vent, Eau, Terre, Feu, Vie et Mort). C’est l’un des rares peuples qui ne s’est pas con vertià la religion des nouveaux dieux, et les druides sont leurs seu ls prêtres.\nInterpréter un elfe pâle Les elfes pâles souffrent des mêmes préjugés que les elfes des profondeurs et ils ont bien du mal à faire comprendre la différence entre leurs deux peuples. Cette histoire-là, pour l’humain moyen, c’est bonnet blanc et blanc bonnet, et vous avez appris qu’il valait parfois mieux courir vite que tenter d’expliquer cette nuance subtile. Au moins, votre jeunesse passée dans la terrible Forêt sombre vous a appris à être prudent et que les manœuvres d’évitement sont souvent bien plus efficaces que l’affrontement direct.",
+  "reperes": {
+   "Âge de départ": "50+",
+   "Espérance de vie": "400 ans",
+   "Taille": "1,50 m à 1,70 m",
+   "Poids": "40 à 70 kg",
+   "Traits": "peau pâle (pas autant que les elfes des profondeurs), élancé, svelte, oreilles pointues, yeux en amandes (verts, violets), cheveux blancs ou argent, pilosité corporelle absente Caractéristiques +1 PER ou VOL, -1 FOR"
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 PER ou VOL, -1 FOR",
+  "mods": {
+   "plus": [
+    "PER",
+    "VOL"
+   ],
+   "moins": [
+    "FOR"
+   ]
+  },
+  "voies": [
+   "voie-de-l-elfe-pale"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "elfe-des-profondeurs",
+  "nom": "Elfe des profondeurs",
+  "page": 16,
+  "description": "L’elfe des profondeurs est issu d’une culture elfique qui a fui la surface du monde depuis des millénaires pour s’installer profondément sous terre. La société des elfes y est devenue tyrannique et cruelle, gouvernée par un clergé impitoyable au service d’une divinité qui prône l’obéissance aveugle à la hiérarchie et la lutte permanente pour s’élever parmi ses pairs. En conséquence, les elfes des profondeurs considèrent tous les autres peuples comme inférieurs et seulement dignes d’être réduits en esclavage.\nIl n’y a donc rien d’étonnant à ce que tous les autres peuples se méfient des elfes des profondeurs et les craignent. Quant aux nains et aux autres elfes, cela confine à la haine. Avec une peau pâle très blanche et des cheveux blancs ou argent, il leur est difficile de passer inaperçu et la vie à la surface est parsemée d’embûches pour les rares individus à avoir fui les ténèbres.\nDans les Terres d’Osgild. Pour la plupart des peuples du Mitan, les elfes des profondeurs ne sont qu’une légende ; seuls les elfes et les nains se rappellent les anciennes guerres qui ont coûté tant de vies à leurs peuples.\nGlobalement, les informations qui concernent les elfes maudits et leurs plans sont peu connues du quidam moyen. Cela dépend aussi beaucoup de la période de jeu choisie par le MJ. C’est donc à ce dernier de décider quels sont les renseignements disponibles et, bien entendu, si ce peuple fait partie des options ouvertes à la création de PJ.\nInterpréter un elfe des profondeurs.\nQuitter la société tyrannique des elfes des profondeurs n’est pas une option : vous êtes désormais un déserteur et un traître (eh oui, c’est là notre pro position pour que vous puissiez jouer un tel personnage !). Pour accepter ainsi de vous couper de tout et quitter les ténèbres pour vous aventurer sous la terrible lumière du soleil, il faut une force de caractère extraordinaire et un concours de circonstances particulier. À vous de déterminer laquelle : l’in capacité à supporter plus longtemps les règles iniques de la société, une erreur, un complot ou une trahison qui mettent votre vie en danger si vous restez, etc. Ce déclencheur exercera une influence sur votre façon d’appréhender le monde de la surface : avec un esprit ouvert et l’envie de vous adapter ou, au contraire, à regret et en reproduisant les stéréotypes de votre société d’origine. Dans tous les cas, le choc des cultures et la peur que vous inspirez sont des éléments intéressants à interpréter.\nPréjugés typiques : les elfes des profondeurs sont des créatures maléfiques et cruelles qui ne respecte nt que la force. Ils sont habitués à la domination et traitent les autres peuples comme du bétail.",
+  "reperes": {
+   "Âge de départ": "50+",
+   "Espérance de vie": "400 ans",
+   "Taille": "1,50 m à 1,70 m",
+   "Poids": "40 à 70 kg",
+   "Traits": "peau très pâle, presque translucide, élancé, svelte, oreilles pointues, yeux en amandes (verts, violets), cheveux blancs ou argent, pilosité corporelle absente Caractéristiques +1 AGI ou VOL, -1 FOR"
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 AGI ou VOL, -1 FOR",
+  "mods": {
+   "plus": [
+    "AGI",
+    "VOL"
+   ],
+   "moins": [
+    "FOR"
+   ]
+  },
+  "voies": [
+   "voie-de-l-elfe-des-profondeurs"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "felis",
+  "nom": "Félis",
+  "page": 18,
+  "description": "Les félis sont agiles et rapides. Leur morphologie est humaine et leurs traits félins. Ils possèdent un appendice caudal long de presque un mètre, très similaire à celui d’une panthère. Leur pelage fin et doux se nuance du noir au doré, tacheté, rayé ou uni. Leurs yeux de chat sont jaunes, verts ou parfois bleus, et leurs pupilles verticales.\nIl existe différentes cultures de félis. Les plus sauvages sont des solitaires qui chassent au plus profond des jungles. D’autres se regroupent en bande pour tenter l’aventure parmi les humains, en particulier lorsque ceux-ci ont détruit leur milieu naturel, la forêt. Dans ce cas, ils adoptent généralement un mode de vie nomade, vivant dans des roulottes et, selon les saisons, proposant leurs services dans les champs ou des spectacles à la façon des saltimbanques.\nDans les Terres d’Osgild. Il y a encore un siècle, les félis étaient presque inconnus, même si les sages connaissaient leur existence. Il s’agissait d’une espèce solitaire qui chassait au plus profond des jungles ou des forêts les plus sauvages. Et puis, petit à petit, des bandes de félis, des groupes d’individus un peu désorientés, sont apparues ici et là, sortant des bois, parfois de simples bosquets, comme s’ils y avaient toujours vécu. Ils n’avaient pas d’explication sur leur origine.\nQuestion nés à ce sujet, ils étaient tout juste capables, en fournissant un effort de mémoire, de dire qu’ils vivaient auparavant dans les bois (voir Atlas d’Osgild & règles optionnelles, p. 22).\nDepuis, ils sont devenus un spectacle ordinaire, en particulier dans la principauté d’Arly, où le monarque fut le premier à les accepter comme des citoyens à part entière de son royaume, contrairement à d’autres nations où ils sont considérés au mieux comme des étrangers au pire comme un peuple clan destin.\nInterpréter un félis Si vous avez un chat, vous saurez à n’en pas douter interpréter un félis. Alternez les périodes de calme apathique et celles d’activité frénétique ponctuées de sautes d’humeurs. Soyez propre, brossez-vous, nettoyez-vous, faites attention à vos vêtements, soyez beau ! Au niveau des valeurs, vous n’êtes pas très volontaire pour redresser les torts ou filer un coup de main, et pour vous, charité bien ordonnée commence par soi-même.\nPour autant, si vous êtes bien intégré dans un groupe, alors vous comprenez parfaitement la notion de famille et d’intérêt partagé, et vous savez soutenir et défendre vos amis ou votre clan lorsque les choses tournent vraiment mal.\nVous aimez vivre dangereuse ment, et quand vous avez pris quelqu’un en grippe, vous avez la dent dure… et pour longtemps.\nPréjugés typiques : les félis sont im pré visibles et complètement égocentriques. Ils peuvent se montrer cruels sans même y faire attention.\nQuant aux saltimbanques qui se déplacent en bandes, méfiez-vous d’eux : ce sont des voleurs et des arnaqueurs.",
+  "reperes": {
+   "Âge de départ": "15+",
+   "Espérance de vie": "60 ans",
+   "Taille": "1,50 m à 1,80 m",
+   "Poids": "40 à 80 kg",
+   "Traits": "propre, musclé, griffes rétractables, queue féline, petites moustaches, pelage fin, yeux de chat de toutes les couleurs Caractéristiques +1 AGI ou PER, -1 FOR ou INT"
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 AGI ou PER, -1 FOR ou INT",
+  "mods": {
+   "plus": [
+    "AGI",
+    "PER"
+   ],
+   "moins": [
+    "FOR",
+    "INT"
+   ]
+  },
+  "voies": [
+   "voie-du-felis"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "frouin",
+  "nom": "Frouïn",
+  "page": 20,
+  "description": "Un frouïn ressemble à un rat humanoïde d’un mètre de haut. Les frouïns sont des citadins, ils affectionnent les tunnels et les égouts qui courent sous les cités des humains et participent activement à leur propagation.\nLeur civilisation est basée sur la discrétion et la récupération, rien n’est trop mauvais pour un frouïn. De fait, un frouïn peut survivre avec trois fois rien, là où un humain serait mort de faim et de maladie. Cela ne veut pas dire que les frouïns n’aiment pas le luxe, mais ils ne sont pas prêts à travailler ni à prendre des risques pour l’obtenir. Les frouïns sont des charognards avec une certaine noblesse d’âme, des parangons de la dé croissance, toujours prêts à partager leurs maigres trou va il les. À vrai dire, les humains sont souvent très injustes avec eux.\nDans les Terres d’Osgild. Les frouïns sont partout, et pourtant, ils passent complètement inaperçus. Personne ne s’occupe d’eux et ils s’arrangent pour ne pas se faire remarquer. Ils commettent rarement des méfaits, et quand ils font preuve de violence, cela se cantonne généralement à leur propre communauté ou pour se défendre contre les créatures dangereuses avec lesquelles ils partagent leur écosystème. Pour cette raison, malgré leur mauvaise réputation, les humains les ignorent la plupart du temps et les considèrent comme quantité négligeable. Les frouïns ne sont pas très nombreux et, comme ils vivent de restes, ils ne forment pas de colonies nombreuses : leur survie est basée sur la faible densité de leur espèce. Ils n’ont pas de meneurs ni d’histoire ; s’ils venaient à disparaître, ils ne laisseraient aucune trace.\nInterpréter un frouïn Soyez vif et curieux, posez-vous toujours la question : y a-t-il quelque chose à récupérer ? Jetez votre dévolu sur un autre PJ : vous êtes très attaché à lui, même si ce n’est pas réciproque. Vous le suivez partout, quitte à lui marquer votre affection par des petits riens, comme un reste de poisson encore mangeable (pour un frouïn). Soyez attachiant !\nAu quotidien, vous êtes un profiteur, toujours à la recherche du bon coup, du profit facile.\nToutefois, vous compensez cette pro pen sion par un bel esprit d’équipe : votre groupe est devenu votre famille et vous savez que pour survivre, il faut se serrer les coudes. En situation tendue, évitez l’affrontement direct ; pour ce faire, ne soyez pas avare en compliments et en superlatifs pour tenter de séduire vos adversaires. Vous faites toutefois de fréquent es fautes de goût et autres bévues d’étiquette (les gens sont susceptibles !). Même si vous êtes définitivement un couard, vous êtes prêt à prendre des risques si la vie de vos amis (et potentielles sources de ressources) est en danger.\nPréjugés typiques : les frouïns sont sales et porteurs de maladie, toucher un frouïn est dangereux. Lorsqu’un frouïn se montre sympathique, c’est qu’il espère obtenir de la nourriture.",
+  "reperes": {
+   "Âge de départ": "10+",
+   "Espérance de vie": "30 ans",
+   "Taille": "1 m à 1,10 m",
+   "Poids": "30 à 40 kg Traits des frouïns : odeur nauséabonde, pelage miteux, incisives proéminentes, queue de rat, truffe humide, petits yeux noirs Caractéristiques +1 AGI ou PER, +1 CON, -1 FOR et -1 CHA Taille petite : un frouïn est de taille petite."
+  },
+  "particularites": "Taille petite : un frouïn est de taille petite.\nIl ne peut utiliser à une main qu’une arme dont les DM sont au maximum égaux à 1d6 DM (épée courte, masse, etc., mais pas la rapière). Il lui faut utiliser les deux mains pour manier les armes qui infligent 1d8 à 1d10 DM (épée longue, etc.), et il lui est interdit d’utiliser les armes qui infligent plus de 1d10 DM. Il ne peut pas utiliser d’arc long ni d’arbalète lourde.",
+  "source": "compagnon",
+  "modificateurs": "+1 AGI ou PER, +1 CON, -1 FOR et -1 CHA",
+  "mods": {
+   "plus": [
+    "AGI",
+    "PER"
+   ],
+   "moins": [],
+   "fixes": {
+    "CON": 1,
+    "FOR": -1,
+    "CHA": -1
+   }
+  },
+  "voies": [
+   "voie-du-frouin"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "gobelin",
+  "nom": "Gobelin",
+  "page": 22,
+  "description": "Les gobelins, aussi appelés « peaux vertes » ou plus couramment « gobs », forment un peuple à la fois attachant et détestable. Ce sont des créatures paradoxales : un gob est capable d’être discret tout autant que braillard, malin et retors tout autant que complètement crétin, joyeux et drôle en même temps que violent et cruel… Les gobelins comptent normalement sur le nombre pour survivre et s’imposer dans la chaîne alimentaire. C’est pourquoi, pour être capable de concevoir un destin hors de son propre clan, un gobelin solitaire sera obligatoirement un être d’exception. Petit être doué de plus de sensibilité et d’empathie que ses congénères, peut-être a-t-il fui la violence de la société des peaux vertes ? Plus intelligent que ses frères, peut-être une rencontre lui a-t-elle ouvert les yeux sur le monde ? Qui sait, un magicien excentrique l’a-t-il enlevé tout jeune et élevé comme son propre fils pour prouver au monde que les gobelins ne sont pas mauvais par nature, mais seulement condition nés par leur éducation ! À moins qu’il ne soit simplement beaucoup plus ambitieux que ses congénères… Dans les Terres d’Osgild. On trouve des gobelins un peu partout dans les Terres d’Osgild.\nÀ vrai dire, il s’agit sans doute du peuple le plus nombreux juste derrière les humains ! Toutefois, ils vivent le plus souvent cachés dans des grottes, que ce soit en zone montagneuse ou en forêt, et n’en sortent qu’à la nuit tombée. Les collines de la Pacherie, au sud de Benastir (principauté d’Arly), sont connues pour abriter une communauté de gobelins particulièrement organisée et pugnace, dont certains individus sont capables de se comporter de façon civilisée.\nInterpréter un gobelin Comme pour tous les peuples dits monstrueux, interpréter un gobelin dans un cadre de jeu de fantasy classique, comme les Terres d’Osgild, est une gageure. En effet, pour le commun des mortels, un bon gob est un gob mort, et la tolérance à l’égard de vos écarts de conduite sera au mieux très mince, au pire in existante… Pour jouer un gob, du moins en zone civilisée, vous avez intérêt à vous trouver un protecteur, de préférence un personnage dont la moralité est garante de votre sécurité : un chevalier, un prêtre, ce genre de parangon de vertu. Ah, et n’oubliez pas d’appeler les humains « grandes-guibolles », les elfes « bouffe-laitue » et les nains « gros-tarin » (vous les confondez d’ailleurs toujours avec les gnomes, même si ces derniers tapent tout de même moins fort !).\nPréjugés typiques : les gobs sont des plaies, ils sont vicieux, menteurs et débiles. Un seul gob ne représente qu’une nuisance ; en revanche, en groupe, ils constituent un véritable fléau.",
+  "reperes": {
+   "Âge de départ": "8+",
+   "Espérance de vie": "30 ans",
+   "Taille": "80 cm à 1m",
+   "Poids": "15 à 30 kg Traits des gobelins : peau verte, traits du visage dis pro por tion nés (bouche, yeux, oreilles et nez immenses) ; cheveux épais, noirs et rares ; yeux rouges ou jaunes, souvent vairons ; maigrichons, mais parfois avec un gros bidon."
+  },
+  "particularites": "Taille petite : un gobelin est de taille petite. Il ne peut utiliser à une main qu’une arme dont les DM sont au maximum égaux à 1d6 DM (épée courte, masse, etc., mais pas la rapière). Il lui faut utiliser les deux mains pour manier les armes qui infligent 1d8 à 1d10 DM (épée longue, etc.), et il lui est interdit d’utiliser les armes qui infligent plus de 1d10 DM. Il ne peut pas utiliser d’arc long ni d’arbalète lourde.",
+  "source": "compagnon",
+  "modificateurs": "+1 AGI, +1 PER, -1 FOR et -1 VOL",
+  "mods": {
+   "plus": [],
+   "moins": [],
+   "fixes": {
+    "AGI": 1,
+    "PER": 1,
+    "FOR": -1,
+    "VOL": -1
+   }
+  },
+  "voies": [
+   "voie-du-gobelin"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "kobold",
+  "nom": "Kobold",
+  "page": 24,
+  "description": "Un kobold est un humanoïde reptilien de petite taille pourvu de fines écailles et d’une queue, dont la tête n’est pas sans rappeler le mélange improbable entre un chien et un dragon. Outre des mains et des pieds pourvus de griffes, les kobolds possèdent une mâchoire très robuste, digne d’un crocodile de petite taille.\nLa couleur de leurs écailles varie selon les tribus (rouge, vert, noir, bleu, blanc). Parfois, un kobold naît avec une couleur exotique (jaune, orange, violet), ce qui en fait un être à part, chamane, chef ou encore paria. Enfin, au sein de certaines tribus, une antique prophétie annonce la venue d’un messie « paré d’or » qui unira le peuple kobold et le mènera à la conquête du monde… Alors que les gobelins font partie de la grande famille des peuples gobelinoïdes, qui comprend aussi les orcs et les hobgobelins, aussi incroyable que cela puisse sembler, les kobolds partagent le sang des dragons. Comment ce peuple chétif peut-il partager quoi que ce soit avec ces immenses et fières créatures qui dominent la chaîne alimentaire des mondes connus reste un mystère. Les dragons préfèrent ignorer la question et il est fort malavisé de la leur poser, mais certains sages humains se sont risqués à prétendre que les grands vers ont créé les kobolds pour en faire des animaux de compagnie. Ainsi, le kobold serait au dragon ce que le chien est aux humains, thèse accréditée par le fait que les kobolds préfèrent souvent agiter la queue pour montrer leurs émotions, leur face écailleuse et leur mâchoire dis pro por tion née n’étant guère propices à l’expression de sentiments.\nTous comme les gobelins, les kobolds comptent généralement sur le nombre pour s’imposer.\nToutefois, ils sont aussi des spécialistes des pièges, des embuscades et de la ruse en général.\nDans les Terres d’Osgild. Les kobolds sont nettement moins visibles que les gobelins, car bien plus craintifs. Cela dit, on les trouve dans presque toutes les forêts et plus encore dans les collines et les montagnes. Si un jour les kobolds d’Osgild s’unifiaient, les autres races seraient assurément surprises de leur nombre !\nInterpréter un kobold Les conseils indiqués pour interpréter un gobelin s’appliquent aussi aux kobolds. Toutefois, les kobolds comptent deux avantages sur les gobelins. Certaines personnes n’ont jamais vu de kobold, et l’ignorance quant à leur véritable nature pourra parfois éviter des réactions négatives. De plus, leur faciès, à mi-chemin entre le chien et le crocodile, les rend étranges, voire amusants pour les humains, qui s’en méfient moins que des peaux-vertes. C’est d’ailleurs pour cela qu’ils ne subissent pas de malus de Charisme.\nDu point de vue des kobolds, les humains et toutes les autres espèces humanoïdes plus grandes sont des peuples prétentieux. Ils leur en veulent de se croire supérieurs et souhaitent prouver à la face du monde que les descendants des dragons ne comptent pas pour rien !\nPréjugés typiques : les kobolds sont fourbes et sournois, ne vous approchez pas de leur antre, ils piègent même leur propre lit !",
+  "reperes": {
+   "Âge de départ": "10+",
+   "Espérance de vie": "60 ans",
+   "Taille": "0,70 m à 0,90 m",
+   "Poids": "18 à 25 kg",
+   "Traits": "écailles colorées (au choix), mâchoire proéminente, crocs et griffes, queue, grands yeux Caractéristiques +1 AGI et PER, -1 FOR et CON Créature petite : un kobold est de taille petite. Il ne peut utiliser à une main qu’une arme dont les DM sont au maximum égaux à 1d6 DM (épée courte, masse, etc., mais pas la rapière). Il lui faut utiliser les deux mains pour manier les armes qui infligent 1d8 à 1d10 DM (épée longue, etc.), et il lui est interdit d’utiliser les armes qui infligent plus de 1d10 DM. Il ne peut pas utiliser d’arc long ni d’arbalète lourde."
+  },
+  "particularites": "Créature petite : un kobold est de taille petite. Il ne peut utiliser à une main qu’une arme dont les DM sont au maximum égaux à 1d6 DM (épée courte, masse, etc., mais pas la rapière). Il lui faut utiliser les deux mains pour manier les armes qui infligent 1d8 à 1d10 DM (épée longue, etc.), et il lui est interdit d’utiliser les armes qui infligent plus de 1d10 DM. Il ne peut pas utiliser d’arc long ni d’arbalète lourde.",
+  "source": "compagnon",
+  "modificateurs": "+1 AGI et PER, -1 FOR et CON",
+  "mods": {
+   "plus": [],
+   "moins": [],
+   "fixes": {
+    "AGI": 1,
+    "PER": 1,
+    "FOR": -1,
+    "CON": -1
+   }
+  },
+  "voies": [
+   "voie-du-kobold"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "lutin-fee",
+  "nom": "Lutin (fée)",
+  "page": 26,
+  "description": "Fées et farfadets forment les deux faces d’une même pièce, le peuple des lutins. Malgré d’évidentes différences physiques, ces créatures sont les représentants des deux sexes d’une seule et même espèce. À la fois très distincts en termes de règles et de jeu, mais tellement proches.\nLes fées naissent dans les fleurs et les farfadets dans les choux, source inépuisable de moquerie de la part des fées à l’endroit de leurs congénères mâles. Mais concrètement, comment cela se passe-t-il, vous demandez-vous sans doute ?\nC’est pourtant très simple.\nLorsqu’un farfadet séduit une fée, l’entre prise d’une vie entière ou parfois d’une minute, les amoureux s’allongent sur un lit de mousse. Là où les amoureux se sont embrassés, une plante pousse au printemps suivant. Un chou ou une fleur. Et lorsque la fleur s’ouvre, car n’en déplaise aux fées, les choux aussi font des fleurs, un jeune farfadet ou une petite fée, couvert de rosée, s’en échappe.\nLes lutins forment un peuple facétieux, voire horripilant d’après tous les sages qui ont tenté de les étudier. Rassemblés, fées et farfadets passent leur temps à se chamailler, vous pourriez donc croire qu’ils se détestent alors qu’en réalité ils s’adorent. Mais une chose les rassemble inévitablement : l’amour de la nature et sa défense face aux peuples brutaux qui la détruisent. Malheur à ceux-ci, car alors les blagues peuvent prendre un tournant létal.\nDans les Terres d’Osgild. Les êtres féeriques sont beaucoup moins nombreux qu’il y a quelques millénaires à cause de l’expansion humaine. Fées et farfadets vivent dans les forêts, les bois et les bosquets. Ils sont particulièrement nombreux dans toutes les forêts peuplées d’elfes. Cependant, certaines communautés se sont adaptées et vivent au contact de l’humanité sans que celle-ci s’en aperçoive, se réfugiant parfois dans un monde onirique parallèle auquel on accède par des portes invisibles (cercles de champignons, anciennes pierres levées ou même placard à balais !).\nNote de l’auteur : fées et farfadets forment une espèce drôle et caricaturale qui se moque des stéréotypes, mais toujours avec bienveillance. Ils ne représentent en aucun cas une remise en cause de l’égalité entre les genres, bien au contraire.\nToutefois, comme toujours, si cela ne correspond pas à vos goûts, n’hésitez pas à ignorer cet aspect du jeu et à décider qu’il y a des fées et des farfadets des deux sexes.\nInterpréter un lutin Votre philosophie de vie est très éloignée de celle des humains. Pour vous, une bonne blague, un brin de muguet ou un reflet de lumière a bien plus de valeur que l’or ou la santé.\n• Interpréter un farfadet : vous êtes un sale gosse, vous adorez vous moquer ou jouer des tours pendables, en particulier aux dépens de ceux qui n’ont aucun humour. Toutefois, vous n’êtes jamais méchant, du moins pas volontairement. Vous voulez toujours être le premier, vous adorez parier et jouer, mais vous êtes très mauvais perdant. En groupe, les farfadets sont insupportab les et passent leur temps à se chamailler.\n• Interpréter une fée : vous êtes jolie et insupportable, capricieuse et exigeante. Vous vous comportez comme une enfant gâtée ou une princesse avec sa cour. Vous adorez vous vexer et bouder, mais votre bonne humeur finit toujours par reprendre le dessus.\nNB : à titre d’inspiration, n’hésitez pas à revoir le film Willow !\nPréjugés typiques : les farfadets et les fées, c’est du pareil au même, ce sont des nuisibles !\nÇa vole la nourriture, ça fait des blagues et ça dort.\nDes bouches inutiles à nourrir. Si tu veux un animal de compagnie, prend plutôt un chat, il sera plus reconnaissant et il videra la maison des mulots !",
+  "reperes": {
+   "Âge de départ": "3+",
+   "Espérance de vie": "150 ans",
+   "Taille": "20 cm (fées) à 30 cm (farfadets)",
+   "Poids": "1 à 3 kg",
+   "Traits": "• fée : mystérieuse, diaphane, magique, rapide, lumineuse, gracieuse, élégante, irrésistible • farfadet : grand nez et grands pieds, chapeau en champignon, coiffure ébouriffée, vêtements d’écorce Caractéristiques • Fée : +1 AGI, +1 CHA, -1 CON, -2 FOR • Farfadet : +1 AGI, +1 PER, -1 CON, -2 FOR Créature très petite : la valeur de FOR d’une fée est limitée à -2, celle d’un lutin à -1. Les fées et les lutins infligent seulement 1d4 DM lors d’attaques au contact ou à distance avec une arme à une main. Avec une arme à deux mains (une épée courte ou un arc), ils infligent 1d6 DM."
+  },
+  "particularites": "Ces DM sont liés à la précision plutôt qu’à la force d’impact, et les êtres féeriques sont de véritables experts pour viser les organes vitaux.\nLorsqu’un lutin ou une fée obtient des d4° supplémentaires sur une attaque physique (par exemple, pour une Attaque puissante ou une Attaque sournoise), lorsque le résultat maximal est obtenu sur le dé, il est considéré comme résultat de 1 ! En échange, leur petite taille leur permet de bénéficier de +2 en DEF et +5 à tous les tests de discrétion.",
+  "source": "compagnon",
+  "modificateurs": "+1 AGI, +1 CHA, -1 CON, -2 FOR",
+  "mods": {
+   "plus": [],
+   "moins": [],
+   "fixes": {
+    "AGI": 1,
+    "CHA": 1,
+    "CON": -1,
+    "FOR": -2
+   }
+  },
+  "voies": [
+   "voie-de-la-fee"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "lutin-farfadet",
+  "nom": "Lutin (farfadet)",
+  "page": 26,
+  "description": "Fées et farfadets forment les deux faces d’une même pièce, le peuple des lutins. Malgré d’évidentes différences physiques, ces créatures sont les représentants des deux sexes d’une seule et même espèce. À la fois très distincts en termes de règles et de jeu, mais tellement proches.\nLes fées naissent dans les fleurs et les farfadets dans les choux, source inépuisable de moquerie de la part des fées à l’endroit de leurs congénères mâles. Mais concrètement, comment cela se passe-t-il, vous demandez-vous sans doute ?\nC’est pourtant très simple.\nLorsqu’un farfadet séduit une fée, l’entre prise d’une vie entière ou parfois d’une minute, les amoureux s’allongent sur un lit de mousse. Là où les amoureux se sont embrassés, une plante pousse au printemps suivant. Un chou ou une fleur. Et lorsque la fleur s’ouvre, car n’en déplaise aux fées, les choux aussi font des fleurs, un jeune farfadet ou une petite fée, couvert de rosée, s’en échappe.\nLes lutins forment un peuple facétieux, voire horripilant d’après tous les sages qui ont tenté de les étudier. Rassemblés, fées et farfadets passent leur temps à se chamailler, vous pourriez donc croire qu’ils se détestent alors qu’en réalité ils s’adorent. Mais une chose les rassemble inévitablement : l’amour de la nature et sa défense face aux peuples brutaux qui la détruisent. Malheur à ceux-ci, car alors les blagues peuvent prendre un tournant létal.\nDans les Terres d’Osgild. Les êtres féeriques sont beaucoup moins nombreux qu’il y a quelques millénaires à cause de l’expansion humaine. Fées et farfadets vivent dans les forêts, les bois et les bosquets. Ils sont particulièrement nombreux dans toutes les forêts peuplées d’elfes. Cependant, certaines communautés se sont adaptées et vivent au contact de l’humanité sans que celle-ci s’en aperçoive, se réfugiant parfois dans un monde onirique parallèle auquel on accède par des portes invisibles (cercles de champignons, anciennes pierres levées ou même placard à balais !).\nNote de l’auteur : fées et farfadets forment une espèce drôle et caricaturale qui se moque des stéréotypes, mais toujours avec bienveillance. Ils ne représentent en aucun cas une remise en cause de l’égalité entre les genres, bien au contraire.\nToutefois, comme toujours, si cela ne correspond pas à vos goûts, n’hésitez pas à ignorer cet aspect du jeu et à décider qu’il y a des fées et des farfadets des deux sexes.\nInterpréter un lutin Votre philosophie de vie est très éloignée de celle des humains. Pour vous, une bonne blague, un brin de muguet ou un reflet de lumière a bien plus de valeur que l’or ou la santé.\n• Interpréter un farfadet : vous êtes un sale gosse, vous adorez vous moquer ou jouer des tours pendables, en particulier aux dépens de ceux qui n’ont aucun humour. Toutefois, vous n’êtes jamais méchant, du moins pas volontairement. Vous voulez toujours être le premier, vous adorez parier et jouer, mais vous êtes très mauvais perdant. En groupe, les farfadets sont insupportab les et passent leur temps à se chamailler.\n• Interpréter une fée : vous êtes jolie et insupportable, capricieuse et exigeante. Vous vous comportez comme une enfant gâtée ou une princesse avec sa cour. Vous adorez vous vexer et bouder, mais votre bonne humeur finit toujours par reprendre le dessus.\nNB : à titre d’inspiration, n’hésitez pas à revoir le film Willow !\nPréjugés typiques : les farfadets et les fées, c’est du pareil au même, ce sont des nuisibles !\nÇa vole la nourriture, ça fait des blagues et ça dort.\nDes bouches inutiles à nourrir. Si tu veux un animal de compagnie, prend plutôt un chat, il sera plus reconnaissant et il videra la maison des mulots !",
+  "reperes": {
+   "Âge de départ": "3+",
+   "Espérance de vie": "150 ans",
+   "Taille": "20 cm (fées) à 30 cm (farfadets)",
+   "Poids": "1 à 3 kg",
+   "Traits": "• fée : mystérieuse, diaphane, magique, rapide, lumineuse, gracieuse, élégante, irrésistible • farfadet : grand nez et grands pieds, chapeau en champignon, coiffure ébouriffée, vêtements d’écorce Caractéristiques • Fée : +1 AGI, +1 CHA, -1 CON, -2 FOR • Farfadet : +1 AGI, +1 PER, -1 CON, -2 FOR Créature très petite : la valeur de FOR d’une fée est limitée à -2, celle d’un lutin à -1. Les fées et les lutins infligent seulement 1d4 DM lors d’attaques au contact ou à distance avec une arme à une main. Avec une arme à deux mains (une épée courte ou un arc), ils infligent 1d6 DM."
+  },
+  "particularites": "Ces DM sont liés à la précision plutôt qu’à la force d’impact, et les êtres féeriques sont de véritables experts pour viser les organes vitaux.\nLorsqu’un lutin ou une fée obtient des d4° supplémentaires sur une attaque physique (par exemple, pour une Attaque puissante ou une Attaque sournoise), lorsque le résultat maximal est obtenu sur le dé, il est considéré comme résultat de 1 ! En échange, leur petite taille leur permet de bénéficier de +2 en DEF et +5 à tous les tests de discrétion.",
+  "source": "compagnon",
+  "modificateurs": "+1 AGI, +1 PER, -1 CON, -2 FOR",
+  "mods": {
+   "plus": [],
+   "moins": [],
+   "fixes": {
+    "AGI": 1,
+    "PER": 1,
+    "CON": -1,
+    "FOR": -2
+   }
+  },
+  "voies": [
+   "voie-du-farfadet"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "minotaure",
+  "nom": "Minotaure",
+  "page": 29,
+  "description": "Le minotaure correspond à l’image classique issue de la mythologie grecque : une créature mi-homme mi-taureau. Son corps est celui d’un homme ou d’une femme de grande taille, puissamment bâti et très musclé. Son cou, sa tête et ses sabots sont ceux d’un taureau. Il arbore également une queue de bovin. Sa voix est profonde et son regard ne respire pas l’intelligence. Il est connu pour son sens de l’orientation et ses explosions de rage.\nLes minotaures chassent dans les grandes plaines dé ser tiques et vivent dans des grottes ou des souterrains. Ils ont développé un art défensif curieux pour protéger leur tanière ou leur famille : le labyrinthe. Le labyrinthe d’un minotaure est l’œuvre d’une vie : il passe sa jeunesse à le construire, et une fois sa famille fondée, il améliore sans cesse sa structure et sa létalité.\nCelui qui pénètre dans l’antre d’un minotaure n’est jamais certain d’en ressortir, du moins pas avant que le propriétaire des lieux et son instinct infaillible ne l’aient trouvé.\nUn minotaure aventurier est soit un jeune minotaure que la recherche du lieu idéal pour construire son labyrinthe a poussé sur les routes, soit un minotaure dont le sanctuaire et la famille ont été détruits. Un peu perdu, il erre alors à travers le monde, peut-être avec la ferme intention de punir les coupables, qu’il s’agisse d’une organisation ou d’un peuple particulier (orcs, gobelins, etc.).\nDans les Terres d’Osgild. Les minotaures vivent dans des endroits reculés où ils peuvent trouver des cavernes. Plusieurs ethnies distinctes peuplent les Terres d’Osgild.\n• Les glabres ont une peau similaire à celle d’un humain et sont particulièrement communs dans les collines de la Pacherie, un territoire sauvage resté indépendant au sud de Benastir et de Valastir, qu’ils partagent avec les gobelins. Ce sont les plus aptes à se fondre dans la civilisation et partir à l’aventure.\n• Les minotaures à pelage (celui-ci est plus proche du bison que de la vache) guerroient contre les clans humains dans les lointains royaumes barbares du Nord.\n• De nombreux clans de minotaures corrompus par le mal vivent dans les Monts maudits, autour des ruines de la légendaire Tor-Angul, l’antique siège de pouvoir du Roi-Sorcier.\nInterpréter un minotaure Les préjugés comportent une bonne part d’exactitude : les minotaures sont irascibles. Mais ne forcez pas trop le trait dans votre interprétation, cela pourrait nuire à la qualité du jeu pour vos compagnons de tablée et vous. Jouer un minotaure sera donc un exercice plus fin qu’il n’y paraît, afin de ne pas transformer la moindre rencontre en baston !\nVous pouvez en revanche tenter de con tourner ou forcer un autre trait marquant, comme le fait d’être taciturne, ronchon ou même borné.\nPréjugés typiques : les minotaures sont des créatures irascibles et dangereuses, mais ils font d’excellents guides, que ce soit dans les terres sauvages ou sous terre.",
+  "reperes": {
+   "Âge de départ": "15+",
+   "Espérance de vie": "60 ans",
+   "Taille": "1,90 à 2,30 m",
+   "Poids": "150 à 250 kg",
+   "Traits": "pelage, cornes d’auroch, pagne, colifichets (minotaures du Nord) ; peau glabre sur le buste, piercings aux naseaux et aux oreilles, tatouages (minotaures du Sud)."
+  },
+  "particularites": "Taille presque grande : le minotaure est considéré comme de taille grande pour résister aux capacités des créatures (saisie et autres).\nToutefois, être une armoire à glace ne comporte pas que des avantages, le minotaure se sent bien souvent à l’étroit. Dans la plupart des constructions à taille humaine, un minotaure subit -1 à tous ses tests de FOR et AGI, et en attaque.",
+  "source": "compagnon",
+  "modificateurs": "+2 FOR, +1 VOL, -2 INT, -2 CHA",
+  "mods": {
+   "plus": [],
+   "moins": [],
+   "fixes": {
+    "FOR": 2,
+    "VOL": 1,
+    "INT": -2,
+    "CHA": -2
+   }
+  },
+  "voies": [
+   "voie-du-minotaure"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "nephilim",
+  "nom": "Nephilim",
+  "page": 31,
+  "description": "Les nephilims n’ont pas de société propre, ce sont simplement des humains un peu particuliers : ils sont dotés d’une ascendance angélique, des créatures des plans extérieurs alignées sur le bien. L’ancêtre angélique peut remonter à plusieurs générations et le caractère héréditaire s’exprimer chez un individu alors qu’il est resté dormant chez les générations précédentes. Physiquement, un nephilim se distingue par une ou deux caractéristiques étranges : une chevelure très pâle ou aux reflets métalliques, des yeux aux reflets de joyaux (ambre, diamant, etc.), une couleur de peau pailletée d’or ou même un léger halo de lumière dorée.\nLes nephilims sont généralement plus beaux et plus endurants que les humains ordinaires. En revanche, ils sont souvent un peu perdus dans leurs pensées et étrangers au monde qui les entoure, ce qui leur pose des problèmes pour s’insérer dans la société et obtenir un travail et une vie stables.\nDans les Terres d’Osgild. Les nephilims sont très rares dans les Terres d’Osgild : les anges ne sont pas fréquemment invoqués sur le domaine des mortels, et lorsque cela arrive, ils ne sont pas non plus les plus portés sur la gaudriole… Sans compter le débat sur leur côté asexué. Bref, on se demande parfois comment ce peuple a réussi à voir le jour. En réalité, le plus souvent, il s’agit de prêtres qui ont voyagé jusque dans les domaines divins ou qui ont été récompensés de leurs services par la bénédiction de leur progéniture, et contrairement à la croyance populaire, aucun ange n’est impliqué dans cette affaire.\nInterpréter un nephilim La beauté et la perfection vous fascinent, vous êtes capable de rester une heure en contemplation devant une simple fleur sans voir le temps passer et en oubliant les contingences matérielles ou un ami dans le besoin. Cela vous fait souvent passer pour quelqu’un d’insensible aux besoins des autres. Pourtant, ce n’est pas le cas, et lorsque vous réalisez ce que vous avez fait, vous êtes mortifié. Pas trop longtemps non plus, rien ne dure, surtout pas les mortels.\nPréjugés typiques : les nephilims sont beaux et se croient meilleurs que les autres, mais en réalité, ils sont creux. Ils ne sont que de beaux parleurs et ne valent pas mieux que n’importe qui. Souvent, ils sont complètement perdus devant les problèmes du quotidien.",
+  "reperes": {
+   "Âge de départ": "25 à 30 ans. Les nephilims atteignent leur maturité plus tardivement et ils ont du mal à quitter le cocon familial, car ils sont souvent la lumière du foyer et les parents ont beaucoup de peine à laisser partir leur adorable chérubin.",
+   "Espérance de vie": "de 50 à 200 ans de plus qu’un humain, en fonction de la proximité généalogique de l’ascendance angélique.",
+   "Taille": "1,5 m à 2 m (comme un humain ordinaire)",
+   "Poids": "40 à 120kg (comme un humain ordinaire)",
+   "Traits": "traits réguliers, cheveux blonds ou dorés, yeux bleus ou acier, beauté surnaturelle, silhouette harmonieuse, pilosité faible, genre peu marqué Caractéristiques +1 CHA ou CON, -1 PER"
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 CHA ou CON, -1 PER",
+  "mods": {
+   "plus": [
+    "CHA",
+    "CON"
+   ],
+   "moins": [
+    "PER"
+   ]
+  },
+  "voies": [
+   "voie-du-nephilim"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "ophidien",
+  "nom": "Ophidien",
+  "page": 32,
+  "description": "Les anciens dominaient le monde avant que leurs esclaves ne se révoltent et ne mettent fin à l’âge d’or de leur civilisation. Nul ne sait ce qu’ils sont devenus, mais il est possible que les ophidiens soient leurs descendants directs. Quoi qu’il en soit, les hommes-serpents cachent leur véritable identité et se dis simulent parmi les humains. Ils essayent d’entretenir des lignées du sang les plus pures possibles, mais faute de mieux, ils succombent souvent au désir de pérenniser leur lignage en s’accouplant avec des humains. Les ophidiens sont pour la plupart nostalgiques de leur puissance perdue et assoiffés de pouvoir.\nDe prime abord, un ophidien est indiscernabled’un humain, tant le sang des anciens est dilué. Pour autant, ne vous méprenez pas :si les caractéristiques physiques du peuple ophidien se sont est om - pées avec le temps, un féroce appétit de domination et un esprit revanchard continuent à les animer. En effet, les ophidiens possède nt une sorte de mémoire géné - tique qui leur permet de connaître intuitivement leur héritage de sang et de ne pas oublier leur histoire. Chaque ophidien est capable de re tracer son lig nage depuis le premier âge, et des bribes de savoirs anciens hantent ses rêves de vi es pas sées.\nDans les Terres d’Osgild. Les ophidiens sont les descendants très lointains d’un peuple serpentin puissant qui maîtrisait les pouvoirs psioniques et as ser vis sait les autres créatures pensantes par la force de leur esprit. Ils furent abattus par les elfes à l’aube des temps. Certains d’entre eux se sont réfugiés dans le sud des Terres d’Osgild et sont devenus les anciens dieux du Katang et des jungles de Luir-An-Doral. Après de nombreux millénaires de reproduction avec leurs adorateurs et leurs esclaves, leur sang s’est dilué dans celui de leurs serviteurs humains.\nInterpréter un ophidien Votre vie s’est organisée autour de la duplicité, à tel point que le mensonge est devenu pour vous une seconde nature afin de cacher la vérité de votre héritage. Quatre-vingt-dix-neuf pour cent de votre sang est humain, aussi vous rêvez parfois d’être une personne ordinaire, mais le dernier pour cent murmure à votre oreille, jour après jour, dans vos rêves, nuit après nuit, et vous pousse à chercher le pouvoir et à asservir ces faibles humains. Il vous est donc difficile de considérer vos compagnons de voyage comme des égaux, et même lorsque vous essayez, le con’it intérieur qui vous anime peut vous faire paraître froid ou dhumeur change an te.\nÉventuellement, peut-être vous êtes-vous trouvé un noble objectif, afin de con tenter votre ego et votre instinct de supériorité, quelque chose comme sau ver le monde d’un mal encore plus grand, ou mêmes au ver les humains de leurs propres faibles ses.\nPréjugés typiques : les ophidiens sont des conspirateurs, ils cachent de sombres secrets dans le but d’acquérir du pouvoir et de dominer le monde entier.",
+  "reperes": {
+   "Âge de départ": "30+",
+   "Espérance de vie": "300 ans",
+   "Taille": "1,50 m à 1,90 m",
+   "Poids": "40 à 100 kg",
+   "Traits": "une marque des anciens au choix parmi : pupille verticale, langue bifide, peau écailleuse sur une partie du corps, etc."
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 INT ou VOL, -1 CON",
+  "mods": {
+   "plus": [
+    "INT",
+    "VOL"
+   ],
+   "moins": [
+    "CON"
+   ]
+  },
+  "voies": [
+   "voie-de-l-ophidien"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "satyre",
+  "nom": "Satyre",
+  "page": 34,
+  "description": "Les satyres sont des créatures de la nature qui vivent dans les forêts et les bosquets denses. Ils sont dotés de sabots et de jambes de chèvre, de petites cornes proéminentes et, pour les mâles, d’une barbichette. Ils sont suffisamment discrets pour résider dans des zones proches des communautés humaines ou elfiques sans que quiconque s’aperçoive de leur présence. Ils sont pacifistes par nature et préfèrent souvent déménager plutôt que d’affronter les humains qui détruisent leur habitat.\nIls ne forment pas de grandes communautés et vivent de peu de choses, s’abîmant dans la contemplation des beautés naturelles et profitant des bienfaits de dame nature pour se nourrir.\nStrictementvégétariens, ils se nourrissent principa lement de baies, de noix, de noise’es, demi el et de racines com est ib les, pouvant même sur - vivre avec des lichensoudesécorcessi le besoin s’en fait sentir. Toutefois, il sont un pen chant pour le vin, qu’ils savent produire eux-mêmes, mais jamais en quantité suffisante, ce qui les pousse alors à interagir avec les humains pour s’en pro - curer davantage. Les satyres sont des hédonistes qui aiment la liberté, jouer de la musique, danser autour d’un feu, boire et profiter des plaisirs de la chair. Ils ne refuse nt donc jamais une or gie. Leur culture ne connaît pas l’usage du métal, mais ils savent fabri - quer des outils de bois aussi durs quel’acier. Ils nt aiment pas non plus les armures de peau morte ou en métal, leur préférantlaco’ed’écorce (DEf’+2, pas de malus en natation, mais doit être réparée après chaque combat ou perd 1 e n DEf).\nDans les Terres d’Osgild. Avec la porosité croissante de la frontière entre le plan de l’ombre féerique et le plan matériel, le nombre de satyres présents sur les Terres d’Osgild est en croissance constante. Certains ont quitté le confort de leur vie simple en forêt dans l’intention de faire réfléchir l’humanité à son mode de vie destructeur basé sur la mise en coupe réglée de la nature et l’accumulation des richesses matérielles. Les humains découvrent ce peuple avec étonnement.\nSa philosophie de vie tournée vers le plaisir et la nature est l’objet d’intenses controverses dans certains milieux bourgeois. Des jeunes gens de bonne famille se réclament d’un courant de pensée satyrique qui commence à sérieusement inquiéter et irriter leurs parents.\nInterprétation Pour un satyre, rien n’est vraiment grave ou sérieux, si ce n’est le manque de vin ou de plaisir. Mieux vaut mourir heureux que de vivre en travail la nt. Toutefois, aventurier ou chercheur de trésors ne sont pas de véritables métiers, ce sont avant tout des in vit a tions au voyage, des prétextes pour faire la fête et se faire de nouveaux amis ! Les satyres qui prennent la route sont en général des individus qui ont le goût du risque et tirent plaisir des péripéties qu’ils affrontent. L’important ce n’est pas la destin a tion, mais le voyage.\nPréjugés typiques : les satyres sont de bons compagnons si vous avez envie de boire un coup, mais cachez vos filles et vos fils, ce sont des pervers libidineux qui n’ont aucune notion de pudeur. Ce sont des fainéants et des alcooliques qui ne pensent qu’à prendre du bon temps.",
+  "reperes": {
+   "Âge de départ": "15+",
+   "Espérance de vie": "120 ans",
+   "Taille": "1,60 à 1,75 m",
+   "Poids": "50 à 80 kg",
+   "Traits": "pelage, jambes de bouc, barbichette (pour les mâles), petites cornes."
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 PER ou CHA, -1 VOL ou INT",
+  "mods": {
+   "plus": [
+    "PER",
+    "CHA"
+   ],
+   "moins": [
+    "VOL",
+    "INT"
+   ]
+  },
+  "voies": [
+   "voie-du-satyre"
+  ],
+  "noteVoie": null
+ },
+ {
+  "id": "wolfer",
+  "nom": "Wolfer",
+  "page": 36,
+  "description": "Les wolfers sont des êtres robustes avec une pilosité importante, caractérisée notamment par la présence d’un monosourcil et par d’imposantes rouflaquettes. Ils peuvent néanmoins aisément passer pour des humains. Ils vivent en clan et mènent une vie de chasseurs nomades dans les forêts, les montagnes et les plaines sauvages. Ce mode de vie ancestral les fait souvent entrer en conflit avec les humains là où s’étend la civilisation, débordant sur leur territoire de chasse. Parfois, des orphelins sont élevés au sein des sociétés humaines, où ils mènent une vie difficile et peinent à s’intégrer à cause de leur tempérament vif et combatif, mais aussi parce qu’ils détestent les chevaux qui sont d’ailleurs très nerveux en leur présence. La notion de clan est importante pour un wolfer et, s’il trouve une organisation en laquelle il a confiance, il devient un allié par - ticuliè rement loyal. Les wolfers pourraient faire de bons chevaliers, ils en ont souvent les valeurs : loyauté et obéissance à la hiérarchie, mais leur sens du de voir se limite à leur clan, ils ne con çoi vent pas d’idéal supérieur.\nDans les Terres d’Osgild. Les wolfers sont très peu répandus dans les Terres d’Osgild, où on les confond souvent avec les loups-garous.\nIls ont d’ailleurs été victimes d’un terrible génocide durant un épisode des guerres fratricides entre les anciennes provinces de l’empire d’Osgild de la période ténébreuse, aux environs de 500 AM, l’un des deux camps ayant propagé une épidémie de lycanthropie qui mena de façon fortuite à l’éradication presque complète des wolfers. Depuis, ceux-ci sont cantonnés aux terres les plus au nord (royaumes du nord et royaumes barbares).\nInterpréter un wolfer Votre vision du monde est plutôt simple : la vie est une lutte pour la survie et l’union fait la force.\nPour être heureux, vous avez besoin d’appartenir à un clan avec, de préférence, un meneur évident.\nVous êtes loyal et vous attendez la même chose de ceux à qui vous avez accordé votre confiance.\nPlutôt taiseux, vous avez du mal avec la rhétorique et vous préférez ceux qui laissent leurs actes parler pour eux.\nPréjugés : les wolfers sont souvent naïfs et il est facile de les tromper, mais s’ils s’en rendent compte, cours vite !",
+  "reperes": {
+   "Âge de départ": "15+",
+   "Espérance de vie": "60 ans",
+   "Taille": "1,60 m à 1,85 m",
+   "Poids": "50 à 90 kg",
+   "Traits": "pilosité développée, canines proéminentes, posture voûtée, monosourcil Caractéristiques +1 en PER ou VOL, -1 en INT"
+  },
+  "particularites": null,
+  "source": "compagnon",
+  "modificateurs": "+1 en PER ou VOL, -1 en INT",
+  "mods": {
+   "plus": [
+    "PER",
+    "VOL"
+   ],
+   "moins": [
+    "INT"
+   ]
+  },
+  "voies": [
+   "voie-du-wolfer"
+  ],
+  "noteVoie": null
+ }
+]

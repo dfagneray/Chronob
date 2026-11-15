@@ -2,7 +2,7 @@ import { Sheet, Stepper, Chip, SectionTitle, Card, Btn } from './ui.jsx';
 import TraitSelect from './TraitSelect.jsx';
 import { IDEAUX, TRAVERS } from '../data/personnalite.js';
 import { peuples, profils, peupleById, voieById, CARACS, CARAC_NOMS, familles, profilById } from '../data/index.js';
-import { fmt, NIVEAU_MAX } from '../lib/rules.js';
+import { fmt, NIVEAU_MAX, familleDuPerso, pvProfil } from '../lib/rules.js';
 
 const BONUS = [
   ['DEF', 'Défense'],
@@ -12,6 +12,7 @@ const BONUS = [
   ['MAGIQUE', 'Attaque magique'],
   ['PV', 'PV max'],
   ['PM', 'PM max'],
+  ['PE', 'PE max (psionique)'],
   ['PC', 'PC max'],
   ['DR', 'DR max'],
 ];
@@ -62,6 +63,18 @@ export default function EditCharacter({ open, onClose, char, maj, d }) {
           </Chip>
         ))}
       </div>
+      {profilById[char.profilId] && !profilById[char.profilId].famille && (
+        <>
+          <p className="mt-2 px-1 font-ui text-xs text-muted">Famille au choix du {profilById[char.profilId].nom.toLowerCase()} (dé de récupération, voies de prestige) :</p>
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {Object.entries(familles).map(([k, f]) => (
+              <Chip key={k} active={familleDuPerso(char) === k} onClick={() => set({ famille: k })}>
+                {f.nom}
+              </Chip>
+            ))}
+          </div>
+        </>
+      )}
 
       <SectionTitle>Caractéristiques (valeurs de base)</SectionTitle>
       <p className="-mt-1 mb-2 px-1 font-ui text-xs text-muted">Valeurs après modificateurs de peuple, sans les bonus de capacités (appliqués automatiquement).</p>
@@ -106,7 +119,8 @@ export default function EditCharacter({ open, onClose, char, maj, d }) {
 
 /** PV de base gagnés à chaque niveau (hors CON) : calcul du livre ou valeur saisie. */
 function PVParNiveau({ char, maj, d }) {
-  const fam = familles[profilById[char.profilId]?.famille || 'aventuriers'];
+  const fam = familles[familleDuPerso(char)];
+  const pvNiv = pvProfil(char);
   const hist = char.historique || [];
   const setPV = (n, v) =>
     maj((c) => {
@@ -122,13 +136,13 @@ function PVParNiveau({ char, maj, d }) {
     <>
       <SectionTitle>PV de base par niveau</SectionTitle>
       <p className="-mt-1 mb-2 px-1 font-ui text-xs text-muted">
-        Hors CON (ajoutée à chaque niveau). Par défaut : niveau 1 = {fam.pv * 2}, puis {fam.pv} par niveau ({fam.nom.toLowerCase()}) ou la moyenne hybride calculée au passage de niveau. Total actuel : {d.pvMax} PV.
+        Hors CON (ajoutée à chaque niveau). Par défaut : niveau 1 = {pvNiv * 2}, puis {pvNiv} par niveau ({fam.nom.toLowerCase()}) ou la moyenne hybride calculée au passage de niveau. Total actuel : {d.pvMax} PV.
       </p>
       <Card className="divide-y divide-line">
         {Array.from({ length: char.niveau }, (_, i) => i + 1).map((n) => {
           const h = hist.find((x) => x.niveau === n);
           const val = d.pvParNiveau[n - 1];
-          const defaut = n === 1 ? fam.pv * 2 : fam.pv;
+          const defaut = n === 1 ? pvNiv * 2 : pvNiv;
           return (
             <div key={n} className="px-3 py-2">
               <div className="flex items-center gap-2">

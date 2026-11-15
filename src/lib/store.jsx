@@ -38,6 +38,8 @@ export function personnageVide(partial = {}) {
     niveau: 1,
     voiePeuple: 'voie-de-l-humain',
     voieDuMage: false,
+    voieDomaine: null, // voie de domaine de prêtre (Compagnon), remplace la voie de peuple
+    famille: null, // famille choisie quand le profil n'en impose pas (psionique)
     carac: Object.fromEntries(CARACS.map((k) => [k, 0])),
     voies: {},
     choix: {},
@@ -47,6 +49,7 @@ export function personnageVide(partial = {}) {
     dr: { actuel: null },
     pc: { actuel: null },
     pm: { actuel: null },
+    pe: { actuel: null },
     ressources: [],
     etats: [],
     utilise: {},
@@ -75,6 +78,7 @@ export function normaliser(c) {
   if (char.dr?.actuel == null) char.dr = { actuel: d.drMax };
   if (char.pc?.actuel == null) char.pc = { actuel: d.pcMax };
   if (char.pm?.actuel == null) char.pm = { actuel: d.pmMax };
+  if (char.pe?.actuel == null) char.pe = { actuel: d.peMax };
   return char;
 }
 

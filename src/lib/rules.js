@@ -4,6 +4,19 @@ import { CARACS, voieById, profilById, peupleById, familles, capaciteById, famil
 // Niveau requis par rang (p. 39 et p. 42 pour les voies de prestige)
 export const NIVEAU_REQUIS = { 1: 1, 2: 2, 3: 3, 4: 5, 5: 7, 6: 9, 7: 11, 8: 13 };
 export const coutRang = (rang) => (rang <= 2 ? 1 : 2);
+/**
+ * Coût d'une capacité selon sa voie : voies d'artisan = 1 point par rang quel que soit le rang ;
+ * voies de recettes = 0 point (les rangs viennent des voies d'artisan) — Compagnon p. 73.
+ */
+export function coutCapacite(voie, rang) {
+  if (voie?.type === 'artisan') return 1;
+  if (voie?.type === 'recette') return 0;
+  return coutRang(rang);
+}
+/** Types de voies qui ne comptent pas dans la limite de six voies. */
+export const HORS_LIMITE = ['peuple', 'mage', 'domaine', 'artisan', 'recette'];
+/** Rangs de recettes offerts par chaque rang de voie d'artisan (rangs 1 à 4, Compagnon p. 74). */
+export const RANGS_RECETTE_PAR_RANG = 3;
 export const NIVEAU_MAX = 20;
 export const MAX_VOIES = 6; // hors voie de peuple
 export const NIVEAU_PRESTIGE = 5;
@@ -25,8 +38,21 @@ export function deEvolutif(niveau) {
 
 export const fmt = (n) => (n >= 0 ? `+${n}` : `${n}`);
 
+/** Famille du personnage : celle du profil, ou celle choisie (psionique, Compagnon p. 58). */
 export function familleDuPerso(char) {
-  return profilById[char.profilId]?.famille || 'aventuriers';
+  return profilById[char.profilId]?.famille || (familles[char.famille] ? char.famille : null) || 'aventuriers';
+}
+
+/** Rangs de recettes : gagnés (voies d'artisan) et dépensés (voies de recettes). */
+export function rangsRecettes(voiesMap) {
+  let gagnes = 0;
+  let depenses = 0;
+  for (const [id, r] of Object.entries(voiesMap || {})) {
+    const v = voieById[id];
+    if (v?.type === 'artisan') gagnes += RANGS_RECETTE_PAR_RANG * Math.min(r, 4);
+    if (v?.type === 'recette') depenses += r;
+  }
+  return { gagnes, depenses, restants: gagnes - depenses };
 }
 
 /** Liste des voies possédées avec leur rang. */
@@ -50,7 +76,7 @@ export function capacitesAcquises(char, voiesMap = char.voies) {
 }
 
 export function estVoieDePeuple(char, voie) {
-  return voie?.type === 'peuple' || voie?.type === 'mage';
+  return voie?.type === 'peuple' || voie?.type === 'mage' || voie?.type === 'domaine';
 }
 
 const modKey = (capId, i) => `${capId}#${i}`;
@@ -104,21 +130,33 @@ export function equipementPorte(char) {
   return { armure, bouclier };
 }
 
+/** Sorts psioniques : ils donnent des points d'ego (PE) au lieu de PM (Compagnon p. 59). */
+export const estPsionique = (cap) => voieById[cap.voieId]?.profil === 'psionique';
+
 export function nbSorts(char, voiesMap = char.voies) {
-  return capacitesAcquises(char, voiesMap).filter((c) => c.sort).length;
+  return capacitesAcquises(char, voiesMap).filter((c) => c.sort && !estPsionique(c)).length;
+}
+
+export function nbPouvoirsPsioniques(char, voiesMap = char.voies) {
+  return capacitesAcquises(char, voiesMap).filter((c) => c.sort && estPsionique(c)).length;
 }
 
 /**
  * PV maximum : niveau 1 = 2 × PV de famille + CON ; ensuite PV de famille (ou moyenne hybride) + CON
  * par niveau (CON rétroactive, p. 39).
  */
+/** PV par niveau du profil principal (primaliste : 4 alors que les mages ont 3, Compagnon p. 53). */
+export function pvProfil(char) {
+  return profilById[char.profilId]?.pvParNiveau || familles[familleDuPerso(char)].pv;
+}
+
 export function pvBaseParNiveau(char) {
-  const fam = familles[familleDuPerso(char)];
+  const pv = pvProfil(char);
   const parNiveau = [];
   for (let n = 1; n <= char.niveau; n++) {
     const h = (char.historique || []).find((x) => x.niveau === n);
     if (h && typeof h.pvBase === 'number') parNiveau.push(h.pvBase);
-    else parNiveau.push(n === 1 ? fam.pv * 2 : fam.pv);
+    else parNiveau.push(n === 1 ? pv * 2 : pv);
   }
   return parNiveau;
 }
@@ -204,12 +242,19 @@ export function deriver(char, opts = {}) {
   const pmCarac = [...new Set(capB.pmCarac)].filter((k) => k !== 'VOL').reduce((a, k) => a + carac[k], 0);
   const pmAuto = sorts > 0 || b.PM || orph.PM ? Math.max(0, carac.VOL + pmCarac + sorts + capB.PM + (b.PM || 0) + (orph.PM || 0) * 2) : 0;
   const pmMax = typeof man.PM === 'number' ? man.PM : pmAuto;
+  // PE (points d'ego) : VOL + 1 par pouvoir psionique, comme les PM (Compagnon p. 59)
+  const pouvoirs = nbPouvoirsPsioniques(char, voiesMap);
+  const peAuto = pouvoirs > 0 || b.PE ? Math.max(0, carac.VOL + pouvoirs + (b.PE || 0)) : 0;
+  const peMax = typeof man.PE === 'number' ? man.PE : peAuto;
 
   const avertissements = [];
   if (armure && profil && armure.def > profil.armureMax) {
-    avertissements.push(`${armure.nom} (DEF +${armure.def}) dépasse l’armure autorisée pour les voies de ${profil.nom.toLowerCase()} (DEF +${profil.armureMax} max) : capacités de profil interdites.`);
+    if (profil.armureLibre) avertissements.push(`${armure.nom} (DEF +${armure.def}) n’est pas maîtrisée par le ${profil.nom.toLowerCase()} (DEF +${profil.armureMax} max) ; ses capacités restent utilisables.`);
+    else avertissements.push(`${armure.nom} (DEF +${armure.def}) dépasse l’armure autorisée pour les voies de ${profil.nom.toLowerCase()} (DEF +${profil.armureMax} max) : capacités de profil interdites.`);
   }
   if (bouclier && profil && !profil.bouclier) avertissements.push(`Les voies de ${profil.nom.toLowerCase()} ne permettent pas l’usage du bouclier.`);
+  else if (bouclier && profil?.bouclier === 'petit' && (bouclier.def || 0) > 1) avertissements.push(`Les voies de ${profil.nom.toLowerCase()} n’autorisent que le petit bouclier.`);
+  if (profil?.energie === 'PE' && (carac.VOL ?? 0) < 1) avertissements.push('Il faut une VOL d’au moins +1 pour apprendre des capacités de psionique (Compagnon p. 59).');
   if (agiBridee) avertissements.push(`AGI limitée à ${fmt(agiMax)} par l’armure (${armure.nom}).`);
 
   const posture = POSTURES[char.posture] ? { id: char.posture, ...POSTURES[char.posture] } : null;
@@ -238,8 +283,8 @@ export function deriver(char, opts = {}) {
     penalites: pen,
     etats,
     deMalus,
-    auto: { PV: pvAuto, PC: pcAuto, PM: pmAuto, DR: drAuto },
-    manuel: { PV: typeof man.PV === 'number', PC: typeof man.PC === 'number', PM: typeof man.PM === 'number', DR: typeof man.DR === 'number' },
+    auto: { PV: pvAuto, PC: pcAuto, PM: pmAuto, DR: drAuto, PE: peAuto },
+    manuel: { PV: typeof man.PV === 'number', PC: typeof man.PC === 'number', PM: typeof man.PM === 'number', DR: typeof man.DR === 'number', PE: typeof man.PE === 'number' },
     pvMax,
     pvParNiveau,
     drMax,
@@ -247,6 +292,8 @@ export function deriver(char, opts = {}) {
     pcMax,
     pmMax,
     sorts,
+    peMax,
+    pouvoirs,
     d4: deEvolutif(niveau),
     malusArmure: armure ? Math.max(0, (armure.def || 0) - (armure.magie || 0) - (armure.qualite ? 1 : 0)) : 0,
     armure,
@@ -287,7 +334,7 @@ export function voiesApresPlan(char, jusqua) {
 }
 
 export function pointsDepenses(picks) {
-  return picks.reduce((a, p) => a + coutRang(p.rang), 0);
+  return picks.reduce((a, p) => a + coutCapacite(voieById[p.voieId], p.rang), 0);
 }
 
 /**
@@ -301,9 +348,10 @@ export function optionsProgression(char, n, etat, picks = []) {
   const profil = profilById[char.profilId];
   const famille = profil?.famille;
   const principal = new Set(profil?.voies || []);
-  const ouvertes = Object.entries(courant).filter(([id, r]) => r > 0 && voieById[id] && !['peuple', 'mage'].includes(voieById[id].type));
+  const ouvertes = Object.entries(courant).filter(([id, r]) => r > 0 && voieById[id] && !HORS_LIMITE.includes(voieById[id].type));
   const prestigeActuel = ouvertes.find(([id]) => voieById[id].type === 'prestige');
   const voiesPeuple = new Set([char.voiePeuple].filter(Boolean));
+  const recettes = rangsRecettes(courant);
   const options = [];
 
   const candidats = Object.values(voieById);
@@ -316,30 +364,34 @@ export function optionsProgression(char, n, etat, picks = []) {
     // Type de voie
     if (voie.type === 'peuple') {
       if (!voiesPeuple.has(voie.id)) continue;
-      if (char.voieDuMage) continue; // la voie du mage remplace la voie de peuple
+      if (char.voieDuMage || char.voieDomaine) continue; // la voie du mage / de domaine remplace la voie de peuple
     }
     if (voie.type === 'mage') {
       if (famille !== 'mages' || !char.voieDuMage) continue;
     }
+    // voie de domaine : seulement celle de la divinité choisie (Compagnon p. 142)
+    if (voie.type === 'domaine' && char.voieDomaine !== voie.id) continue;
+    if (voie.type === 'recette' && recettes.restants < 1) raisons.push('aucun rang de recette disponible (voies d’artisan)');
     if (voie.type === 'prestige') {
       if (prestigeActuel && prestigeActuel[0] !== voie.id) continue;
       if (voie.categorie !== 'generique' && voie.categorie !== famille) continue;
       if (n < NIVEAU_PRESTIGE) raisons.push(`voie de prestige dès le niveau ${NIVEAU_PRESTIGE}`);
     }
     const nouvelle = !rangActuel;
-    if (nouvelle && voie.type !== 'peuple' && voie.type !== 'mage' && ouvertes.length >= MAX_VOIES) raisons.push(`maximum ${MAX_VOIES} voies (hors peuple)`);
+    if (nouvelle && !HORS_LIMITE.includes(voie.type) && ouvertes.length >= MAX_VOIES) raisons.push(`maximum ${MAX_VOIES} voies (hors peuple)`);
     if (voie.type === 'profil' && !principal.has(voie.id) && nouvelle) {
       // Profil hybride : il doit rester au moins une voie du profil principal sans aucun point
       const libres = [...principal].filter((id) => !courant[id]);
       if (libres.length === 0) raisons.push('profil hybride impossible : les cinq voies du profil principal sont entamées');
     }
     if ((NIVEAU_REQUIS[cap.rang] || 99) > n) raisons.push(`niveau ${NIVEAU_REQUIS[cap.rang]} requis`);
-    if (coutRang(cap.rang) > restant) raisons.push(`coût ${coutRang(cap.rang)} pt${coutRang(cap.rang) > 1 ? 's' : ''}`);
+    const cout = coutCapacite(voie, cap.rang);
+    if (cout > restant) raisons.push(`coût ${cout} pt${cout > 1 ? 's' : ''}`);
     options.push({
       voie,
       cap,
       rang: cap.rang,
-      cout: coutRang(cap.rang),
+      cout,
       nouvelle,
       hybride: voie.type === 'profil' && !principal.has(voie.id),
       raisons,
@@ -352,15 +404,20 @@ export function optionsProgression(char, n, etat, picks = []) {
 /** PV de base gagnés à un niveau selon les familles des capacités choisies (p. 177). */
 export function pvGainNiveau(char, picks, demiPV = char.demiPV) {
   const famPrincipale = familleDuPerso(char);
+  const pvPrincipal = pvProfil(char);
   const pts = [];
   for (const p of picks) {
     const v = voieById[p.voieId];
     let pv;
     if (v?.type === 'prestige' && v.pvParNiveau) pv = v.pvParNiveau;
-    else pv = familles[familleDeVoie(v, famPrincipale)].pv;
-    for (let i = 0; i < coutRang(p.rang); i++) pts.push(pv);
+    else if (v?.type === 'profil' && profilById[v.profil]?.pvParNiveau) pv = profilById[v.profil].pvParNiveau;
+    else {
+      const f = familleDeVoie(v, famPrincipale);
+      pv = f === famPrincipale ? pvPrincipal : familles[f].pv;
+    }
+    for (let i = 0; i < coutCapacite(v, p.rang); i++) pts.push(pv);
   }
-  if (!pts.length) return { pv: familles[famPrincipale].pv, demiPV };
+  if (!pts.length) return { pv: pvPrincipal, demiPV };
   const moy = pts.reduce((a, x) => a + x, 0) / pts.length;
   if (Number.isInteger(moy)) return { pv: moy, demiPV };
   // demi-PV : arrondi inférieur une fois sur deux
@@ -412,7 +469,9 @@ export function verifierNiveau(char, n) {
   const depenses = pointsDepenses(lvl.picks);
   const restants = 2 - depenses;
   if (restants > 0) {
-    const encore = optionsProgression(char, n, etat, lvl.picks).filter((o) => o.possible);
+    // les rangs de recettes (gratuits) ne permettent pas d'écouler les points de capacité
+    // les voies d'artisan et de recettes sont optionnelles : elles n'empêchent pas le point orphelin
+    const encore = optionsProgression(char, n, etat, lvl.picks).filter((o) => o.possible && !['artisan', 'recette'].includes(o.voie.type));
     if (encore.length) erreurs.push(`${restants} point${restants > 1 ? 's' : ''} de capacité à dépenser (ils ne peuvent pas être mis de côté)`);
     else if (restants === 1 && !lvl.orphelin) erreurs.push('Point de capacité orphelin : choisissez un échange (PC, DR, PV ou PM).');
   }
@@ -443,6 +502,7 @@ export function validerNiveau(char) {
   const apres = deriver(next);
   next.pv = { ...next.pv, actuel: Math.min(apres.pvMax, (char.pv?.actuel ?? avant.pvMax) + (apres.pvMax - avant.pvMax)) };
   next.pm = { actuel: Math.min(apres.pmMax, (char.pm?.actuel ?? avant.pmMax) + Math.max(0, apres.pmMax - avant.pmMax)) };
+  next.pe = { actuel: Math.min(apres.peMax, (char.pe?.actuel ?? avant.peMax) + Math.max(0, apres.peMax - avant.peMax)) };
   next.pc = { actuel: apres.pcMax }; // les PC sont récupérés intégralement à chaque passage de niveau (p. 205)
   next.dr = { actuel: Math.min(apres.drMax, (char.dr?.actuel ?? apres.drMax) + Math.max(0, apres.drMax - avant.drMax)) };
   return next;

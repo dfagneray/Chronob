@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Heart, Shield, Zap, Clover, Droplet, Swords, Crosshair, Wand2, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal, HeartCrack, HeartPulse, Dices, Hand, Hexagon, ShieldPlus, ShieldCheck, Rabbit } from 'lucide-react';
+import { Heart, Shield, Zap, Clover, Droplet, Swords, Crosshair, Wand2, Plus, Moon, Coffee, AlertTriangle, Trash2, Pencil, Skull, Sparkles, SlidersHorizontal, HeartCrack, HeartPulse, Dices, Hand, Hexagon, ShieldPlus, ShieldCheck, Rabbit, Brain } from 'lucide-react';
 import { AnneauPV, ICONES_CARAC, ICONES_ETAT } from '../components/visuels.jsx';
 
 const ICONES_POSTURE = { 'defense-partielle': ShieldPlus, 'defense-totale': ShieldCheck, sprint: Rabbit };
@@ -21,7 +21,7 @@ export default function Personnage({ char, d, maj, onEdit }) {
   const [recup, setRecup] = useState(false);
   const [etatInfo, setEtatInfo] = useState(null);
   const [nouvelleRes, setNouvelleRes] = useState(false);
-  const [ressourceEdit, setRessourceEdit] = useState(null); // 'PV' | 'PC' | 'PM' | 'DR'
+  const [ressourceEdit, setRessourceEdit] = useState(null); // 'PV' | 'PC' | 'PM' | 'PE' | 'DR'
   const [statEdit, setStatEdit] = useState(null); // clé de bonus
   const [caracEdit, setCaracEdit] = useState(null);
 
@@ -85,6 +85,7 @@ export default function Personnage({ char, d, maj, onEdit }) {
     PC: { label: 'Points de chance', actuel: char.pc?.actuel ?? d.pcMax, max: d.pcMax, set: (v) => maj((c) => ({ ...c, pc: { actuel: v } })) },
     PM: { label: 'Points de mana', actuel: char.pm?.actuel ?? d.pmMax, max: d.pmMax, set: (v) => maj((c) => ({ ...c, pm: { actuel: v } })) },
     DR: { label: `Dés de récupération (d${d.drDe})`, actuel: char.dr?.actuel ?? d.drMax, max: d.drMax, set: (v) => maj((c) => ({ ...c, dr: { actuel: v } })) },
+    PE: { label: 'Points d’ego (psionique)', actuel: char.pe?.actuel ?? d.peMax, max: d.peMax, set: (v) => maj((c) => ({ ...c, pe: { actuel: v } })) },
   };
 
   return (
@@ -156,6 +157,9 @@ export default function Personnage({ char, d, maj, onEdit }) {
         <Tracker icon={Droplet} tone="text-gold" pastille="bg-gold" label={`Récup. (DR d${d.drDe})`} res={ressources.DR} manuel={d.manuel.DR} onEdit={() => setRessourceEdit('DR')} hint={`Rapide : 1d${d.drDe} + ${Math.floor(d.niveau / 2)}`} />
         {(d.pmMax > 0 || (char.pm?.actuel ?? 0) > 0 || d.manuel.PM) && (
           <Tracker icon={Zap} tone="text-mana" pastille="bg-mana" label="Mana (PM)" res={ressources.PM} manuel={d.manuel.PM} onEdit={() => setRessourceEdit('PM')} hint={`${d.sorts} sort${d.sorts > 1 ? 's' : ''} + VOL`} />
+        )}
+        {(d.peMax > 0 || (char.pe?.actuel ?? 0) > 0 || d.manuel.PE) && (
+          <Tracker icon={Brain} tone="text-mana" pastille="bg-mana" label="Ego (PE)" res={ressources.PE} manuel={d.manuel.PE} onEdit={() => setRessourceEdit('PE')} hint={`${d.pouvoirs} pouvoir${d.pouvoirs > 1 ? 's' : ''} + VOL · 1 DR → 1d4° PE`} />
         )}
         {(char.ressources || []).map((r) => (
           <Tracker
@@ -447,6 +451,7 @@ const FORMULES = {
   PC: '2 + CHA (+1 pour les aventuriers), + capacités et bonus.',
   PM: 'VOL + nombre de sorts connus, + capacités et bonus (0 sans sort).',
   DR: '2 + CON (+1 pour les mystiques), + bonus.',
+  PE: 'VOL + nombre de pouvoirs psioniques (*) connus, + bonus. Récupérés en dépensant des DR : 1d4° PE par DR (maximum du dé après une récupération complète) — Compagnon p. 59.',
 };
 
 const STATS = {

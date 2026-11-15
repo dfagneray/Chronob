@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { Search, Users, Download, Upload, Copy, Trash2, UserPlus, Check, Library } from 'lucide-react';
 import { Card, SectionTitle, Btn, Chip, Badge, cx, Segmented, ConfirmBtn, useToast, Empty, ActionBadge } from '../components/ui.jsx';
-import { peuples, profils, voies, etats, regles, EQUIPEMENT, peupleById, profilById, familles } from '../data/index.js';
+import { peuples, profils, voies, etats, regles, EQUIPEMENT, peupleById, profilById, familles, refPage, sourceDe, SOURCES, voieById } from '../data/index.js';
 import { CATEGORIES_EQUIPEMENT } from '../data/equipement.js';
 import { useStore, exporterJSON } from '../lib/store.jsx';
 import { origineVoie } from '../components/Details.jsx';
@@ -44,15 +44,16 @@ const TYPES = {
 function construireIndex() {
   const idx = [];
   for (const p of peuples) idx.push({ type: 'peuple', ref: p, titre: p.nom, sous: p.modificateurs, texte: p.description });
-  for (const p of profils) idx.push({ type: 'profil', ref: p, titre: p.nom, sous: `${familles[p.famille].nom} · ${p.pvParNiveau} PV/niveau · DR d${p.de}`, texte: `${p.description} ${p.equipementDepart}` });
+  for (const p of profils) idx.push({ type: 'profil', ref: p, titre: p.nom, sous: `${familles[p.famille]?.nom || 'Famille au choix'} · ${p.pvParNiveau} PV/niveau${p.de || familles[p.famille] ? ` · DR d${p.de || familles[p.famille].dr}` : ''}`, texte: `${p.description} ${p.equipementDepart || ''}` });
   for (const v of voies) {
     idx.push({ type: 'voie', ref: v, titre: v.nom, sous: origineVoie(v), texte: `${v.intro || ''} ${v.capacites.map((c) => c.nom).join(' ')}` });
     for (const c of v.capacites) idx.push({ type: 'capacite', ref: c, titre: c.nom, sous: `${v.nom} · rang ${c.rang}`, texte: c.description, cap: c });
   }
   for (const e of EQUIPEMENT) idx.push({ type: 'equipement', ref: e, titre: e.nom, sous: CATEGORIES_EQUIPEMENT[e.categorie], texte: `${e.dm || ''} ${e.notes || ''}` });
   for (const e of etats) idx.push({ type: 'etat', ref: e, titre: e.nom, sous: 'État préjudiciable', texte: e.description });
-  for (const r of regles) idx.push({ type: 'regle', ref: r, titre: r.titre, sous: `${r.chapitre} · p. ${r.page}`, texte: r.texte });
-  return idx.map((x) => ({ ...x, nt: norm(x.titre), nx: norm(`${x.titre} ${x.sous} ${x.texte}`) }));
+  for (const r of regles) idx.push({ type: 'regle', ref: r, titre: r.titre, sous: `${r.chapitre} · ${refPage(r)}`, texte: r.texte });
+  // ouvrage d'origine (une capacité hérite de celui de sa voie)
+  return idx.map((x) => ({ ...x, src: sourceDe(x.type === 'capacite' ? voieById[x.ref.voieId] : x.ref), nt: norm(x.titre), nx: norm(`${x.titre} ${x.sous} ${x.texte}`) }));
 }
 
 export default function Grimoire({ details, onNouveau }) {
@@ -78,10 +79,11 @@ function Encyclopedie({ details }) {
   const index = useMemo(construireIndex, []);
   const [q, setQ] = useState('');
   const [type, setType] = useState('tout');
+  const [source, setSource] = useState('tout');
   const [limite, setLimite] = useState(60);
   const resultats = useMemo(() => {
     const termes = norm(q).split(/\s+/).filter(Boolean);
-    let r = index.filter((x) => type === 'tout' || x.type === type);
+    let r = index.filter((x) => (type === 'tout' || x.type === type) && (source === 'tout' || x.src === source));
     if (termes.length) {
       r = r.filter((x) => termes.every((t) => x.nx.includes(t)));
       r = r
@@ -90,7 +92,7 @@ function Encyclopedie({ details }) {
         .map((y) => y.x);
     }
     return r;
-  }, [index, q, type]);
+  }, [index, q, type, source]);
 
   const ouvrir = (x) => {
     if (x.type === 'peuple') details.peuple(x.ref);
@@ -124,6 +126,16 @@ function Encyclopedie({ details }) {
         </Chip>
         {Object.entries(TYPES).map(([k, v]) => (
           <Chip key={k} active={type === k} onClick={() => setType(k)}>
+            {v}
+          </Chip>
+        ))}
+      </div>
+      <div className="no-scrollbar -mx-4 mt-1 flex gap-1.5 overflow-x-auto px-4 pb-1">
+        <Chip active={source === 'tout'} onClick={() => setSource('tout')}>
+          Tous les ouvrages
+        </Chip>
+        {Object.entries(SOURCES).map(([k, v]) => (
+          <Chip key={k} active={source === k} onClick={() => setSource(k)}>
             {v}
           </Chip>
         ))}

@@ -44,6 +44,10 @@ import {
   HandHeart,
   Mountain,
   User,
+  Tent,
+  Drum,
+  Sword,
+  BrainCircuit,
 } from 'lucide-react';
 import { cx } from './ui.jsx';
 
@@ -96,6 +100,12 @@ export const ICONES_PROFIL = {
   druide: Leaf,
   moine: Mountain,
   pretre: HandHeart,
+  // Compagnon du joueur
+  caravanier: Tent,
+  chamane: Drum,
+  parangon: Sword,
+  primaliste: Footprints, // magie pieds nus
+  psionique: BrainCircuit,
 };
 export const IconeProfil = ({ id, ...p }) => {
   const I = ICONES_PROFIL[id] || User;

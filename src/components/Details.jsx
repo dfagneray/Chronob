@@ -1,17 +1,25 @@
 import { BookOpen, CheckCircle2, Circle, Sparkles } from 'lucide-react';
 import { Sheet, Badge, ActionBadge, RuleText, Btn, cx } from './ui.jsx';
 import { Hexa, VoieTrace, IconeProfil, ICONES_CATEGORIE, ICONES_ETAT } from './visuels.jsx';
-import { voieById, profilById, peupleById, ACTIONS, CATEGORIES_PRESTIGE, familles, CARAC_NOMS } from '../data/index.js';
-import { NIVEAU_REQUIS, coutRang, frequence, modApplique, fmt } from '../lib/rules.js';
+import { voieById, profilById, peupleById, ACTIONS, CATEGORIES_PRESTIGE, CATEGORIES_RECETTES, familles, CARAC_NOMS, refPage, sourceDe } from '../data/index.js';
+import { NIVEAU_REQUIS, coutCapacite, frequence, modApplique, fmt, estPsionique } from '../lib/rules.js';
 import { CATEGORIES_EQUIPEMENT, formatPrix } from '../data/equipement.js';
 
 export function origineVoie(voie) {
   if (!voie) return '';
   if (voie.type === 'peuple') return `Voie de peuple · ${peupleById[voie.peuple]?.nom || ''}`;
   if (voie.type === 'mage') return 'Voie du mage (remplace la voie de peuple)';
-  if (voie.type === 'profil') return `${profilById[voie.profil]?.nom || ''} · ${familles[voie.famille]?.nom || ''}`;
+  if (voie.type === 'profil') return `${profilById[voie.profil]?.nom || ''} · ${familles[voie.famille]?.nom || 'famille au choix'}`;
   if (voie.type === 'prestige') return `Voie de prestige · ${CATEGORIES_PRESTIGE[voie.categorie]}`;
+  if (voie.type === 'domaine') return `Voie de domaine de prêtre · ${voie.epithete || voie.divinite}`;
+  if (voie.type === 'artisan') return 'Voie d’artisan · 1 pt par rang, hors limite de voies';
+  if (voie.type === 'recette') return `Voie de recettes · ${CATEGORIES_RECETTES[voie.categorie] || ''}`;
   return '';
+}
+
+/** Badge « Compagnon » pour les données issues du Compagnon du joueur. */
+export function BadgeSource({ x }) {
+  return sourceDe(x) === 'compagnon' ? <Badge tone="mana">Compagnon</Badge> : null;
 }
 
 const FREQ = { combat: '1 fois / combat', jour: '1 fois / jour' };
@@ -33,17 +41,17 @@ export function CapaciteSheet({ cap, open, onClose, char, onToggleUse, onToggleM
         {cap.action && <Badge>{ACTIONS[cap.action].nom}</Badge>}
         {freq && <Badge tone="blood">{FREQ[freq]}</Badge>}
         <Badge>
-          Coût {coutRang(cap.rang)} pt{coutRang(cap.rang) > 1 ? 's' : ''}
+          {voie?.type === 'recette' ? '1 rang de recette' : `Coût ${coutCapacite(voie, cap.rang)} pt${coutCapacite(voie, cap.rang) > 1 ? 's' : ''}`}
         </Badge>
         <Badge>Niveau {NIVEAU_REQUIS[cap.rang]}+</Badge>
-        {cap.sort && <Badge tone="mana">{cap.rang} PM</Badge>}
+        {cap.sort && <Badge tone="mana">{cap.rang} {estPsionique(cap) ? 'PE' : 'PM'}</Badge>}
       </div>
       <button type="button" onClick={() => onOpenVoie?.(voie)} className="mb-3 flex w-full items-center gap-2 rounded-xl bg-surface2 px-3 py-2 text-left font-ui text-sm active:brightness-95">
         <BookOpen size={16} className="text-gold" />
         <span className="flex-1">
           <span className="font-semibold">{voie?.nom}</span>
           <span className="block text-xs text-muted">
-            {origineVoie(voie)} · p. {voie?.page}
+            {origineVoie(voie)} · {refPage(voie)}
           </span>
         </span>
       </button>
@@ -105,9 +113,15 @@ export function VoieSheet({ voie, open, onClose, char, onOpenCap }) {
   return (
     <Sheet open={open} onClose={onClose} title={voie.nom} tall>
       <div className="mb-3 font-ui text-sm text-muted">
-        {origineVoie(voie)} · p. {voie.page}
+        {origineVoie(voie)} · {refPage(voie)}
         {voie.pvParNiveau ? ` · ${voie.pvParNiveau} PV par niveau` : ''}
       </div>
+      {voie.type === 'domaine' && (
+        <div className="mb-3 flex flex-wrap gap-1.5">
+          {voie.symbole && <Badge>Symbole : {voie.symbole}</Badge>}
+          {voie.armePrivilegiee && <Badge>Arme privilégiée : {voie.armePrivilegiee}</Badge>}
+        </div>
+      )}
       <div className="mb-3 rounded-xl bg-surface2 px-3 py-2">
         <VoieTrace voie={voie} rang={rang} />
       </div>
@@ -134,19 +148,22 @@ export function VoieSheet({ voie, open, onClose, char, onOpenCap }) {
 export function ProfilSheet({ profil, open, onClose, onOpenVoie }) {
   if (!profil) return null;
   const fam = familles[profil.famille];
+  const de = profil.de || fam?.dr;
   return (
     <Sheet open={open} onClose={onClose} title={profil.nom} tall>
       <div className="mb-3 flex flex-wrap items-center gap-1.5">
         <span className="mr-1 flex h-10 w-10 items-center justify-center rounded-xl bg-gold/15 text-gold">
           <IconeProfil id={profil.id} size={22} aria-hidden="true" />
         </span>
-        <Badge tone="gold">{fam.nom}</Badge>
+        <Badge tone="gold">{fam?.nom || 'Famille au choix'}</Badge>
         <Badge>{profil.pvParNiveau} PV / niveau</Badge>
-        <Badge>DR d{profil.de}</Badge>
+        {de && <Badge>DR d{de}</Badge>}
         <Badge>[{profil.caracteristiques.join(', ').replace('|', ' ou ')}]</Badge>
-        <Badge>p. {profil.page}</Badge>
+        <Badge>{refPage(profil)}</Badge>
+        <BadgeSource x={profil} />
       </div>
       <RuleText text={profil.description} />
+      {profil.particularites && <RuleText text={profil.particularites} className="mt-3 rounded-xl bg-surface2 p-3" />}
       {profil.armesArmures && (
         <>
           <h3 className="mt-5 flex items-center gap-2 font-display text-[17px] text-goldsoft">Armes & armures maîtrisées</h3>
@@ -180,9 +197,11 @@ export function PeupleSheet({ peuple, open, onClose, onOpenVoie }) {
     <Sheet open={open} onClose={onClose} title={peuple.nom} tall>
       <div className="mb-3 flex flex-wrap gap-1.5">
         <Badge tone="gold">{peuple.modificateurs}</Badge>
-        <Badge>p. {peuple.page}</Badge>
+        <Badge>{refPage(peuple)}</Badge>
+        <BadgeSource x={peuple} />
       </div>
       <RuleText text={peuple.description} />
+      {peuple.particularites && <RuleText text={peuple.particularites} className="mt-3 rounded-xl bg-surface2 p-3" />}
       {Object.keys(peuple.reperes || {}).length > 0 && (
         <dl className="mt-4 grid grid-cols-[auto,1fr] gap-x-3 gap-y-1 rounded-xl bg-surface2 p-3 font-ui text-sm">
           {Object.entries(peuple.reperes).map(([k, v]) => (
@@ -194,6 +213,7 @@ export function PeupleSheet({ peuple, open, onClose, onOpenVoie }) {
         </dl>
       )}
       {peuple.noteVoie && <RuleText text={peuple.noteVoie} className="mt-3 text-muted" />}
+      {peuple.noteCompagnon && <RuleText text={`Compagnon du joueur : ${peuple.noteCompagnon}`} className="mt-3 text-muted" />}
       <div className="mt-3 space-y-2">
         {peuple.voies.map((id) => (
           <Btn key={id} className="w-full justify-start" onClick={() => onOpenVoie?.(voieById[id])}>
@@ -217,7 +237,7 @@ export function EquipSheet({ item, open, onClose, footer }) {
           })()}
           {CATEGORIES_EQUIPEMENT[item.categorie]}
         </Badge>
-        {item.page && <Badge>p. {item.page}</Badge>}
+        {item.page && <Badge>{refPage(item)}</Badge>}
       </div>
       <dl className="grid grid-cols-[auto,1fr] gap-x-4 gap-y-1.5 font-ui text-[15px]">
         {item.dm && (
@@ -286,7 +306,7 @@ export function RegleSheet({ regle, open, onClose }) {
   return (
     <Sheet open={open} onClose={onClose} title={regle.titre} tall>
       <div className="mb-3 font-ui text-sm text-muted">
-        {regle.chapitre} · p. {regle.page}
+        {regle.chapitre} · {refPage(regle)}
       </div>
       <RuleText text={regle.texte} />
     </Sheet>

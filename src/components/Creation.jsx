@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Check, Wand2, BookOpen, Info, Coins } from 'lucide-react';
 import { Sheet, Btn, Chip, Card, Badge, cx, Stepper, SectionTitle } from './ui.jsx';
-import { peuples, profils, peupleById, profilById, voieById, familles, CARACS, CARAC_NOMS, equipById } from '../data/index.js';
+import { peuples, profils, peupleById, profilById, voieById, voiesDomaine, familles, CARACS, CARAC_NOMS, equipById, SOURCES, sourceDe } from '../data/index.js';
 import { SERIES, deriver, fmt } from '../lib/rules.js';
 import { SAC_AVENTURIER } from '../data/equipement.js';
 import { personnageVide } from '../lib/store.jsx';
@@ -21,6 +21,13 @@ const ALIAS = [
   [/grand bouclier/, 'grand-bouclier'],
   [/petit bouclier/, 'petit-bouclier'],
   [/outils de crochetage/, 'outils-crochetage'],
+  [/épée courte/, 'epee-courte'],
+  [/arbalète légère/, 'arbalete-legere'],
+  [/fronde/, 'fronde'],
+  [/sabre droit/, 'sabre-droit'],
+  [/sabre court/, 'sabre-court'],
+  [/lance à pointe|\blance\b(?! de cavalerie)/, 'lance'],
+  [/\bgourdin\b/, 'gourdin'],
   [/arc court/, 'arc-court'],
   [/javelots?/, 'javelot'],
   [/bâton ferré/, 'baton-ferre'],
@@ -58,6 +65,8 @@ export default function Creation({ open, onClose, onCreate }) {
   const [moins, setMoins] = useState(null);
   const [voiesChoisies, setVoiesChoisies] = useState([]);
   const [voieDuMage, setVoieDuMage] = useState(false);
+  const [voieDomaine, setVoieDomaine] = useState(null); // prêtre : voie de domaine (Compagnon)
+  const [familleChoisie, setFamilleChoisie] = useState(null); // profil sans famille imposée (psionique)
   const [rang2Mage, setRang2Mage] = useState(null);
   const [equip, setEquip] = useState(null);
   const [sac, setSac] = useState(true);
@@ -67,7 +76,8 @@ export default function Creation({ open, onClose, onCreate }) {
 
   const peuple = peupleById[peupleId];
   const profil = profilById[profilId];
-  const famille = profil?.famille;
+  const famille = profil?.famille || familleChoisie;
+  const domaine = profilId === 'pretre' ? voieDomaine : null;
   const valeurs = serie === 'libre' ? null : SERIES[serie].valeurs;
 
   const base = useMemo(() => {
@@ -83,19 +93,22 @@ export default function Creation({ open, onClose, onCreate }) {
   const moinsOptions = peuple.mods.moins;
   const plusEff = plusOptions.includes(plus) ? plus : plusOptions.length === 1 ? plusOptions[0] : null;
   const moinsEff = moinsOptions.includes(moins) ? moins : moinsOptions.length === 1 ? moinsOptions[0] : null;
+  const fixes = peuple.mods.fixes || {};
   const final = useMemo(() => {
     const o = {};
-    for (const k of CARACS) o[k] = (base[k] ?? 0) + (k === plusEff ? 1 : 0) - (k === moinsEff ? 1 : 0);
+    for (const k of CARACS) o[k] = (base[k] ?? 0) + (k === plusEff ? 1 : 0) - (k === moinsEff ? 1 : 0) + (fixes[k] || 0);
     return o;
-  }, [base, plusEff, moinsEff]);
+  }, [base, plusEff, moinsEff, fixes]);
 
-  const voiePeuple = peupleId === 'demi-elfe' ? voiePeupleDE : peuple.voies[0];
+  // plusieurs voies possibles (demi-elfe) : celle choisie, sinon la première
+  const voiePeuple = peuple.voies.includes(voiePeupleDE) ? voiePeupleDE : peuple.voies[0];
 
   const brouillon = useMemo(() => {
     const voies = {};
     if (voiePeuple) voies[voiePeuple] = 1;
     for (const id of voiesChoisies) voies[id] = 1;
-    if (famille === 'mages' && voieDuMage) voies['voie-du-mage'] = 1;
+    if (profil?.voieDuMage && voieDuMage) voies['voie-du-mage'] = 1;
+    if (domaine) voies[domaine] = 1;
     if (famille === 'mages' && rang2Mage) voies[rang2Mage] = 2;
     const eqIds = equip ?? equipementDepart(profil);
     const inventaire = [...eqIds.map((id) => equipById[id]).filter(Boolean), ...(sac ? SAC_AVENTURIER.map((id) => equipById[id]) : [])].map((r) => itemDepuisCatalogue(r));
@@ -110,7 +123,9 @@ export default function Creation({ open, onClose, onCreate }) {
       peupleId,
       profilId,
       voiePeuple,
-      voieDuMage: famille === 'mages' && voieDuMage,
+      voieDuMage: !!profil?.voieDuMage && voieDuMage,
+      voieDomaine: domaine,
+      famille: profil?.famille ? null : familleChoisie,
       carac: final,
       voies,
       inventaire,
@@ -119,7 +134,7 @@ export default function Creation({ open, onClose, onCreate }) {
       travers,
       pv: { actuel: null, temp: 0 },
     });
-  }, [nom, peupleId, profilId, voiePeuple, voiesChoisies, famille, voieDuMage, rang2Mage, final, equip, sac, bourse, ideal, travers, profil]);
+  }, [nom, peupleId, profilId, voiePeuple, voiesChoisies, voieDuMage, domaine, familleChoisie, rang2Mage, final, equip, sac, bourse, ideal, travers, profil]);
   const apercu = useMemo(() => deriver(brouillon), [brouillon]);
 
   const reset = () => {
@@ -129,6 +144,8 @@ export default function Creation({ open, onClose, onCreate }) {
     setVoiesChoisies([]);
     setRang2Mage(null);
     setVoieDuMage(false);
+    setVoieDomaine(null);
+    setFamilleChoisie(null);
     setEquip(null);
     setBourse(7);
     setPlus(null);
@@ -138,8 +155,8 @@ export default function Creation({ open, onClose, onCreate }) {
   };
 
   const peutSuivre = [
-    !!peupleId && (peupleId !== 'demi-elfe' || !!voiePeupleDE),
-    !!profilId,
+    !!peupleId && !!voiePeuple,
+    !!profilId && !!famille,
     complet && (plusOptions.length <= 1 || !!plusEff) && (moinsOptions.length <= 1 || !!moinsEff),
     voiesChoisies.length === 2 && (famille !== 'mages' || !!rang2Mage),
     true,
@@ -220,14 +237,17 @@ export default function Creation({ open, onClose, onCreate }) {
             Nom du personnage
             <input value={nom} onChange={(e) => setNom(e.target.value)} className="mt-1 w-full rounded-xl bg-surface2 px-3 py-3 font-display text-lg text-ink outline-none rune-border" placeholder="ex. Lhagva, fille de Nuala" />
           </label>
-          <SectionTitle>Peuple</SectionTitle>
+          {Object.entries(SOURCES).map(([src, titreSource]) => (
+          <div key={src}>
+          <SectionTitle>{src === 'ldr' ? 'Peuple' : `Peuples optionnels — ${titreSource}`}</SectionTitle>
           <div className="space-y-2">
-            {peuples.map((p) => (
+            {peuples.filter((p) => sourceDe(p) === src).map((p) => (
               <button
                 key={p.id}
                 type="button"
                 onClick={() => {
                   setPeupleId(p.id);
+                  setVoiePeupleDE(p.voies[0]);
                   setPlus(null);
                   setMoins(null);
                 }}
@@ -242,12 +262,15 @@ export default function Creation({ open, onClose, onCreate }) {
               </button>
             ))}
           </div>
-          {peupleId === 'demi-elfe' && (
+          </div>
+          ))}
+          {peuple.voies.length > 1 && (
             <Card className="mt-3 p-3">
               <p className="mb-2 text-[15px]">{peuple.noteVoie}</p>
+              {peuple.noteCompagnon && <p className="mb-2 text-[15px] text-muted">Compagnon du joueur : {peuple.noteCompagnon}</p>}
               <div className="flex flex-wrap gap-2">
                 {peuple.voies.map((id) => (
-                  <Chip key={id} active={voiePeupleDE === id} onClick={() => setVoiePeupleDE(id)}>
+                  <Chip key={id} active={voiePeuple === id} onClick={() => setVoiePeupleDE(id)}>
                     {voieById[id]?.nom}
                   </Chip>
                 ))}
@@ -258,15 +281,15 @@ export default function Creation({ open, onClose, onCreate }) {
       )}
 
       {etape === 1 &&
-        Object.entries(familles).map(([fid, fam]) => (
+        [...Object.entries(familles), ...(profils.some((p) => !p.famille) ? [[null, { nom: 'Famille au choix' }]] : [])].map(([fid, fam]) => (
           <div key={fid}>
             <SectionTitle icon={ICONES_FAMILLE[fid]}>
-              {fam.nom} <span className="font-num text-[13px] text-muted">· {fam.pv} PV · d{fam.dr}</span>
+              {fam.nom} {fid && <span className="font-num text-[13px] text-muted">· {fam.pv} PV · d{fam.dr}</span>}
             </SectionTitle>
             {fam.bonus && <p className="-mt-1 mb-2 px-1 font-ui text-xs text-muted">Bonus de famille : {fam.bonus}</p>}
             <div className="grid grid-cols-2 gap-2">
               {profils
-                .filter((p) => p.famille === fid)
+                .filter((p) => (p.famille || null) === fid)
                 .map((p) => (
                   <button
                     key={p.id}
@@ -275,6 +298,7 @@ export default function Creation({ open, onClose, onCreate }) {
                       setProfilId(p.id);
                       setVoiesChoisies([]);
                       setRang2Mage(null);
+                      setVoieDuMage(false);
                       setEquip(null);
                     }}
                     className={cx('flex items-start gap-2.5 rounded-xl p-3 text-left rune-border', profilId === p.id ? 'bg-gold/15 border-gold' : 'bg-surface')}
@@ -283,10 +307,23 @@ export default function Creation({ open, onClose, onCreate }) {
                     <span className="min-w-0">
                     <div className="font-display text-[17px] leading-tight">{p.nom}</div>
                     <div className="font-ui text-[11px] text-muted">[{p.caracteristiques.join(', ').replace('|', '/')}]</div>
+                    {sourceDe(p) === 'compagnon' && <div className="font-ui text-[10px] uppercase tracking-wide text-mana">Compagnon</div>}
                     </span>
                   </button>
                 ))}
             </div>
+            {fid === null && !profil?.famille && (
+              <Card className="mt-2 p-3">
+                <p className="mb-2 text-[15px]">Le {profil.nom.toLowerCase()} appartient à la famille de votre choix : elle fixe le dé de récupération, les PV et les voies de prestige accessibles.</p>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(familles).map(([k, f]) => (
+                    <Chip key={k} active={familleChoisie === k} onClick={() => setFamilleChoisie(k)}>
+                      {f.nom}
+                    </Chip>
+                  ))}
+                </div>
+              </Card>
+            )}
           </div>
         ))}
 
@@ -383,6 +420,7 @@ export default function Creation({ open, onClose, onCreate }) {
             </div>
           )}
           {peuple.mods.plus[0] === '*faibles' && !complet && <p className="font-ui text-xs text-muted">Attribuez toutes les valeurs pour choisir parmi vos deux caractéristiques les plus faibles.</p>}
+          {profil.energie === 'PE' && complet && final.VOL < 1 && <p className="mt-2 font-ui text-sm text-blood">Il faut une VOL d’au moins +1 pour apprendre des capacités de psionique (Compagnon p. 59).</p>}
         </>
       )}
 
@@ -418,9 +456,34 @@ export default function Creation({ open, onClose, onCreate }) {
               );
             })}
           </div>
+          {profilId === 'pretre' && voiesDomaine.length > 0 && (
+            <>
+              <SectionTitle>Voie de domaine (Compagnon du joueur)</SectionTitle>
+              <Card className="p-3">
+                <p className="text-[15px] text-muted">Comme la voie du mage : elle remplace la voie de peuple, dont seul le rang 1 est conservé. Le prêtre renonce alors à sa capacité divine de spécialiste (Compagnon p. 142).</p>
+                <label className="mt-2 block font-ui text-sm text-muted">
+                  Divinité
+                  <select value={voieDomaine || ''} onChange={(e) => setVoieDomaine(e.target.value || null)} className="mt-1 min-h-[44px] w-full rounded-xl bg-surface2 px-3 text-[16px] text-ink outline-none rune-border">
+                    <option value="">Garder la voie de peuple</option>
+                    {voiesDomaine.map((v) => (
+                      <option key={v.id} value={v.id}>
+                        {v.divinite} — {v.epithete}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {domaine && (
+                  <p className="mt-2 text-[14px]">
+                    1. {voieById[domaine].capacites[0].nom} : <span className="text-muted">{voieById[domaine].capacites[0].description}</span>
+                  </p>
+                )}
+              </Card>
+            </>
+          )}
           {famille === 'mages' && (
             <>
               <SectionTitle>Spécificités des mages</SectionTitle>
+              {profil.voieDuMage && (
               <Card className="p-3">
                 <div className="font-display text-[17px]">Voie du mage</div>
                 <p className="text-[15px] text-muted">Remplace la voie de peuple : vous gardez seulement son rang 1, en plus du rang 1 de la voie du mage (p. 29).</p>
@@ -439,10 +502,11 @@ export default function Creation({ open, onClose, onCreate }) {
                   </Chip>
                 </div>
               </Card>
+              )}
               <Card className="mt-2 p-3">
                 <div className="font-display text-[17px]">Capacité de rang 2 supplémentaire</div>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {[...voiesChoisies, ...(voieDuMage ? ['voie-du-mage'] : [])].map((id) => (
+                  {[...voiesChoisies, ...(profil.voieDuMage && voieDuMage ? ['voie-du-mage'] : [])].map((id) => (
                     <Chip key={id} active={rang2Mage === id} onClick={() => setRang2Mage(id)}>
                       {voieById[id].capacites[1].nom} {voieById[id].capacites[1].sort ? '✦' : ''}
                     </Chip>

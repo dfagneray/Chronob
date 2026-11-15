@@ -1,0 +1,156 @@
+[
+ {
+  "id": "caravanier",
+  "nom": "Caravanier",
+  "famille": "aventuriers",
+  "page": 39,
+  "caracteristiques": [
+   "CHA",
+   "PER",
+   "INT"
+  ],
+  "armureMax": 4,
+  "bouclier": "petit",
+  "armureLibre": false,
+  "energie": null,
+  "caracMagie": null,
+  "pvParNiveau": 4,
+  "de": null,
+  "description": "Le caravanier peut être un marchand, un explorateur, un truand, un messager, un diplomate ou tout cela à la fois. C’est un baroudeur au long court qui sait organiser et mener une expédition, se tirer de tous les mauvais pas, le tout sans oublier de se faire de l’argent. Parfois, il est à son propre compte, mais il peut aussi être au service d’une puissante guilde ou même être l’agent sous couverture d’un royaume.\nDans les Terre sd’Osgild. Les caravaniers sont très courants sur les grandes routes commerciales, et ils sont particulièrement nombreux à emprunter l’axe est-ouest qui débute à la grande cité de Guilde, traverse la mer des Roseaux, passe par Port-Libre, file vers Piémont, capitale des marches du même nom, et dessert toutes les cités sur la route qui mène à la capitale de la principauté d’Arly, Ferrance, au bord de l’océan Pélurique. L’autre axe très emprunté, du sud au nord, débute à Xélys, porte des royaumes du sud, et mène jusqu’à la capitale elfique de Syndoril en passant par Monastir à la frontière entre les deux grands royaumes. Travers a nt moult royaumes et capitales, les caravaniers sont donc non seulement des marchands, mais aussi des messagers, voire des diplomates ou agents au service de maîtres puissants. Mais bien souvent, ils ne servent en réalité qu’eux-mêmes…",
+  "particularites": null,
+  "armesArmures": "Le caravanier sait manier toutes les armes de contact à une main et toutes les armes à distance, ainsi que le bâton ou la lance à deux mains.\nLes voies de caravanier limitent l’armure à la chemise de mailles et autorisent le port du petit bouclier.",
+  "equipementDepart": "Une arme au choix parmi épée courte, marteau ou masse (DM 1d6). Un arc court (DM 1d6) ou une arbalète légère (DM 2d4), une dague (DM 1d4), une armure de cuir renforcé (DEF +3), un petit bouclier (DEF +1).",
+  "voies": [
+   "voie-du-baroudeur",
+   "voie-du-diplomate",
+   "voie-de-l-explorateur",
+   "voie-du-garde-personnel",
+   "voie-du-marchand"
+  ],
+  "voieDuMage": false,
+  "source": "compagnon"
+ },
+ {
+  "id": "chamane",
+  "nom": "Chamane",
+  "famille": "mystiques",
+  "page": 44,
+  "caracteristiques": [
+   "PER",
+   "VOL",
+   "CON"
+  ],
+  "armureMax": 2,
+  "bouclier": false,
+  "armureLibre": false,
+  "energie": null,
+  "caracMagie": "PER",
+  "pvParNiveau": 4,
+  "de": null,
+  "description": "Le chamane est un lanceur de sorts proche de la nature. Il ne vénère pas de divinité et se distingue du druide, car il ne tire pas ses sorts des éléments naturels, mais des esprits, que lui seul sait percevoir et manipuler. Ces derniers constituent l’âme magique de chaque élément du monde, les créatures, mais aussi les choses inertes. Pour le chamane, les esprits sont partout, sauf dans les objets dont la matière même a été transformée par la main de l’homme (exemple : le métal, dont le minerai a été décomposé puis fondu). Pour cette raison, le chamane n’utilise pas ce type d’objets, car leur esprit a été au mieux détruit, au pire corrompu. Il peut toutefois utiliser des objets en fer froid, un alliage spécial forgé à froid.\nDans les Terres d’Osgild. Des chamanes ont toujours existé parmi les tribus reculées du nord ou dans les jungles profondes de Luir-An-Doral.\nToutefois, avec l’avènement de la civilisation et des objets manufacturés, ils avaient presque disparu des deux grandes nations : la principauté d’Arly et les marches du Piémont. Mais depuis quelques décennies, un phénomène inconnu met à nouveau à l’honneur cette subtile magie, notamment portée par l’intrusion de plus en plus fréquente des peuples féeriques dans les Terres d’Osgild.",
+  "particularites": null,
+  "armesArmures": "Le chamane sait manier le bâton, la lance ou l’épieu, la masse, le marteau, la dague, la fronde et l’arc court. Il n’utilise pas d’armes fabriquées en métal fondu, mais utilise des équivalents comme le silex ou le bois durci. Dans ses mains, de telles armes infligent des DM normaux (dans les mains de tout autre profil, elles infligent -1 DM).\nLes voies de chamane limitent l’armure au cuir simple. Il ne sait pas utiliser le bouclier.",
+  "equipementDepart": "Armure de cuir simple (DEF +2), masse en pierre (1d6) ou lance à pointe d’os (1d8), dague en silex (1d4)",
+  "voies": [
+   "voie-de-l-esprit-animal",
+   "voie-des-esprits-des-choses",
+   "voie-des-esprits-malefiques",
+   "voie-de-l-esprit-vital",
+   "voie-de-la-forme-d-esprit"
+  ],
+  "voieDuMage": false,
+  "source": "compagnon"
+ },
+ {
+  "id": "parangon",
+  "nom": "Parangon",
+  "famille": "combattants",
+  "page": 49,
+  "caracteristiques": [
+   "AGI",
+   "VOL",
+   "PER"
+  ],
+  "armureMax": 4,
+  "bouclier": false,
+  "armureLibre": false,
+  "energie": null,
+  "caracMagie": null,
+  "pvParNiveau": 5,
+  "de": null,
+  "description": "Le parangon, parfois aussi appelé champion, est l’essence même du combattant vif et rapide, une véritable machine de guerre qui a voué sa vie au sabre et à l’arc. Il se prépare comme un athlète de haut niveau qui s’entraîne sans cesse. En ce sens, il est assez proche du chevalier, mais avec un mode de combat basé sur la vitesse plutôt que la force (l’utilisation de l’arc en étant le symbole).\nIl peut être le bras armé d’une organisation, le com man dant d’une force d’élite, un jeune seigneur, un mystique passionné par le métier des armes ou encore le champion personnel d’un seigneur vieillissant.\nDans les Terres d’Osgild. Certaines cultures de l’est d’Osgild (Protectorat de fer) érigent ce mode de vie en modèle. Inspiré des cultures asiatiques, ce profil peut alors être rebaptisé samouraï. Les seigneurs elfes sont plus souvent associés à ce profil qu’à celui du chevalier en armure lourde, qui correspond moins à leur nature mobile.",
+  "particularites": null,
+  "armesArmures": "Le parangon sait manier toutes les armes de contact et toutes les armes à distance. Il préfère généralement utiliser la vivelame ou les sabres (courts et droits, voir page 66). Il dédaigne les armes qui sont aussi des outils associés au travail du peuple, comme les haches, bâtons, marteaux, fléaux, etc. De telles armes ne permettent pas l’utilisation des capacités de parangon (on ne provoque pas quelqu’un en duel avec un marteau, ce serait un comportement de malfrat).\nLes voies de parangon limitent l’armure à la chemise de mailles et n’autorisent pas le port du bouclier.",
+  "equipementDepart": "Sabre droit (DM 1d6/1d8 explosif, crit. 19-20), sabre d’entraînement en bois (DM 1d4 temporaires, crit. 19-20), dague (DM 1d4), arc court (DM 1d6, portée 30 m), chemise de mailles (DEF +4)",
+  "voies": [
+   "voie-de-l-arc-et-du-cheval",
+   "voie-de-l-honneur",
+   "voie-de-la-maitrise-interieure",
+   "voie-du-sabre",
+   "voie-des-traditions"
+  ],
+  "voieDuMage": false,
+  "source": "compagnon"
+ },
+ {
+  "id": "primaliste",
+  "nom": "Primaliste",
+  "famille": "mages",
+  "page": 53,
+  "caracteristiques": [
+   "VOL",
+   "CON"
+  ],
+  "armureMax": 2,
+  "bouclier": false,
+  "armureLibre": false,
+  "energie": null,
+  "caracMagie": "VOL",
+  "pvParNiveau": 4,
+  "de": null,
+  "description": "Le primaliste est le mage du peuple. Ses sorts sont de nature élémentaire et primaire, leurs domaines d’action concernent les rivières, les nuages, le bois ou le sol, et son arme favorite est une torche, dont il sait attiser le feu. Ses pouvoirs sont innés, un peu à la façon de l’ensorceleur, bien qu’il existe une tradition orale qui lui permet d’apprendre à les maîtriser.\nLe primaliste n’a pas fait de grande école de magie, et ses pouvoirs sont généralement dénigrés par les véritables magiciens, qui considèrent ses sorts comme une sous-magie.\nPire, une des conditions à la pratique de la magie primaliste consiste à être pieds nus, afin d’être ancré dans le monde et en contact avec les éléments. Il va donc sans dire que les archimages considèrent leurs confrères des campagnes comme des va-nu-pieds. Pour cette raison, le primaliste n’a pas accès à la voie du mage. À vrai dire, certains primalistes ne savent même pas lire.\nLes sorts du primaliste sont généralement en rapport avec la nature, mais il serait une erreur de croire que sa magie ressemble à celle des druides.\nIl se trouve simplement qu’en tant que mage du peuple, le primaliste a naturellement utilisé les objets et les lieux qui l’entourent au quotidien pour y expérimenter sa magie.\nDans les Terres d’Osgild. Il fut une époque où les talents pour la magie étaient très rares et les académies de magie étaient à l’affût du moindre signe pro met teur. Les mages étaient prompts à prendre des apprentis, et il était donc rare qu’une jeune personne prometteuse soit abandonnée à elle-même et devienne autodidacte. Mais depuis quelques siècles, de façon imperceptible et continue, les talents pour la magie sont de plus en plus nombreux. De plus, il semble que les premiers primalistes soient apparus parmi les halfelins, sans doute parce que ceux-ci ont pour habitude d’aller pieds nus et que c’est la condition de la pratique de cette étonnante magie. Bien entendu, la présence du petit peuple conforte les écoles de magie dans l’idée que cette pratique n’est pas digne d’intérêt.",
+  "particularites": "Particularités de la magie primaliste Les sorts de primaliste nécessitent d’être en contact direct avec le sol, de préférence pieds nus. Un personnage qui porte des chaussures doit choisir l’une des pénalités suivantes lorsqu’il lance un sort de primaliste : soit il subit un dé malus à son test d’attaque, soit il doit dépenser 1 PM supplémentaire. Bien entendu, si le sort ne comporte pas de test d’attaque, c’est la seconde pénalité qui s’applique automatiquement. Du moment qu’un primaliste est pieds nus, il ne subit pas de pénalité particulière à être en l’air (vol, étage d’un bâtim en t, etc.). Les primaliste sont une façon d’utiliser la magie très limitée : ils ne peuvent pas utiliser de par - che mi ns magiques ni de grimoires de pouvoir. Ils peuvent toutefois pallier cette limitation en inves - tissant dans une voie de magicien. Ils peuvent alors utiliser les parchemins et grimoires dont les capacité sn’excède nt pas le rang atteint dans la voied e magicien.",
+  "armesArmures": "Le primaliste sait manier le bâton, le gourdin, la hachette (au contact et à distance), le marteau, la dague et la fronde.\nLes voies de primaliste limitent l’armure au cuir simple et empêchent l’utilisation du bouclier.",
+  "equipementDepart": "Armure de cuir simple (DEF +2), hachette ou marteau (DM 1d6), fronde (DM 1d4).",
+  "voies": [
+   "voie-du-bois",
+   "voie-des-brumes",
+   "voie-des-rivieres",
+   "voie-du-sol",
+   "voie-de-la-torche"
+  ],
+  "voieDuMage": false,
+  "source": "compagnon"
+ },
+ {
+  "id": "psionique",
+  "nom": "Psionique",
+  "famille": null,
+  "page": 58,
+  "caracteristiques": [
+   "VOL",
+   "PER",
+   "CON"
+  ],
+  "armureMax": 4,
+  "bouclier": false,
+  "armureLibre": true,
+  "energie": "PE",
+  "caracMagie": "VOL",
+  "pvParNiveau": 4,
+  "de": null,
+  "description": "Le psionique est un être d’exception. Fermier ou noble, peu importe, il est né doté de pouvoirs psychiques extraordinaires qu’il a travaillés par la suite à la force de son ego et de son intuition.\nProfil polyvalent, le psionique peut être développé comme un subtil maître de l’esprit et un combattant à distance ou, au contraire, comme un guerrier porté par des pouvoirs psychiques.\nEn fonction de son historique, qu’il vous appartient de déterminer, un psionique peut appartenir à la famille de votre choix : aventurier, combattant, mage ou mystique. Notez votre choix, il déterminer a notamment le dé de récupération (voir Livre des règles, p. 30) et les voies de prestige accessibles à partir du niveau 5. Un psionique qui choisit la famille des mages n’a pas pour autant accès à la voie du mage.\nDans les Terres d’Osgild. Dans les Terres d’Osgild, il n’existe pas d’école de psi. Les psioniques sont généralement des éléments isolés qui développe nt leur talent de façon innée. Les individus doués de pouvoirs psis sont rares et, la plupart du temps, les gens qui sont témoins de leurs capacités les confondent avec des ensorceleurs, tandis que d’autres se font passer pour des prêtres. Les vrais magiciens et les prêtres n’aiment pas trop ces individus qui leur volent la vedette et dont ils ne com prennent pas la nature. Enfin, et c’est peu connu, les gnomes ont une prédisposition naturelle pour les pouvoirs psioniques. À la création, un gnome peut choisir une capacité de rang 1 de psionique au lieu d’ensorceleur. Il se pourrait même qu’il existe un ordre secret de gnomes psioniques…",
+  "particularites": "Règles sur les capacités du psionique Dans Chroniques Oubliées Fantasy, les pouvoirs psioniques sont traités comme une forme de magie parmi d’autres. Cela vous évitera de vous poser la question de ce qui est magique et’de ce qui ne l’est pas. Ces capacités sont donc soumis es aux mêmes règles que nt importe quel sort en termes d’interactions, de défense s’ou de r ésistan ces.\nToutefois, le psionique ne dépense pas de points de mana (PM) pour utiliser ses capacités, mais des points d’ego (PE). Les PE suivent exactement les mêmes règles que les PM pour les sorts (n’ombres, points gagnés, coût des capacités, brû - lure de mana, règle de concentration accrue, etc. ; voir le Livre des règles, p. 31 et 227 à 229), mais il s’agit d’une caractéristique à part.\nAinsi, un personnage psionique de niveau 1 qui possède une VOL de +3 et connaît deux capacités issues de voies du psionique portant le symbole * (par exemple, Attaque mentale et Manipulation à distance), possède un total de 5 PE. Chaque nouvelle capacité psionique acquise signalée par un * apporte 1 PE de plus.\nUn profil hybride psionique et magicien possède des PM et des PE distincts, qui évolueront différemment au cours de chaque aventure.\nAttention, il existe une différence importante entre PM et PE : le psionique ne récupère pas automatiquement ses PE : il doit pour cela dépenser des DR lors d’une récupération rapide ou complète. Pour chaque DR dépensé, il récupère un nombre de PE égal à 1d4°. Si le DR est dépensé à la suite d’une récupération complète (8 h de repos), il obtient automatiquement le résultat maximal au dé, comme pour les PV. Un DR dépensé de cette façon ne permet pas de récupérer les PV habituels (mais cela peut changer dès que le personnage fait l’acquisition de la capacité Contrôle du métabolisme).\nLorsqu’il utilise un pouvoir psionique, le personnage n’a pas besoin de parler ni de faire des gestes, il se contente de se concentrer (parfois, un rictus d’effort déforme ses traits). Il peut aller jusqu’à laisser échapper un cri ou un ahanement, mais ce n’est que le symptôme de l’intensité de l’effort produit, en aucun cas un prérequis (une zone de silence ne le gêne pas pour se concentrer).\nFinalement, comme pour toute autre magie (Livre des règles, p. 27), il est nécessaire d’avoir une valeur minimale de +1 en VOL pour pouvoir apprendre des capacités du profil de psionique.",
+  "armesArmures": "Le psionique sait manier toutes les armes au contact et toutes les armes à distance qui n’infligent pas plus de 1d6 DM et n’ont pas une plage de critique améliorée.\nLe psionique sait utiliser les armures jusqu’à la chemise de mailles et il ne sait pas manier le bouclier.\nToutefois, les capacités de psionique ne sont limitées par aucun type d’armure. Tous les autres profils peuvent choisir une voie de psionique et en utiliser les capacités, peu importe l’armure portée. Si un psionique choisit une voie d’un autre profil, il apprend à utiliser les armures correspondantes et peut utiliser ses propres capacités avec cette nouvelle armure.\nCASQUES Pour pouvoir profiter pleinement de ses pouvoirs, un psionique ne doit pas porter de casque, ce dernier causant une interférence. Si vous utilisez la règle optionnelle sur les casques figurant dans l’Atlas d’Osgild & règles optionnelles, page 158, le port d’un casque léger par un psionique augmente le coût de chaque pouvoir de 1 PE, et le heaume de 2 PE.",
+  "equipementDepart": "Armure de cuir renforcée (DEF +3), épée courte (DM 1d6), dague (DM 1d4).",
+  "voies": [
+   "voie-de-l-attaque-mentale",
+   "voie-du-controle-corporel",
+   "voie-de-l-empathie",
+   "voie-de-la-telekinesie",
+   "voie-de-la-telepathie"
+  ],
+  "voieDuMage": false,
+  "source": "compagnon"
+ }
+]

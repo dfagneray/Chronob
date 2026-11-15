@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Plus, X, TrendingUp, AlertTriangle, CheckCircle2, Search, Info, ArrowRight, Eraser, Crown } from 'lucide-react';
 import { Card, SectionTitle, Btn, Sheet, Badge, ActionBadge, cx, ConfirmBtn, useToast, Empty, Chip, Stepper } from '../components/ui.jsx';
 import { voieById, CARACS, profilById } from '../data/index.js';
-import { NIVEAU_MAX, optionsProgression, voiesApresPlan, simulerPlan, verifierNiveau, validerNiveau, pointsDepenses, coutRang, fmt, deriver, NIVEAU_REQUIS, gainPVPlanifie } from '../lib/rules.js';
+import { NIVEAU_MAX, optionsProgression, voiesApresPlan, simulerPlan, verifierNiveau, validerNiveau, pointsDepenses, coutCapacite, fmt, deriver, NIVEAU_REQUIS, gainPVPlanifie, rangsRecettes } from '../lib/rules.js';
 import { origineVoie } from '../components/Details.jsx';
 import { Hexa } from '../components/visuels.jsx';
 
@@ -43,7 +43,9 @@ export default function Planificateur({ char, maj, details }) {
   const verif = verifierNiveau(char, cible);
   const restant = 2 - pointsDepenses(lvl.picks);
   const opts = optionsProgression(char, cible, etatAvant, lvl.picks);
-  const orphelinPossible = restant === 1 && !opts.some((o) => o.possible);
+  // rangs de recettes encore disponibles (voies d'artisan), choix de ce niveau compris
+  const recettes = rangsRecettes(lvl.picks.reduce((v, p) => ({ ...v, [p.voieId]: Math.max(v[p.voieId] || 0, p.rang) }), etatAvant));
+  const orphelinPossible = restant === 1 && !opts.some((o) => o.possible && !['artisan', 'recette'].includes(o.voie.type));
 
   const setLvl = (fn) =>
     maj((c) => {
@@ -156,7 +158,7 @@ export default function Planificateur({ char, maj, details }) {
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-semibold">{cap?.nom}</span>
                     <span className="block truncate font-ui text-xs text-muted">
-                      {v?.nom} · {coutRang(p.rang)} pt{coutRang(p.rang) > 1 ? 's' : ''}
+                      {v?.nom} · {v?.type === 'recette' ? '1 rang de recette' : `${coutCapacite(v, p.rang)} pt${coutCapacite(v, p.rang) > 1 ? 's' : ''}`}
                     </span>
                   </span>
                   <ActionBadge action={cap?.action} sort={cap?.sort} />
@@ -248,24 +250,27 @@ export default function Planificateur({ char, maj, details }) {
         )}
       </Card>
 
-      <ProgressionPicker open={picker} onClose={() => setPicker(false)} options={opts} onPick={ajouter} char={char} details={details} niveau={cible} libre={libre} />
+      <ProgressionPicker open={picker} onClose={() => setPicker(false)} options={opts} onPick={ajouter} char={char} details={details} niveau={cible} libre={libre} recettes={recettes} />
     </div>
   );
 }
 
-function ProgressionPicker({ open, onClose, options, onPick, char, details, niveau, libre }) {
+function ProgressionPicker({ open, onClose, options, onPick, char, details, niveau, libre, recettes }) {
   const [q, setQ] = useState('');
   const [voirToutEtat, setVoirTout] = useState(false);
   const voirTout = voirToutEtat || libre;
   const profil = profilById[char.profilId];
   const t = q.trim().toLowerCase();
+
   const filtre = options.filter((o) => (voirTout || o.possible) && (!t || o.cap.nom.toLowerCase().includes(t) || o.voie.nom.toLowerCase().includes(t) || origineVoie(o.voie).toLowerCase().includes(t)));
   const groupes = [
     { titre: 'Voies déjà ouvertes', liste: filtre.filter((o) => !o.nouvelle) },
     { titre: `Nouvelles voies de ${profil?.nom.toLowerCase() || 'profil'}`, liste: filtre.filter((o) => o.nouvelle && o.voie.type === 'profil' && !o.hybride) },
-    { titre: 'Voie de peuple / du mage', liste: filtre.filter((o) => o.nouvelle && (o.voie.type === 'peuple' || o.voie.type === 'mage')) },
+    { titre: 'Voie de peuple / du mage / de domaine', liste: filtre.filter((o) => o.nouvelle && ['peuple', 'mage', 'domaine'].includes(o.voie.type)) },
     { titre: 'Voies de prestige', liste: filtre.filter((o) => o.nouvelle && o.voie.type === 'prestige') },
     { titre: 'Profil hybride (autres profils)', liste: filtre.filter((o) => o.nouvelle && o.hybride) },
+    { titre: 'Voies d’artisan (1 pt par rang, hors limite)', liste: filtre.filter((o) => o.nouvelle && o.voie.type === 'artisan') },
+    { titre: `Voies de recettes (${recettes.restants} rang${recettes.restants > 1 ? 's' : ''} disponible${recettes.restants > 1 ? 's' : ''})`, liste: filtre.filter((o) => o.nouvelle && o.voie.type === 'recette') },
   ].filter((g) => g.liste.length);
   return (
     <Sheet open={open} onClose={onClose} title={`Capacités — niveau ${niveau}`} tall>
@@ -291,7 +296,7 @@ function ProgressionPicker({ open, onClose, options, onPick, char, details, nive
                   <span className="min-w-0 flex-1">
                     <span className="block font-semibold leading-tight">{o.cap.nom}</span>
                     <span className="block truncate font-ui text-xs text-muted">
-                      {o.voie.nom} · {o.cout} pt{o.cout > 1 ? 's' : ''} · niv. {NIVEAU_REQUIS[o.rang]}+
+                      {o.voie.nom} · {o.voie.type === 'recette' ? '1 rang de recette' : `${o.cout} pt${o.cout > 1 ? 's' : ''}`} · niv. {NIVEAU_REQUIS[o.rang]}+
                     </span>
                     {!o.possible && <span className="block font-ui text-xs text-blood">{o.raisons.join(' · ')}</span>}
                     {o.voie.prerequis && o.nouvelle && <span className="block font-ui text-xs text-gold">Prérequis : {o.voie.prerequis}</span>}

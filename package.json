@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "extract": "node scripts/extract-rules.mjs",
+    "extract:compagnon": "node scripts/extract-compagnon.mjs",
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview --host",

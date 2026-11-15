@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Plus, Search, Shield, Swords, Crosshair, Package, Coins, Backpack, Trash2, FlaskConical, PenLine, Check } from 'lucide-react';
 import { Card, SectionTitle, Btn, Sheet, Stepper, Chip, Badge, cx, useToast, ConfirmBtn, NumPad, Empty, Segmented } from '../components/ui.jsx';
-import { EQUIPEMENT, equipById } from '../data/index.js';
+import { EQUIPEMENT, equipById, refPage } from '../data/index.js';
 import { CATEGORIES_EQUIPEMENT, SAC_AVENTURIER, formatPrix } from '../data/equipement.js';
 import { dmArme, attaqueArme, fmt } from '../lib/rules.js';
 import { ICONES_CATEGORIE } from '../components/visuels.jsx';
@@ -211,7 +211,7 @@ export default function Equipement({ char, d, maj }) {
                         {it.qte > 1 ? ` ×${it.qte}` : ''}
                       </span>
                       <span className="block truncate font-ui text-xs text-muted">
-                        {arme && `Att ${fmt(attaqueArme(it, d))}${it.nonMaitrisee ? ' (dé malus)' : ''} · DM ${dmArme(it, d, it.deuxMainsUse)}${it.portee ? ` · ${it.portee} m` : ''}${it.critique ? ` · crit ${it.critique}-20` : ''}`}
+                        {arme && `Att ${fmt(attaqueArme(it, d))}${it.nonMaitrisee ? ' (dé malus)' : ''} · DM ${dmArme(it, d, it.deuxMainsUse)}${it.portee ? ` · ${it.portee} m` : ''}${it.critique ? ` · crit ${it.critique}-20` : ''}${it.explosif ? ' · dé explosif' : ''}`}
                         {it.categorie === 'armure' && `DEF +${it.def} · AGI max ${fmt(it.agiMax)}`}
                         {it.categorie === 'bouclier' && `DEF +${it.def}`}
                         {!arme && !portable && (it.notes || formatPrix(it.prix))}
@@ -356,7 +356,7 @@ function Catalogue({ open, onClose, onAdd, onBuy }) {
             <p className="text-[16px]">{choix.notes || CATEGORIES_EQUIPEMENT[choix.categorie]}</p>
             <div className="mt-3 font-ui text-sm text-muted">Quantité</div>
             <Stepper value={qte} min={1} max={99} onChange={setQte} />
-            <p className="mt-2 font-ui text-xs text-muted">p. {choix.page}</p>
+            <p className="mt-2 font-ui text-xs text-muted">{refPage(choix)}</p>
           </>
         )}
       </Sheet>
@@ -465,7 +465,7 @@ function EditItem({ item, d, onClose, onChange, onDelete }) {
       <div className="mb-3 flex flex-wrap gap-1.5">
         <Badge tone="gold">{CATEGORIES_EQUIPEMENT[item.categorie] || 'Divers'}</Badge>
         {item.typeDm && <Badge>{item.typeDm}</Badge>}
-        {item.page && <Badge>p. {item.page}</Badge>}
+        {item.page && <Badge>{refPage(item)}</Badge>}
       </div>
       {arme && (
         <Card className="mb-3 grid grid-cols-2 gap-2 p-3 text-center">

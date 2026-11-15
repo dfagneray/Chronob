@@ -37,6 +37,13 @@ export const EQUIPEMENT = [
   { id: 'rapiere', nom: 'Rapière', categorie: 'contact', dm: '1d6', prix: pa(6), typeDm: 'Perforants', legere: true, critique: 19, notes: 'Arme légère, critique sur 19-20', page: 183 },
   { id: 'stylet', nom: 'Stylet', categorie: 'contact', dm: '1d3', prix: pa(1), typeDm: 'Perforants', legere: true, sansFor: true, notes: 'Arme légère ; pas de FOR aux DM, mais 1d6+AGI DM si la cible est surprise', page: 185 },
   { id: 'vivelame', nom: 'Vivelame', categorie: 'contact', dm: '1d10', prix: pa(15), typeDm: 'Tranchants', deuxMains: true, critique: 19, notes: 'Arme à deux mains, critique sur 19-20', page: 185 },
+  // --- Nouvelles armes du Compagnon du joueur (p. 66-67) ---
+  { id: 'fouet', nom: 'Fouet', categorie: 'contact', dm: '1', prix: pa(2), typeDm: 'Contondants', sansFor: true, notes: 'Attaque basée sur l’AGI, portée 3 m ; +3 aux tests pour désarmer et renverser', page: 66, source: 'compagnon' },
+  { id: 'fouet-de-guerre', nom: 'Fouet de guerre', categorie: 'contact', dm: '1d4', prix: pa(4), typeDm: 'Tranchants', sansFor: true, notes: 'Portée 3 m, sans FOR aux DM ; [1d4 + AGI] DM en action limitée ; +3 aux tests pour désarmer et renverser', page: 66, source: 'compagnon' },
+  { id: 'pioche-de-guerre', nom: 'Pioche de guerre', categorie: 'contact', dm: '1d10', prix: pa(7), typeDm: 'Perforants et Tranchants', deuxMains: true, forMin: 1, notes: 'Arme à deux mains, FOR +1 minimum (sinon dé malus) ; critique 18-20 contre plaques et cuirasses ; DM × 2 contre les structures', page: 67, source: 'compagnon' },
+  { id: 'sabre-court', nom: 'Sabre court', categorie: 'contact', dm: '1d4', prix: pa(10), typeDm: 'Tranchants', legere: true, critique: 19, explosif: true, notes: 'Arme légère, dé de DM explosif, critique sur 19-20', page: 67, source: 'compagnon' },
+  { id: 'sabre-droit', nom: 'Sabre droit', categorie: 'contact', dm: '1d6', dm2: '1d8', prix: pa(15), typeDm: 'Tranchants', critique: 19, explosif: true, notes: 'Arme à une ou deux mains (1d6/1d8), dé de DM explosif, critique sur 19-20', page: 67, source: 'compagnon' },
+  { id: 'tribaton', nom: 'Tribâton', categorie: 'contact', dm: '1d6', prix: pa(4), typeDm: 'Contondants', deuxMains: true, sansFor: true, notes: 'Arme à deux mains, [1d6 + AGI] DM ; échec critique sur 1-2 (1 DM à soi-même)', page: 67, source: 'compagnon' },
 
   // --- Armes d'attaque à distance (p. 185) ---
   { id: 'arbalete-de-poing', nom: 'Arbalète de poing', categorie: 'distance', dm: '1d6', portee: 10, prix: pa(8), typeDm: 'Perforants', notes: 'Action de mouvement pour être rechargée', page: 185 },
@@ -52,6 +59,8 @@ export const EQUIPEMENT = [
   { id: 'lance-lancer', nom: 'Lance (lancer)', categorie: 'distance', dm: '1d6', portee: 10, prix: pa(3), typeDm: 'Perforants', notes: '', page: 185 },
   { id: 'lance-pierre', nom: 'Lance-pierre', categorie: 'distance', dm: '1d3', portee: 10, prix: 1, typeDm: 'Contondants', notes: '', page: 185 },
   { id: 'petoire', nom: 'Pétoire', categorie: 'distance', dm: '1d10', portee: 20, prix: pa(50), typeDm: 'Perforants', poudre: true, notes: 'Arme à poudre (autorisation du MJ), action limitée pour être rechargée', page: 185 },
+  { id: 'bola', nom: 'Bola', categorie: 'distance', dm: '', portee: 10, prix: pa(2), typeDm: '—', notes: 'Pas de DM ; cible de taille petite à grande : test d’AGI difficulté 10 ou immobilisée (action limitée pour se libérer)', page: 66, source: 'compagnon' },
+  { id: 'sarbacane', nom: 'Sarbacane', categorie: 'distance', dm: '1', portee: 10, prix: pa(3), typeDm: 'Perforants', notes: '[1d4 + PER] DM si le tireur vise (action limitée)', page: 67, source: 'compagnon' },
   { id: 'mousquet', nom: 'Mousquet', categorie: 'distance', dm: '2d6', portee: 50, prix: pa(100), typeDm: 'Perforants', poudre: true, deuxMains: true, notes: 'Arme à poudre (autorisation du MJ), action limitée pour être rechargée, arme tenue à deux mains', page: 185 },
 
   // --- Armures (p. 188) ---

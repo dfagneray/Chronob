@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
-import { ChevronDown, RotateCcw, Settings2, BookOpen, Plus, Trash2, Search, CircleCheck, CircleOff, Users, Crown, Sparkle } from 'lucide-react';
+import { ChevronDown, RotateCcw, Settings2, BookOpen, Plus, Trash2, Search, CircleCheck, CircleOff, Users, Crown, Sparkle, Hammer, ScrollText } from 'lucide-react';
 import { Card, SectionTitle, Btn, ActionBadge, Badge, Sheet, Stepper, Empty, cx, Segmented, ConfirmBtn } from '../components/ui.jsx';
-import { voies as VOIES, profilById } from '../data/index.js';
-import { voiesPossedees, capaciteSuivie, frequence, premierRang } from '../lib/rules.js';
+import { voies as VOIES, profilById, voiesDomaine, voieById } from '../data/index.js';
+import { voiesPossedees, capaciteSuivie, frequence, premierRang, rangsRecettes } from '../lib/rules.js';
 import { origineVoie } from '../components/Details.jsx';
 import { Hexa, VoieTrace } from '../components/visuels.jsx';
 
@@ -14,10 +14,13 @@ export default function Voies({ char, maj, details }) {
   const [gerer, setGerer] = useState(false);
   const possedees = voiesPossedees(char);
   const groupes = [
-    { titre: 'Voie de peuple', icon: Users, liste: possedees.filter((x) => x.voie.type === 'peuple' || x.voie.type === 'mage') },
+    { titre: 'Voie de peuple', icon: Users, liste: possedees.filter((x) => ['peuple', 'mage', 'domaine'].includes(x.voie.type)) },
     { titre: 'Voies de profil', icon: Sparkle, liste: possedees.filter((x) => x.voie.type === 'profil') },
     { titre: 'Voie de prestige', icon: Crown, liste: possedees.filter((x) => x.voie.type === 'prestige') },
+    { titre: 'Voies d’artisan', icon: Hammer, liste: possedees.filter((x) => x.voie.type === 'artisan') },
+    { titre: 'Voies de recettes', icon: ScrollText, liste: possedees.filter((x) => x.voie.type === 'recette'), recettes: true },
   ].filter((g) => g.liste.length);
+  const recettes = rangsRecettes(char.voies);
 
   const toggleUse = (cap) => maj((c) => ({ ...c, utilise: { ...(c.utilise || {}), [cap.id]: !c.utilise?.[cap.id] } }));
   const nbUtilisees = Object.values(char.utilise || {}).filter(Boolean).length;
@@ -53,7 +56,9 @@ export default function Voies({ char, maj, details }) {
 
       {groupes.map((g) => (
         <div key={g.titre}>
-          <SectionTitle icon={g.icon}>{g.titre}</SectionTitle>
+          <SectionTitle icon={g.icon} right={g.recettes || (g.icon === Hammer && recettes.gagnes) ? <span className="font-ui text-xs text-muted">rangs de recettes : {recettes.depenses} / {recettes.gagnes}</span> : null}>
+            {g.titre}
+          </SectionTitle>
           <div className="space-y-2.5">
             {g.liste.map(({ voie, rang }) => {
               const open = ouvertes.has(voie.id);
@@ -204,7 +209,40 @@ function GererVoies({ open, onClose, char, maj, details }) {
           </ul>
         </div>
       )}
-      {(profilById[char.profilId]?.famille === 'mages' || char.voieDuMage) && (
+      {(char.profilId === 'pretre' || char.voieDomaine) && voiesDomaine.length > 0 && (
+        <Card className="mt-4 p-3">
+          <div className="font-display text-sm font-bold">Voie de domaine de prêtre</div>
+          <p className="text-[15px] text-muted">Remplace la voie de peuple : seul son rang 1 est conservé (Compagnon p. 142).</p>
+          <label className="mt-2 block font-ui text-sm text-muted">
+            Divinité
+            <select
+              value={char.voieDomaine || ''}
+              onChange={(e) =>
+                maj((c) => {
+                  const id = e.target.value || null;
+                  const voies = { ...c.voies };
+                  const rangAvant = c.voieDomaine ? voies[c.voieDomaine] || 0 : 0;
+                  if (c.voieDomaine) delete voies[c.voieDomaine];
+                  if (id) {
+                    if (c.voiePeuple && voies[c.voiePeuple]) voies[c.voiePeuple] = 1;
+                    voies[id] = Math.max(1, rangAvant);
+                  }
+                  return { ...c, voieDomaine: id, voies };
+                }, { titre: e.target.value ? `Voie de domaine : ${voieById[e.target.value]?.nom}` : 'Retour à la voie de peuple' })
+              }
+              className="mt-1 min-h-[44px] w-full rounded-xl bg-surface2 px-3 text-[16px] text-ink outline-none rune-border"
+            >
+              <option value="">Aucune (voie de peuple)</option>
+              {voiesDomaine.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.divinite} — {v.epithete}
+                </option>
+              ))}
+            </select>
+          </label>
+        </Card>
+      )}
+      {((profilById[char.profilId]?.famille === 'mages' && profilById[char.profilId]?.voieDuMage) || char.voieDuMage) && (
         <Card className="mt-4 p-3">
           <div className="font-display text-sm font-bold">Voie du mage</div>
           <p className="text-[15px] text-muted">Remplace la voie de peuple : seul son rang 1 est conservé (p. 60).</p>

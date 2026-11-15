@@ -1,7 +1,13 @@
 // Intégrité des données extraites du PDF (src/data/*.json, générées par `npm run extract`).
 import { describe, it, expect } from 'vitest';
-import { peuples, profils, voies, etats, familles, regles, EQUIPEMENT, voieById, equipById } from '../src/data/index.js';
+import { peuples as tousPeuples, profils as tousProfils, voies as toutesVoies, etats, familles, regles, EQUIPEMENT, voieById, equipById, sourceDe, peupleById, profilById, voiesDomaine, refPage } from '../src/data/index.js';
 import { SAC_AVENTURIER } from '../src/data/equipement.js';
+
+// Livre des règles seul (le Compagnon du joueur est vérifié plus bas)
+const ldr = (x) => sourceDe(x) === 'ldr';
+const peuples = tousPeuples.filter(ldr);
+const profils = tousProfils.filter(ldr);
+const voies = toutesVoies.filter(ldr);
 
 describe('Données de règles', () => {
   it('8 peuples, 14 profils, 4 familles, 10 états (sommaire du livre)', () => {
@@ -56,9 +62,9 @@ describe('Données de règles', () => {
     expect(voieById['voie-du-mage'].profils.sort()).toEqual(['ensorceleur', 'forgesort', 'magicien', 'sorcier']);
   });
 
-  it('les voies de peuple référencées existent (le demi-elfe choisit parmi trois)', () => {
-    for (const p of peuples) p.voies.forEach((id) => expect(voieById[id], `${p.nom} → ${id}`).toBeDefined());
-    expect(peuples.find((p) => p.id === 'demi-elfe').voies).toHaveLength(3);
+  it('les voies de peuple référencées existent (le demi-elfe choisit parmi trois, plus la voie optionnelle du Compagnon)', () => {
+    for (const p of tousPeuples) p.voies.forEach((id) => expect(voieById[id], `${p.nom} → ${id}`).toBeDefined());
+    expect(peuples.find((p) => p.id === 'demi-elfe').voies).toEqual(['voie-de-l-humain', 'voie-de-l-elfe-haut', 'voie-de-l-elfe-sylvain', 'voie-du-demi-elfe']);
   });
 
   // Le tableau p. 128 nomme « voie des couleurs » la voie du chaos (p. 155) et omet la voie de l’enchanteur (p. 157).
@@ -110,5 +116,63 @@ describe('Catalogue d’équipement (p. 183-191)', () => {
   it('identifiants uniques et sac d’aventurier complet (p. 31)', () => {
     expect(new Set(EQUIPEMENT.map((e) => e.id)).size).toBe(EQUIPEMENT.length);
     SAC_AVENTURIER.forEach((id) => expect(equipById[id]).toBeDefined());
+  });
+});
+
+describe('Compagnon du joueur', () => {
+  const comp = (x) => sourceDe(x) === 'compagnon';
+  const cv = toutesVoies.filter(comp);
+  const n = (type) => cv.filter((v) => v.type === type).length;
+
+  it('17 peuples optionnels (les lutins en deux variantes) et 5 profils (sommaire p. 3)', () => {
+    expect(tousPeuples.filter(comp).map((p) => p.nom)).toEqual([
+      'Âme forgée', 'Cambion', 'Demi-ogre', 'Drakonide', 'Elfe pâle', 'Elfe des profondeurs', 'Félis', 'Frouïn', 'Gobelin', 'Kobold',
+      'Lutin (fée)', 'Lutin (farfadet)', 'Minotaure', 'Nephilim', 'Ophidien', 'Satyre', 'Wolfer',
+    ]);
+    expect(tousProfils.filter(comp).map((p) => p.id)).toEqual(['caravanier', 'chamane', 'parangon', 'primaliste', 'psionique']);
+  });
+
+  it('voies : 18 de peuple, 25 de profil, 2 de prestige, 4 d’artisan, 35 de recettes, 32 de domaine', () => {
+    expect([n('peuple'), n('profil'), n('prestige'), n('artisan'), n('recette'), n('domaine')]).toEqual([18, 25, 2, 4, 35, 32]);
+    expect(voiesDomaine).toHaveLength(32);
+  });
+
+  it('aucun identifiant de voie en double avec le Livre des règles', () => {
+    const ids = toutesVoies.map((v) => v.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('texte réparé : pas de lettres éclatées ni de caractères de contrôle', () => {
+    for (const v of cv)
+      for (const c of v.capacites) {
+        expect(c.description, c.id).not.toMatch(/[\u0000-\u0008\u0080-\u009F\uE000-\uF8FF\uFFFD]/);
+        expect(c.description, c.id).not.toMatch(/(?:^|\s)(?:\S\s){5,}\S(?=\s|$)/);
+      }
+  });
+
+  it('textes de référence', () => {
+    expect(voieById['voie-de-l-ame-forgee'].capacites[4].description).toMatch(/augmente ses valeurs de CON et de FOR de \+1/);
+    expect(voieById['voie-de-la-telekinesie'].capacites[1].nom).toBe('Champ de protection');
+    expect(voieById['voie-de-domaine-oumaros'].capacites.map((c) => c.nom)).toEqual(['Capacité de peuple + météo', 'Lévitation', 'Foudre mineure', 'Monture volante', 'Château dans le ciel']);
+    expect(voieById['voie-de-domaine-arcanna']).toMatchObject({ divinite: 'Arcanna', symbole: 'une étoile', armePrivilegiee: 'bâton', page: 142 });
+  });
+
+  it('modificateurs de peuple : fixes ou au choix', () => {
+    expect(peupleById['demi-ogre'].mods.fixes).toEqual({ FOR: 2, CON: 1, AGI: -1, INT: -1, CHA: -1, VOL: -1 });
+    expect(peupleById['felis'].mods).toMatchObject({ plus: ['AGI', 'PER'], moins: ['FOR', 'INT'] });
+    expect(peupleById['ame-forgee'].modificateurs).toBe('+1 en CON, -1 en CHA ou INT');
+  });
+
+  it('profils : armure, bouclier, famille et énergie', () => {
+    expect(profilById.caravanier).toMatchObject({ famille: 'aventuriers', armureMax: 4, bouclier: 'petit', pvParNiveau: 4 });
+    expect(profilById.primaliste).toMatchObject({ famille: 'mages', voieDuMage: false, pvParNiveau: 4 });
+    expect(profilById.psionique).toMatchObject({ famille: null, energie: 'PE', armureLibre: true });
+    expect(profilById.psionique.particularites).toMatch(/points d’ego \(PE\)/);
+  });
+
+  it('pages référencées dans le Compagnon', () => {
+    expect(refPage(peupleById['wolfer'])).toBe('Compagnon p. 36');
+    expect(refPage(voieById['voie-du-mage'])).toBe('p. 60');
+    expect(equipById['sabre-droit']).toMatchObject({ dm: '1d6', dm2: '1d8', critique: 19, source: 'compagnon' });
   });
 });

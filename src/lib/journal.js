@@ -1,6 +1,6 @@
 // Journal des actions d'un personnage (à la manière d'un « chatter ») :
 // chaque modification de la fiche est comparée à l'état précédent et consignée.
-import { voieById, capaciteById, peupleById, profilById, etatById, CARAC_NOMS } from '../data/index.js';
+import { voieById, capaciteById, peupleById, profilById, etatById, familles, CARAC_NOMS } from '../data/index.js';
 import { POSTURES } from './rules.js';
 
 export const JOURNAL_MAX = 500; // nombre maximal d'entrées conservées
@@ -14,8 +14,8 @@ export const CATEGORIES_JOURNAL = {
   note: 'Notes',
 };
 
-const BONUS_LABELS = { DEF: 'Défense', INIT: 'Initiative', CONTACT: 'Attaque au contact', DISTANCE: 'Attaque à distance', MAGIQUE: 'Attaque magique', PV: 'PV max', PM: 'PM max', PC: 'PC max', DR: 'DR max', ...CARAC_NOMS };
-const MAX_LABELS = { PV: 'PV max (manuel)', PC: 'PC max (manuel)', PM: 'PM max (manuel)', DR: 'DR max (manuel)' };
+const BONUS_LABELS = { DEF: 'Défense', INIT: 'Initiative', CONTACT: 'Attaque au contact', DISTANCE: 'Attaque à distance', MAGIQUE: 'Attaque magique', PV: 'PV max', PM: 'PM max', PE: 'PE max', PC: 'PC max', DR: 'DR max', ...CARAC_NOMS };
+const MAX_LABELS = { PV: 'PV max (manuel)', PC: 'PC max (manuel)', PM: 'PM max (manuel)', PE: 'PE max (manuel)', DR: 'DR max (manuel)' };
 
 const court = (t, n = 60) => {
   const s = String(t ?? '').replace(/\s+/g, ' ').trim();
@@ -44,12 +44,15 @@ export function diffPerso(av, ap) {
   if (av.voiePeuple !== ap.voiePeuple) val('voiePeuple', 'fiche', 'Voie de peuple', voieById[av.voiePeuple]?.nom, voieById[ap.voiePeuple]?.nom);
   val('niveau', 'progression', 'Niveau', av.niveau, ap.niveau);
   if (!!av.voieDuMage !== !!ap.voieDuMage) evt('voieDuMage', 'progression', ap.voieDuMage ? 'Voie du mage adoptée' : 'Retour à la voie de peuple');
+  if ((av.voieDomaine || null) !== (ap.voieDomaine || null)) evt('voieDomaine', 'progression', ap.voieDomaine ? `Voie de domaine adoptée : ${voieById[ap.voieDomaine]?.nom || ap.voieDomaine}` : 'Retour à la voie de peuple');
+  if ((av.famille || null) !== (ap.famille || null)) val('famille', 'fiche', 'Famille', familles[av.famille]?.nom, familles[ap.famille]?.nom);
 
   // Réserves
   val('pv', 'combat', 'PV', av.pv?.actuel, ap.pv?.actuel);
   val('pvTemp', 'combat', 'PV temporaires', av.pv?.temp || 0, ap.pv?.temp || 0);
   val('pc', 'combat', 'PC', av.pc?.actuel, ap.pc?.actuel);
   val('pm', 'combat', 'PM', av.pm?.actuel, ap.pm?.actuel);
+  val('pe', 'combat', 'PE', av.pe?.actuel, ap.pe?.actuel);
   val('dr', 'combat', 'DR', av.dr?.actuel, ap.dr?.actuel);
 
   // Posture de combat (défense partielle / totale, sprint)
