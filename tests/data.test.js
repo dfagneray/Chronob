@@ -176,3 +176,28 @@ describe('Compagnon du joueur', () => {
     expect(equipById['sabre-droit']).toMatchObject({ dm: '1d6', dm2: '1d8', critique: 19, source: 'compagnon' });
   });
 });
+
+describe('Illustrations', async () => {
+  const fs = await import('node:fs');
+  const ILL = (await import('../src/data/illustrations.json')).default;
+  const { DESSINS } = await import('../src/components/dessins.jsx');
+
+  it('chaque peuple a un portrait, chaque profil une illustration', () => {
+    for (const p of tousPeuples) expect(ILL.peuples[p.id]?.portrait, p.nom).toBeDefined();
+    for (const p of tousProfils) expect(ILL.profils[p.id], p.nom).toBeDefined();
+  });
+
+  it('chaque objet du catalogue a un dessin du livre ou un dessin au trait', () => {
+    const manquants = EQUIPEMENT.filter((e) => !ILL.equipement[e.id] && !DESSINS[e.id]).map((e) => e.id);
+    expect(manquants).toEqual([]);
+  });
+
+  it('les fichiers référencés existent', () => {
+    const fichiers = [
+      ...Object.values(ILL.peuples).flatMap((p) => [p.portrait, p.silhouette].filter(Boolean)),
+      ...Object.values(ILL.profils),
+      ...Object.values(ILL.equipement),
+    ].map((i) => `public/${i.src}`);
+    for (const f of new Set(fichiers)) expect(fs.existsSync(f), f).toBe(true);
+  });
+});

@@ -282,6 +282,47 @@ select {
   box-shadow: inset 0 0 0 1.5px rgb(var(--surface));
 }
 
+/* Dessins au trait des objets (style crayon du livre) */
+.dessin-trait {
+  fill: none;
+  stroke: rgb(var(--ink) / 0.78);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dessin-trait .fin {
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+/* Illustrations au crayon : le blanc du papier se fond dans le fond (papier), ou s'inverse (Veillée) */
+:root:not([data-theme='dark']) .illus-crayon {
+  mix-blend-mode: multiply;
+}
+/* Illustrations au crayon : sur fond sombre, on éclaircit le papier */
+:root[data-theme='dark'] .illus-crayon {
+  /* blanc → noir (absorbé par « screen »), trait gris → trait clair */
+  filter: invert(1) sepia(0.2) brightness(0.92);
+  mix-blend-mode: screen;
+}
+
+/* Médaillon hexagonal (portrait du peuple dans l'en-tête) */
+.medaillon {
+  display: inline-block;
+  overflow: hidden;
+  clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  background: rgb(var(--gold));
+  padding: 2px;
+}
+.medaillon img.illus-crayon {
+  mix-blend-mode: normal;
+  filter: none;
+}
+.medaillon img {
+  clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  background: rgb(var(--surface));
+}
+
 /* Puces losange du livre */
 .losange {
   display: inline-block;

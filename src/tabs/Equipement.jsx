@@ -5,6 +5,7 @@ import { EQUIPEMENT, equipById, refPage } from '../data/index.js';
 import { CATEGORIES_EQUIPEMENT, SAC_AVENTURIER, formatPrix } from '../data/equipement.js';
 import { dmArme, attaqueArme, fmt } from '../lib/rules.js';
 import { ICONES_CATEGORIE } from '../components/visuels.jsx';
+import { IllustrationObjet } from '../components/illustrations.jsx';
 import { uid } from '../lib/store.jsx';
 
 const PIECES = [
@@ -138,8 +139,10 @@ function LigneObjet({ eq, it }) {
   return (
     <div className="flex items-center">
       <button type="button" className="flex min-h-[60px] min-w-0 flex-1 items-center gap-3 px-3 py-2 text-left active:bg-surface2" onClick={() => eq.setEdit(it)}>
-        <span className={cx('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', it.equipe ? 'bg-gold/20 text-gold' : 'bg-surface2 text-muted')}>
-          <Icon size={19} aria-hidden="true" />
+        <span className={cx('flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl', it.equipe ? 'bg-gold/20 text-gold ring-1 ring-gold' : 'bg-surface2 text-muted')}
+          aria-hidden="true"
+        >
+          <IllustrationObjet refId={it.refId} nom={it.nom} className="h-full w-full p-0.5" repli={<Icon size={19} aria-hidden="true" />} />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block truncate font-semibold">
@@ -341,8 +344,8 @@ function Catalogue({ open, onClose, onAdd, onBuy }) {
               {(() => {
                 const I = ICONES[e.categorie] || Package;
                 return (
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface2 text-gold">
-                    <I size={17} aria-hidden="true" />
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface2 text-gold" aria-hidden="true">
+                    <IllustrationObjet refId={e.id} nom={e.nom} className="h-full w-full p-0.5" repli={<I size={17} aria-hidden="true" />} />
                   </span>
                 );
               })()}
@@ -389,6 +392,7 @@ function Catalogue({ open, onClose, onAdd, onBuy }) {
       >
         {choix && (
           <>
+            <IllustrationObjet refId={choix.id} nom={choix.nom} className="mx-auto mb-3 block h-44 w-full" />
             <p className="text-[16px]">{choix.notes || CATEGORIES_EQUIPEMENT[choix.categorie]}</p>
             <div className="mt-3 font-ui text-sm text-muted">Quantité</div>
             <Stepper value={qte} min={1} max={99} onChange={setQte} />
@@ -503,6 +507,7 @@ function EditItem({ item, d, onClose, onChange, onDelete }) {
         {item.typeDm && <Badge>{item.typeDm}</Badge>}
         {item.page && <Badge>{refPage(item)}</Badge>}
       </div>
+      <IllustrationObjet refId={item.refId} nom={item.nom} className="mx-auto mb-3 block h-40 w-full" />
       {arme && (
         <Card className="mb-3 grid grid-cols-2 gap-2 p-3 text-center">
           <div>

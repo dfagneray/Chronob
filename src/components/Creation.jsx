@@ -7,6 +7,7 @@ import { SAC_AVENTURIER } from '../data/equipement.js';
 import { personnageVide } from '../lib/store.jsx';
 import { IDEAUX, TRAVERS } from '../data/personnalite.js';
 import TraitSelect from './TraitSelect.jsx';
+import { PortraitPeuple, IllustrationProfil, aPortrait, aIllustrationProfil } from './illustrations.jsx';
 import { ICONES_FAMILLE, ICONES_CARAC, IconeProfil } from './visuels.jsx';
 import { itemDepuisCatalogue } from '../tabs/Equipement.jsx';
 
@@ -274,12 +275,21 @@ export default function Creation({ open, onClose, onCreate, details }) {
                 onInfo={details && (() => details.peuple(p))}
                 infoLabel={`Description complète du peuple ${p.nom}`}
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-[18px]">{p.nom}</span>
-                  {peupleId === p.id && <Check size={18} className="text-gold" />}
+                <div className="flex gap-3">
+                  {aPortrait(p.id) && (
+                    <span className="h-[72px] w-[64px] shrink-0 overflow-hidden rounded-lg bg-surface2" aria-hidden="true">
+                      <PortraitPeuple id={p.id} nom={p.nom} cadrage="object-cover object-top" className="h-full w-full" />
+                    </span>
+                  )}
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center justify-between">
+                      <span className="font-display text-[18px]">{p.nom}</span>
+                      {peupleId === p.id && <Check size={18} className="text-gold" />}
+                    </span>
+                    <span className="block font-ui text-xs text-muted">{p.modificateurs}</span>
+                    <span className="mt-1 line-clamp-2 text-[15px]">{p.description.split('\n')[0]}</span>
+                  </span>
                 </div>
-                <div className="font-ui text-xs text-muted">{p.modificateurs}</div>
-                <div className="mt-1 line-clamp-2 text-[15px]">{p.description.split('\n')[0]}</div>
               </CarteChoix>
             ))}
           </div>
@@ -310,7 +320,7 @@ export default function Creation({ open, onClose, onCreate, details }) {
         [...Object.entries(familles), ...(profils.some((p) => !p.famille) ? [[null, { nom: 'Famille au choix' }]] : [])].map(([fid, fam]) => (
           <div key={fid}>
             <SectionTitle icon={ICONES_FAMILLE[fid]}>
-              {fam.nom} {fid && <span className="font-num text-[13px] text-muted">· {fam.pv} PV · d{fam.dr}</span>}
+              {fam.nom} {fid && <span className="ts-droite font-num text-[13px] text-muted">· {fam.pv} PV · d{fam.dr}</span>}
             </SectionTitle>
             {fam.bonus && <p className="-mt-1 mb-2 px-1 font-ui text-xs text-muted">Bonus de famille : {fam.bonus}</p>}
             <div className="grid grid-cols-2 gap-2">
@@ -329,7 +339,13 @@ export default function Creation({ open, onClose, onCreate, details }) {
                     }}
                     className={cx('flex items-start gap-2.5 rounded-xl p-3 text-left rune-border', profilId === p.id ? 'bg-gold/15 border-gold' : 'bg-surface')}
                   >
-                    <IconeProfil id={p.id} size={20} className="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+                    {aIllustrationProfil(p.id) ? (
+                      <span className="h-14 w-10 shrink-0" aria-hidden="true">
+                        <IllustrationProfil id={p.id} nom={p.nom} className="h-full w-full" />
+                      </span>
+                    ) : (
+                      <IconeProfil id={p.id} size={20} className="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+                    )}
                     <span className="min-w-0">
                     <div className="font-display text-[17px] leading-tight">{p.nom}</div>
                     <div className="font-ui text-[11px] text-muted">[{p.caracteristiques.join(', ').replace('|', '/')}]</div>
@@ -356,7 +372,13 @@ export default function Creation({ open, onClose, onCreate, details }) {
       {etape === 1 && profil && (
         <Card className="sticky bottom-0 mt-4 p-3 shadow-lg">
           <div className="flex items-center gap-2">
-            <IconeProfil id={profil.id} size={20} className="shrink-0 text-gold" aria-hidden="true" />
+            {aIllustrationProfil(profil.id) ? (
+              <span className="h-16 w-12 shrink-0" aria-hidden="true">
+                <IllustrationProfil id={profil.id} nom={profil.nom} className="h-full w-full" eager />
+              </span>
+            ) : (
+              <IconeProfil id={profil.id} size={20} className="shrink-0 text-gold" aria-hidden="true" />
+            )}
             <span className="font-display text-[17px]">{profil.nom}</span>
             <span className="font-ui text-xs text-muted">{familles[famille]?.nom || 'famille à choisir'}</span>
           </div>

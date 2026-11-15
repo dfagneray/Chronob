@@ -1,6 +1,7 @@
 import { BookOpen, CheckCircle2, Circle, Sparkles } from 'lucide-react';
 import { Sheet, Badge, ActionBadge, RuleText, Btn, cx } from './ui.jsx';
 import { IconeProfil, ICONES_CATEGORIE, ICONES_ETAT, PiedPage } from './visuels.jsx';
+import { PortraitPeuple, IllustrationProfil, IllustrationObjet } from './illustrations.jsx';
 import { voieById, profilById, peupleById, ACTIONS, CATEGORIES_PRESTIGE, CATEGORIES_RECETTES, familles, CARAC_NOMS, refPage, sourceDe } from '../data/index.js';
 import { NIVEAU_REQUIS, coutCapacite, frequence, modApplique, fmt, estPsionique } from '../lib/rules.js';
 import { CATEGORIES_EQUIPEMENT, formatPrix } from '../data/equipement.js';
@@ -164,6 +165,7 @@ export function ProfilSheet({ profil, open, onClose, onOpenVoie }) {
         <Badge>{refPage(profil)}</Badge>
         <BadgeSource x={profil} />
       </div>
+      <IllustrationProfil id={profil.id} nom={profil.nom} className="mx-auto mb-3 block max-h-72 w-full" />
       <RuleText text={profil.description} />
       {profil.particularites && <RuleText text={profil.particularites} className="mt-3 rounded-xl bg-surface2 p-3" />}
       {profil.armesArmures && (
@@ -202,8 +204,10 @@ export function PeupleSheet({ peuple, open, onClose, onOpenVoie }) {
         <Badge>{refPage(peuple)}</Badge>
         <BadgeSource x={peuple} />
       </div>
+      <PortraitPeuple id={peuple.id} nom={peuple.nom} className="mx-auto mb-3 block max-h-64 w-full" />
       <RuleText text={peuple.description} />
       {peuple.particularites && <RuleText text={peuple.particularites} className="mt-3 rounded-xl bg-surface2 p-3" />}
+      <PortraitPeuple id={peuple.id} nom={peuple.nom} variante="silhouette" className="mx-auto mt-4 block max-h-56 w-auto" />
       {Object.keys(peuple.reperes || {}).length > 0 && (
         <dl className="mt-4 grid grid-cols-[auto,1fr] gap-x-3 gap-y-1 rounded-xl bg-surface2 p-3 font-ui text-sm">
           {Object.entries(peuple.reperes).map(([k, v]) => (
@@ -231,6 +235,7 @@ export function EquipSheet({ item, open, onClose, footer }) {
   if (!item) return null;
   return (
     <Sheet open={open} onClose={onClose} title={item.nom} footer={footer}>
+      <IllustrationObjet refId={item.id} nom={item.nom} className="mx-auto mb-3 block h-48 w-full" />
       <div className="mb-3 flex flex-wrap gap-1.5">
         <Badge tone="gold">
           {(() => {

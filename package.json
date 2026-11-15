@@ -6,6 +6,7 @@
   "scripts": {
     "extract": "node scripts/extract-rules.mjs",
     "extract:compagnon": "node scripts/extract-compagnon.mjs",
+    "extract:illustrations": "node scripts/extract-illustrations.mjs",
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview --host",

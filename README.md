@@ -9,6 +9,7 @@ Fiche de personnage, compendium de règles et planificateur de progression pour
 npm install
 npm run extract   # lit DOC-20250811-WA0000.pdf et génère src/data/*.json
 npm run extract:compagnon  # lit le PDF du Compagnon du joueur et génère src/data/compagnon/*.json
+npm run extract:illustrations  # extrait portraits, profils et dessins d’équipement des PDF (public/illustrations/)
 npm run dev       # http://localhost:5173 (et sur le réseau local, pour le téléphone)
 npm run build     # version de production dans dist/
 npm test          # tests unitaires (Vitest) : règles du livre, données, sauvegarde, journal, interface
@@ -21,6 +22,14 @@ les exemples chiffrés du livre (Lhagva, Ionas, profils hybrides p. 177…), les
 la création d'un héros, le passage de niveau et les saisies manuelles.
 
 `npm run extract -- chemin/vers/autre.pdf` permet d'indiquer un autre fichier.
+
+### Illustrations
+
+`npm run extract:illustrations` lit les deux PDF avec pdf.js dans le Chromium de Playwright, applique les masques
+de fondu des images et écrit des WebP dans `public/illustrations/` ainsi que la table `src/data/illustrations.json`.
+Les correspondances (page, n° d’image) sont relevées à la main dans `scripts/extract-illustrations.mjs`. Les objets
+que le livre n’illustre pas ont un dessin au trait (SVG) dans `src/components/dessins.jsx`. Les illustrations sont
+© Black Book Éditions ; elles sont versionnées et publiées par choix du propriétaire du dépôt.
 
 ### Compagnon du joueur
 
@@ -43,6 +52,7 @@ se gère avec le mode libre du planificateur.
 - `scripts/extract-rules.mjs` : extraction PDF → JSON (peuples, profils, voies, capacités, états, règles)
 - `scripts/extract-compagnon.mjs`, `scripts/lecture-compagnon.mjs` : extraction du Compagnon du joueur (`src/data/compagnon/`)
 - `scripts/pdf-commun.mjs` : outils d’analyse partagés (voies, capacités, effets chiffrés)
+- `scripts/extract-illustrations.mjs`, `scripts/illustrations-pdf.mjs` : extraction des illustrations
 - `src/data/equipement.js` : catalogue d'équipement (tableaux p. 183-191)
 - `src/lib/rules.js` : calculs (DEF, Init., attaques, PV, PM, PC, DR, d4°) et règles de progression
 - `src/tabs/` : les 4 onglets (Personnage — avec armes en main, consommables et « Sac & bourse » —, Voies, Progression, Grimoire) ; `Equipement.jsx` fournit les sections d’équipement de la fiche

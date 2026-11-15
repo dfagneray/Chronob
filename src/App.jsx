@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { User, Waypoints, TrendingUp, Library, Moon, Users, UserPlus, History, BookOpen } from 'lucide-react';
 import { Hexa, IconeProfil, FiletHexa } from './components/visuels.jsx';
+import { MedaillonPeuple } from './components/illustrations.jsx';
 import { useStore } from './lib/store.jsx';
 import { deriver } from './lib/rules.js';
 import { CapaciteSheet, VoieSheet, ProfilSheet, PeupleSheet, EquipSheet, EtatSheet, RegleSheet } from './components/Details.jsx';
@@ -90,6 +91,7 @@ export default function App() {
               <Hexa taille={46} label={actif ? `Niveau ${actif.niveau}` : undefined}>
                 {actif?.niveau ?? '–'}
               </Hexa>
+              {actif && <MedaillonPeuple id={actif.peupleId} nom={peupleById[actif.peupleId]?.nom} />}
               <span className="min-w-0">
                 <span className="block truncate font-display text-[21px] leading-tight text-goldsoft">{actif?.nom || 'Chronob'}</span>
                 <span className="flex items-center gap-1.5 truncate font-ui text-[13px] text-muted">

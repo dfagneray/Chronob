@@ -6,10 +6,24 @@ import { CATEGORIES_EQUIPEMENT } from '../data/equipement.js';
 import { useStore, exporterJSON } from '../lib/store.jsx';
 import { origineVoie } from '../components/Details.jsx';
 import { Hexa, IconeProfil, ICONES_CATEGORIE, ICONES_ETAT } from '../components/visuels.jsx';
+import { PortraitPeuple, IllustrationProfil, IllustrationObjet, aPortrait, aIllustrationProfil, aIllustrationObjet } from '../components/illustrations.jsx';
 import { Users as IcPeuple, Waypoints, Sparkle, ScrollText, AlertTriangle as IcEtat, Package as IcObjet } from 'lucide-react';
 
 /** Pastille d'icône selon le type de résultat de l'encyclopédie. */
 function IconeType({ x }) {
+  // vignette illustrée quand elle existe (peuple, profil, objet)
+  const vignette =
+    x.type === 'peuple' && aPortrait(x.ref.id) ? <PortraitPeuple id={x.ref.id} nom={x.ref.nom} cadrage="object-cover object-top" className="h-full w-full" />
+    : x.type === 'profil' && aIllustrationProfil(x.ref.id) ? <IllustrationProfil id={x.ref.id} nom={x.ref.nom} cadrage="object-cover object-top" className="h-full w-full" />
+    : x.type === 'equipement' && aIllustrationObjet(x.ref.id) ? <IllustrationObjet refId={x.ref.id} nom={x.ref.nom} className="h-full w-full p-0.5" />
+    : null;
+  if (vignette) {
+    return (
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface2" aria-hidden="true">
+        {vignette}
+      </span>
+    );
+  }
   let I = Sparkle;
   if (x.type === 'peuple') I = IcPeuple;
   else if (x.type === 'voie') I = Waypoints;

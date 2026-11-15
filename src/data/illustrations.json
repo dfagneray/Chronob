@@ -1,0 +1,593 @@
+{
+ "peuples": {
+  "demi-elfe": {
+   "portrait": {
+    "src": "illustrations/peuples/demi-elfe.webp",
+    "largeur": 720,
+    "hauteur": 398
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/demi-elfe-silhouette.webp",
+    "largeur": 384,
+    "hauteur": 414
+   }
+  },
+  "demi-orc": {
+   "portrait": {
+    "src": "illustrations/peuples/demi-orc.webp",
+    "largeur": 720,
+    "hauteur": 424
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/demi-orc-silhouette.webp",
+    "largeur": 384,
+    "hauteur": 364
+   }
+  },
+  "elfe-haut": {
+   "portrait": {
+    "src": "illustrations/peuples/elfe-haut.webp",
+    "largeur": 720,
+    "hauteur": 458
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/elfe-haut-silhouette.webp",
+    "largeur": 308,
+    "hauteur": 406
+   }
+  },
+  "elfe-sylvain": {
+   "portrait": {
+    "src": "illustrations/peuples/elfe-sylvain.webp",
+    "largeur": 720,
+    "hauteur": 385
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/elfe-sylvain-silhouette.webp",
+    "largeur": 307,
+    "hauteur": 393
+   }
+  },
+  "gnome": {
+   "portrait": {
+    "src": "illustrations/peuples/gnome.webp",
+    "largeur": 720,
+    "hauteur": 347
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/gnome-silhouette.webp",
+    "largeur": 384,
+    "hauteur": 365
+   }
+  },
+  "halfelin": {
+   "portrait": {
+    "src": "illustrations/peuples/halfelin.webp",
+    "largeur": 720,
+    "hauteur": 336
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/halfelin-silhouette.webp",
+    "largeur": 384,
+    "hauteur": 355
+   }
+  },
+  "humain": {
+   "portrait": {
+    "src": "illustrations/peuples/humain.webp",
+    "largeur": 720,
+    "hauteur": 383
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/humain-silhouette.webp",
+    "largeur": 311,
+    "hauteur": 307
+   }
+  },
+  "nain": {
+   "portrait": {
+    "src": "illustrations/peuples/nain.webp",
+    "largeur": 689,
+    "hauteur": 502
+   },
+   "silhouette": {
+    "src": "illustrations/peuples/nain-silhouette.webp",
+    "largeur": 446,
+    "hauteur": 286
+   }
+  },
+  "ame-forgee": {
+   "portrait": {
+    "src": "illustrations/peuples/ame-forgee.webp",
+    "largeur": 334,
+    "hauteur": 419
+   }
+  },
+  "cambion": {
+   "portrait": {
+    "src": "illustrations/peuples/cambion.webp",
+    "largeur": 374,
+    "hauteur": 418
+   }
+  },
+  "demi-ogre": {
+   "portrait": {
+    "src": "illustrations/peuples/demi-ogre.webp",
+    "largeur": 387,
+    "hauteur": 419
+   }
+  },
+  "drakonide": {
+   "portrait": {
+    "src": "illustrations/peuples/drakonide.webp",
+    "largeur": 334,
+    "hauteur": 418
+   }
+  },
+  "elfe-pale": {
+   "portrait": {
+    "src": "illustrations/peuples/elfe-pale.webp",
+    "largeur": 364,
+    "hauteur": 418
+   }
+  },
+  "elfe-des-profondeurs": {
+   "portrait": {
+    "src": "illustrations/peuples/elfe-des-profondeurs.webp",
+    "largeur": 496,
+    "hauteur": 418
+   }
+  },
+  "felis": {
+   "portrait": {
+    "src": "illustrations/peuples/felis.webp",
+    "largeur": 384,
+    "hauteur": 454
+   }
+  },
+  "frouin": {
+   "portrait": {
+    "src": "illustrations/peuples/frouin.webp",
+    "largeur": 416,
+    "hauteur": 419
+   }
+  },
+  "gobelin": {
+   "portrait": {
+    "src": "illustrations/peuples/gobelin.webp",
+    "largeur": 407,
+    "hauteur": 419
+   }
+  },
+  "kobold": {
+   "portrait": {
+    "src": "illustrations/peuples/kobold.webp",
+    "largeur": 387,
+    "hauteur": 419
+   }
+  },
+  "lutin-fee": {
+   "portrait": {
+    "src": "illustrations/peuples/lutin-fee.webp",
+    "largeur": 381,
+    "hauteur": 419
+   }
+  },
+  "lutin-farfadet": {
+   "portrait": {
+    "src": "illustrations/peuples/lutin-farfadet.webp",
+    "largeur": 369,
+    "hauteur": 447
+   }
+  },
+  "minotaure": {
+   "portrait": {
+    "src": "illustrations/peuples/minotaure.webp",
+    "largeur": 452,
+    "hauteur": 419
+   }
+  },
+  "nephilim": {
+   "portrait": {
+    "src": "illustrations/peuples/nephilim.webp",
+    "largeur": 382,
+    "hauteur": 452
+   }
+  },
+  "ophidien": {
+   "portrait": {
+    "src": "illustrations/peuples/ophidien.webp",
+    "largeur": 375,
+    "hauteur": 419
+   }
+  },
+  "satyre": {
+   "portrait": {
+    "src": "illustrations/peuples/satyre.webp",
+    "largeur": 386,
+    "hauteur": 418
+   }
+  },
+  "wolfer": {
+   "portrait": {
+    "src": "illustrations/peuples/wolfer.webp",
+    "largeur": 426,
+    "hauteur": 508
+   }
+  }
+ },
+ "profils": {
+  "arquebusier": {
+   "src": "illustrations/profils/arquebusier.webp",
+   "largeur": 573,
+   "hauteur": 720
+  },
+  "barde": {
+   "src": "illustrations/profils/barde.webp",
+   "largeur": 557,
+   "hauteur": 720
+  },
+  "rodeur": {
+   "src": "illustrations/profils/rodeur.webp",
+   "largeur": 720,
+   "hauteur": 449
+  },
+  "voleur": {
+   "src": "illustrations/profils/voleur.webp",
+   "largeur": 510,
+   "hauteur": 720
+  },
+  "barbare": {
+   "src": "illustrations/profils/barbare.webp",
+   "largeur": 620,
+   "hauteur": 720
+  },
+  "chevalier": {
+   "src": "illustrations/profils/chevalier.webp",
+   "largeur": 554,
+   "hauteur": 719
+  },
+  "guerrier": {
+   "src": "illustrations/profils/guerrier.webp",
+   "largeur": 672,
+   "hauteur": 720
+  },
+  "ensorceleur": {
+   "src": "illustrations/profils/ensorceleur.webp",
+   "largeur": 479,
+   "hauteur": 720
+  },
+  "forgesort": {
+   "src": "illustrations/profils/forgesort.webp",
+   "largeur": 503,
+   "hauteur": 720
+  },
+  "magicien": {
+   "src": "illustrations/profils/magicien.webp",
+   "largeur": 720,
+   "hauteur": 579
+  },
+  "sorcier": {
+   "src": "illustrations/profils/sorcier.webp",
+   "largeur": 499,
+   "hauteur": 720
+  },
+  "druide": {
+   "src": "illustrations/profils/druide.webp",
+   "largeur": 503,
+   "hauteur": 720
+  },
+  "moine": {
+   "src": "illustrations/profils/moine.webp",
+   "largeur": 523,
+   "hauteur": 720
+  },
+  "pretre": {
+   "src": "illustrations/profils/pretre.webp",
+   "largeur": 621,
+   "hauteur": 720
+  },
+  "caravanier": {
+   "src": "illustrations/profils/caravanier.webp",
+   "largeur": 542,
+   "hauteur": 720
+  },
+  "chamane": {
+   "src": "illustrations/profils/chamane.webp",
+   "largeur": 525,
+   "hauteur": 720
+  },
+  "parangon": {
+   "src": "illustrations/profils/parangon.webp",
+   "largeur": 463,
+   "hauteur": 720
+  },
+  "primaliste": {
+   "src": "illustrations/profils/primaliste.webp",
+   "largeur": 573,
+   "hauteur": 720
+  },
+  "psionique": {
+   "src": "illustrations/profils/psionique.webp",
+   "largeur": 572,
+   "hauteur": 720
+  }
+ },
+ "equipement": {
+  "marteau": {
+   "src": "illustrations/equipement/marteau.webp",
+   "largeur": 333,
+   "hauteur": 468
+  },
+  "masse": {
+   "src": "illustrations/equipement/marteau.webp",
+   "largeur": 333,
+   "hauteur": 468
+  },
+  "hache": {
+   "src": "illustrations/equipement/hache.webp",
+   "largeur": 305,
+   "hauteur": 519
+  },
+  "hache-a-deux-mains": {
+   "src": "illustrations/equipement/hache.webp",
+   "largeur": 305,
+   "hauteur": 519
+  },
+  "epee-longue": {
+   "src": "illustrations/equipement/epee-longue.webp",
+   "largeur": 450,
+   "hauteur": 600
+  },
+  "epee-batarde": {
+   "src": "illustrations/equipement/epee-longue.webp",
+   "largeur": 450,
+   "hauteur": 600
+  },
+  "epee-a-deux-mains": {
+   "src": "illustrations/equipement/epee-longue.webp",
+   "largeur": 450,
+   "hauteur": 600
+  },
+  "epee-courte": {
+   "src": "illustrations/equipement/epee-longue.webp",
+   "largeur": 450,
+   "hauteur": 600
+  },
+  "rapiere": {
+   "src": "illustrations/equipement/rapiere.webp",
+   "largeur": 109,
+   "hauteur": 565
+  },
+  "vivelame": {
+   "src": "illustrations/equipement/vivelame.webp",
+   "largeur": 163,
+   "hauteur": 458
+  },
+  "baton": {
+   "src": "illustrations/equipement/baton.webp",
+   "largeur": 93,
+   "hauteur": 600
+  },
+  "baton-ferre": {
+   "src": "illustrations/equipement/baton.webp",
+   "largeur": 93,
+   "hauteur": 600
+  },
+  "tribaton": {
+   "src": "illustrations/equipement/baton.webp",
+   "largeur": 93,
+   "hauteur": 600
+  },
+  "lance": {
+   "src": "illustrations/equipement/lance.webp",
+   "largeur": 141,
+   "hauteur": 600
+  },
+  "epieu": {
+   "src": "illustrations/equipement/lance.webp",
+   "largeur": 141,
+   "hauteur": 600
+  },
+  "pique": {
+   "src": "illustrations/equipement/lance.webp",
+   "largeur": 141,
+   "hauteur": 600
+  },
+  "lance-lancer": {
+   "src": "illustrations/equipement/lance.webp",
+   "largeur": 141,
+   "hauteur": 600
+  },
+  "lance-de-cavalerie": {
+   "src": "illustrations/equipement/lance.webp",
+   "largeur": 141,
+   "hauteur": 600
+  },
+  "arc-court": {
+   "src": "illustrations/equipement/arc-court.webp",
+   "largeur": 460,
+   "hauteur": 600
+  },
+  "arc-long": {
+   "src": "illustrations/equipement/arc-court.webp",
+   "largeur": 460,
+   "hauteur": 600
+  },
+  "arbalete-legere": {
+   "src": "illustrations/equipement/arbalete-legere.webp",
+   "largeur": 505,
+   "hauteur": 497
+  },
+  "arbalete-lourde": {
+   "src": "illustrations/equipement/arbalete-legere.webp",
+   "largeur": 505,
+   "hauteur": 497
+  },
+  "arbalete-de-poing": {
+   "src": "illustrations/equipement/arbalete-legere.webp",
+   "largeur": 505,
+   "hauteur": 497
+  },
+  "fronde": {
+   "src": "illustrations/equipement/fronde.webp",
+   "largeur": 540,
+   "hauteur": 600
+  },
+  "lance-pierre": {
+   "src": "illustrations/equipement/fronde.webp",
+   "largeur": 540,
+   "hauteur": 600
+  },
+  "javelot": {
+   "src": "illustrations/equipement/fronde.webp",
+   "largeur": 540,
+   "hauteur": 600
+  },
+  "hachette": {
+   "src": "illustrations/equipement/fronde.webp",
+   "largeur": 540,
+   "hauteur": 600
+  },
+  "petoire": {
+   "src": "illustrations/equipement/petoire.webp",
+   "largeur": 394,
+   "hauteur": 303
+  },
+  "mousquet": {
+   "src": "illustrations/equipement/petoire.webp",
+   "largeur": 394,
+   "hauteur": 303
+  },
+  "petit-bouclier": {
+   "src": "illustrations/equipement/petit-bouclier.webp",
+   "largeur": 600,
+   "hauteur": 463
+  },
+  "grand-bouclier": {
+   "src": "illustrations/equipement/petit-bouclier.webp",
+   "largeur": 600,
+   "hauteur": 463
+  },
+  "armure-de-plaques": {
+   "src": "illustrations/equipement/armure-de-plaques.webp",
+   "largeur": 600,
+   "hauteur": 337
+  },
+  "plaque-complete": {
+   "src": "illustrations/equipement/armure-de-plaques.webp",
+   "largeur": 600,
+   "hauteur": 337
+  },
+  "tissus-matelasses": {
+   "src": "illustrations/equipement/tissus-matelasses.webp",
+   "largeur": 600,
+   "hauteur": 212
+  },
+  "cuir-simple": {
+   "src": "illustrations/equipement/tissus-matelasses.webp",
+   "largeur": 600,
+   "hauteur": 212
+  },
+  "cuir-renforce": {
+   "src": "illustrations/equipement/tissus-matelasses.webp",
+   "largeur": 600,
+   "hauteur": 212
+  },
+  "chemise-de-mailles": {
+   "src": "illustrations/equipement/tissus-matelasses.webp",
+   "largeur": 600,
+   "hauteur": 212
+  },
+  "cotte-de-mailles": {
+   "src": "illustrations/equipement/tissus-matelasses.webp",
+   "largeur": 600,
+   "hauteur": 212
+  },
+  "materiel-ecriture": {
+   "src": "illustrations/equipement/materiel-ecriture.webp",
+   "largeur": 284,
+   "hauteur": 406
+  },
+  "potion-de-soins": {
+   "src": "illustrations/equipement/potion-de-soins.webp",
+   "largeur": 474,
+   "hauteur": 303
+  },
+  "sac-a-dos": {
+   "src": "illustrations/equipement/potion-de-soins.webp",
+   "largeur": 474,
+   "hauteur": 303
+  },
+  "carquois": {
+   "src": "illustrations/equipement/carquois.webp",
+   "largeur": 248,
+   "hauteur": 464
+  },
+  "couverture": {
+   "src": "illustrations/equipement/couverture.webp",
+   "largeur": 423,
+   "hauteur": 255
+  },
+  "lanterne": {
+   "src": "illustrations/equipement/lanterne.webp",
+   "largeur": 204,
+   "hauteur": 406
+  },
+  "huile": {
+   "src": "illustrations/equipement/lanterne.webp",
+   "largeur": 204,
+   "hauteur": 406
+  },
+  "grappin": {
+   "src": "illustrations/equipement/grappin.webp",
+   "largeur": 283,
+   "hauteur": 464
+  },
+  "corde": {
+   "src": "illustrations/equipement/grappin.webp",
+   "largeur": 283,
+   "hauteur": 464
+  },
+  "mule": {
+   "src": "illustrations/equipement/mule.webp",
+   "largeur": 396,
+   "hauteur": 403
+  },
+  "poney": {
+   "src": "illustrations/equipement/mule.webp",
+   "largeur": 396,
+   "hauteur": 403
+  },
+  "cheval-de-selle": {
+   "src": "illustrations/equipement/cheval-de-selle.webp",
+   "largeur": 414,
+   "hauteur": 395
+  },
+  "cheval-de-guerre": {
+   "src": "illustrations/equipement/cheval-de-guerre.webp",
+   "largeur": 343,
+   "hauteur": 411
+  },
+  "caparacon-mailles": {
+   "src": "illustrations/equipement/cheval-de-guerre.webp",
+   "largeur": 343,
+   "hauteur": 411
+  },
+  "barde-plaque": {
+   "src": "illustrations/equipement/cheval-de-guerre.webp",
+   "largeur": 343,
+   "hauteur": 411
+  },
+  "ration": {
+   "src": "illustrations/equipement/ration.webp",
+   "largeur": 339,
+   "hauteur": 218
+  },
+  "gamelle": {
+   "src": "illustrations/equipement/ration.webp",
+   "largeur": 339,
+   "hauteur": 218
+  }
+ }
+}
