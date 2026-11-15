@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Plus, X, TrendingUp, AlertTriangle, CheckCircle2, Search, Info, ArrowRight, Eraser, Crown } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Plus, X, TrendingUp, AlertTriangle, CheckCircle2, Search, Info, ArrowRight, Eraser, Crown, Check, Undo2, History } from 'lucide-react';
 import { Card, SectionTitle, Btn, Sheet, Badge, ActionBadge, cx, ConfirmBtn, useToast, Empty, Chip, Stepper } from '../components/ui.jsx';
 import { voieById, CARACS, profilById } from '../data/index.js';
-import { NIVEAU_MAX, optionsProgression, voiesApresPlan, simulerPlan, verifierNiveau, validerNiveau, pointsDepenses, coutCapacite, fmt, deriver, NIVEAU_REQUIS, gainPVPlanifie, rangsRecettes } from '../lib/rules.js';
+import { NIVEAU_MAX, optionsProgression, voiesApresPlan, simulerPlan, verifierNiveau, validerNiveau, pointsDepenses, coutCapacite, fmt, deriver, NIVEAU_REQUIS, gainPVPlanifie, rangsRecettes, revenirAuNiveau } from '../lib/rules.js';
 import { origineVoie } from '../components/Details.jsx';
 import { Hexa } from '../components/visuels.jsx';
 
@@ -18,6 +18,36 @@ export default function Planificateur({ char, maj, details }) {
   const [cible, setCible] = useState(Math.min(NIVEAU_MAX, char.niveau + 1));
   const [picker, setPicker] = useState(false);
   const [libre, setLibre] = useState(false);
+  const [vu, setVu] = useState(null); // niveau déjà acquis consulté (null = planification)
+  const rangee = useRef(null);
+  useEffect(() => {
+    if (vu !== null && vu > char.niveau) setVu(null);
+  }, [char.niveau, vu]);
+  // la rangée des niveaux démarre sur le prochain niveau, les niveaux acquis restent accessibles à gauche
+  useEffect(() => {
+    rangee.current?.querySelector('[data-prochain]')?.scrollIntoView?.({ inline: 'center', block: 'nearest' });
+  }, [char.niveau]);
+  const revenir = (n) => {
+    const nb = char.niveau - n;
+    maj((c) => revenirAuNiveau(c, n), { titre: `Retour au niveau ${n} (${nb} niveau${nb > 1 ? 'x' : ''} annulé${nb > 1 ? 's' : ''})` });
+    setVu(null);
+    setCible(n + 1);
+    toast(`Retour au niveau ${n} : les choix annulés sont de nouveau dans le plan, corrigez-les puis revalidez.`, { duree: 5000 });
+  };
+  const chipsAcquis = Array.from({ length: char.niveau - 1 }, (_, i) => i + 2).map((n) => (
+    <button
+      key={`a${n}`}
+      type="button"
+      onClick={() => setVu(vu === n ? null : n)}
+      aria-pressed={vu === n}
+      aria-label={`Niveau ${n} acquis`}
+      className={cx('relative flex h-12 min-w-[48px] shrink-0 flex-col items-center justify-center rounded-xl font-num font-semibold rune-border', vu === n ? 'bg-leaf text-bg' : 'bg-surface2 text-muted')}
+    >
+      <Check size={12} aria-hidden="true" />
+      <span className="text-lg leading-none">{n}</span>
+    </button>
+  ));
+  const ficheAcquis = vu !== null && <NiveauAcquis char={char} n={vu} details={details} onRevenir={revenir} />;
   useEffect(() => {
     if (cible <= char.niveau || cible > NIVEAU_MAX) setCible(Math.min(NIVEAU_MAX, char.niveau + 1));
   }, [char.niveau, cible]);
@@ -32,9 +62,14 @@ export default function Planificateur({ char, maj, details }) {
 
   if (char.niveau >= NIVEAU_MAX) {
     return (
-      <Empty icon={Crown} title="Niveau 20 atteint">
-        Votre héros a atteint le sommet de sa progression.
-      </Empty>
+      <div className="pb-6">
+        <Empty icon={Crown} title="Niveau 20 atteint">
+          Votre héros a atteint le sommet de sa progression.
+        </Empty>
+        <SectionTitle icon={History}>Niveaux acquis</SectionTitle>
+        <div className="no-scrollbar -mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1">{chipsAcquis}</div>
+        {ficheAcquis}
+      </div>
     );
   }
 
@@ -113,15 +148,21 @@ export default function Planificateur({ char, maj, details }) {
       </button>
 
       <SectionTitle>Niveau planifié</SectionTitle>
-      <div className="no-scrollbar -mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1">
+      <div ref={rangee} className="no-scrollbar -mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1">
+        {chipsAcquis}
+        {chipsAcquis.length > 0 && <span className="mx-1 w-px shrink-0 self-stretch bg-line" aria-hidden="true" />}
         {Array.from({ length: NIVEAU_MAX - char.niveau }, (_, i) => char.niveau + 1 + i).map((n) => {
           const v = verifs[n];
           return (
             <button
               key={n}
               type="button"
-              onClick={() => setCible(n)}
-              className={cx('relative flex h-12 min-w-[48px] shrink-0 flex-col items-center justify-center rounded-xl font-num font-semibold rune-border', n === cible ? 'bg-gold text-bg' : 'bg-surface')}
+              onClick={() => {
+                setCible(n);
+                setVu(null);
+              }}
+              data-prochain={n === char.niveau + 1 ? '' : undefined}
+              className={cx('relative flex h-12 min-w-[48px] shrink-0 flex-col items-center justify-center rounded-xl font-num font-semibold rune-border', n === cible && vu === null ? 'bg-gold text-bg' : 'bg-surface')}
               aria-label={`Niveau ${n}`}
             >
               <span className="text-[10px] font-normal leading-none opacity-70">niv.</span>
@@ -132,6 +173,14 @@ export default function Planificateur({ char, maj, details }) {
         })}
       </div>
 
+      {chipsAcquis.length > 0 && vu === null && (
+        <p className="mt-1 px-1 font-ui text-xs text-muted">
+          <Check size={12} className="inline" aria-hidden="true" /> Touchez un niveau acquis pour revoir ses choix ou revenir en arrière et les corriger.
+        </p>
+      )}
+      {ficheAcquis}
+      {vu === null && (
+      <>
       <Card className="mt-3 p-3">
         <div className="flex items-center justify-between">
           <div>
@@ -249,6 +298,8 @@ export default function Planificateur({ char, maj, details }) {
           </>
         )}
       </Card>
+      </>
+      )}
 
       <ProgressionPicker open={picker} onClose={() => setPicker(false)} options={opts} onPick={ajouter} char={char} details={details} niveau={cible} libre={libre} recettes={recettes} />
     </div>
@@ -334,5 +385,65 @@ function PVNiveau({ lvl, setLvl, gainsPV, cible }) {
       </div>
       {manuel && <Stepper className="mt-2" value={lvl.pvBase} min={0} max={50} format={(v) => `+${v}`} onChange={(v) => setLvl((l) => ({ ...l, pvBase: v }))} />}
     </div>
+  );
+}
+
+/** Niveau déjà validé : rappel des choix et retour en arrière pour les corriger. */
+function NiveauAcquis({ char, n, details, onRevenir }) {
+  const h = (char.historique || []).find((x) => x.niveau === n);
+  const nb = char.niveau - n + 1;
+  const orph = ORPHELINS.find((o) => o.id === h?.orphelin);
+  return (
+    <Card className="mt-3 p-3">
+      <div className="flex items-center gap-2">
+        <span className="font-display text-xl text-goldsoft">
+          Niveau <span className="font-num">{n}</span>
+        </span>
+        <Badge tone="leaf">acquis</Badge>
+        {h?.date && <span className="ml-auto font-ui text-xs text-muted">{new Date(h.date).toLocaleDateString('fr-FR')}</span>}
+      </div>
+      {h ? (
+        <>
+          <ul className="mt-3 space-y-2">
+            {(h.picks || []).map((p, i) => {
+              const v = voieById[p.voieId];
+              const cap = v?.capacites.find((c) => c.rang === p.rang);
+              return (
+                <li key={i}>
+                  <button type="button" className="flex min-h-[52px] w-full items-center gap-2 rounded-xl bg-surface2 px-3 text-left rune-border" onClick={() => cap && details.cap(cap)}>
+                    <Hexa taille={30} petit>
+                      {p.rang}
+                    </Hexa>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-semibold">{cap?.nom || p.voieId}</span>
+                      <span className="block truncate font-ui text-xs text-muted">{v?.nom}</span>
+                    </span>
+                    <ActionBadge action={cap?.action} sort={cap?.sort} />
+                  </button>
+                </li>
+              );
+            })}
+            {!h.picks?.length && <li className="font-ui text-sm text-muted">Aucune capacité choisie à ce niveau.</li>}
+          </ul>
+          <p className="mt-2 font-ui text-sm text-muted">
+            PV de base : +{h.pvBase}
+            {h.manuel ? ' (saisi à la main)' : ''}
+            {orph ? ` · point orphelin : ${orph.label}` : ''}
+          </p>
+        </>
+      ) : (
+        <p className="mt-2 font-ui text-sm text-muted">Niveau réglé à la main : ses choix ne sont pas connus. Revenir en arrière baisse seulement le niveau ; ajustez ensuite les voies dans « Gérer les voies ».</p>
+      )}
+      <ConfirmBtn
+        className="mt-3 w-full"
+        confirmLabel={nb > 1 ? `Annuler les niveaux ${n} à ${char.niveau} ?` : `Annuler le niveau ${n} ?`}
+        onConfirm={() => onRevenir(n - 1)}
+      >
+        <Undo2 size={18} /> Revenir au niveau {n - 1} pour corriger
+      </ConfirmBtn>
+      <p className="mt-1 px-1 font-ui text-xs text-muted">
+        {nb > 1 ? `Les niveaux ${n} à ${char.niveau} sont annulés` : `Le niveau ${n} est annulé`} : rangs, PV et point orphelin retirés, choix remis dans le plan pour être corrigés puis revalidés.
+      </p>
+    </Card>
   );
 }

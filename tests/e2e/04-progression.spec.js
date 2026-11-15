@@ -99,3 +99,27 @@ test('PV de base d’un niveau corrigés après coup dans la fiche', async ({ pa
   await ligne.getByRole('button', { name: 'Valeur par défaut' }).click();
   expect((await perso(page)).historique[0]).toMatchObject({ pvBase: 5, manuel: false });
 });
+
+test('erreur de progression : revenir à un niveau inférieur, corriger, revalider', async ({ page }) => {
+  await choisir(page, 'Charge');
+  await choisir(page, 'Défier la mort');
+  await valider(page, 2);
+  await choisir(page, 'Enchaînement');
+  await valider(page, 3);
+  // niveau 2 acquis : ses choix sont consultables
+  await btn(page, 'Niveau 2 acquis').click();
+  await expect(page.getByText('Défier la mort')).toBeVisible();
+  await btn(page, /Revenir au niveau 1 pour corriger/).click();
+  await btn(page, /Annuler les niveaux 2 à 3/).click();
+  await expect(page.getByRole('banner')).toContainText('Niveau 1');
+  let c = await perso(page);
+  expect(c.voies).toEqual({ 'voie-de-l-humain': 1, 'voie-du-pourfendeur': 1, 'voie-de-la-rage': 1 });
+  expect(c.pv.actuel).toBe(12);
+  // les choix sont revenus dans le plan : on remplace Défier la mort
+  await btn(page, 'Retirer').nth(1).click();
+  await choisir(page, 'Vigueur');
+  await valider(page, 2);
+  c = await perso(page);
+  expect(c.voies).toMatchObject({ 'voie-du-pourfendeur': 2, 'voie-de-la-rage': 1, 'voie-du-pagne': 1 });
+  expect(c.plan[3].picks).toEqual([{ voieId: 'voie-du-pourfendeur', rang: 3 }]);
+});

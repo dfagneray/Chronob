@@ -218,22 +218,44 @@ function useRepeat() {
 // ---------------------------------------------------------------------------
 // Tiroir (bottom sheet) avec glisser-pour-fermer
 // ---------------------------------------------------------------------------
+/**
+ * Verrou du défilement de la page, partagé par tous les tiroirs ouverts : la page ne défile plus
+ * tant qu'au moins un tiroir est ouvert. (Mémoriser puis restaurer la valeur « précédente » de
+ * `overflow` laissait la page bloquée quand des tiroirs s'empilaient et se re-rendaient.)
+ */
+let tiroirsOuverts = 0;
+function verrouillerDefilement() {
+  if (tiroirsOuverts++ === 0) document.body.style.overflow = 'hidden';
+  return () => {
+    tiroirsOuverts = Math.max(0, tiroirsOuverts - 1);
+    if (tiroirsOuverts === 0) document.body.style.overflow = '';
+  };
+}
+
 export function Sheet({ open, onClose, title, children, footer, tall, label }) {
   const [dy, setDy] = useState(0);
   const start = useRef(null);
   const panel = useRef(null);
+  // onClose est souvent une fonction recréée à chaque rendu : on la lit via une ref pour ne pas
+  // relancer l'effet (et le verrou) à chaque rendu du parent.
+  const fermer = useRef(onClose);
+  fermer.current = onClose;
   useEffect(() => {
     if (!open) return;
     setDy(0);
-    const onKey = (e) => e.key === 'Escape' && onClose();
+    // Échap ne ferme que le tiroir du dessus (les fiches de détail s'empilent sur l'assistant de création)
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return;
+      const dialogues = document.querySelectorAll('[role="dialog"]');
+      if (!panel.current || dialogues[dialogues.length - 1]?.contains(panel.current)) fermer.current?.();
+    };
     window.addEventListener('keydown', onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const deverrouiller = verrouillerDefilement();
     return () => {
       window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prev;
+      deverrouiller();
     };
-  }, [open, onClose]);
+  }, [open]);
   if (!open) return null;
   const onStart = (e) => {
     start.current = e.touches[0].clientY;

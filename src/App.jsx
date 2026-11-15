@@ -63,6 +63,11 @@ export default function App() {
     []
   );
   const fermerDetail = useCallback(() => setDetail(null), []);
+  // depuis l'assistant de création : fiches sans lien avec le héros actif (pas de capacités « acquises »)
+  const detailsCreation = useMemo(() => Object.fromEntries(Object.keys(details).map((k) => [k, (data) => setDetail({ type: k, data, neutre: true })])), [details]);
+  const persoDetail = detail?.neutre ? null : actif;
+  // navigation entre fiches (voie → capacité…) en gardant le contexte (création ou héros actif)
+  const suivre = useMemo(() => ({ voie: (data) => setDetail((x) => ({ type: 'voie', data, neutre: x?.neutre })), cap: (data) => setDetail((x) => ({ type: 'cap', data, neutre: x?.neutre })) }), []);
 
   const toggleUse = (cap) => maj((c) => ({ ...c, utilise: { ...(c.utilise || {}), [cap.id]: !c.utilise?.[cap.id] } }));
   const toggleMod = (cap, i) =>
@@ -149,24 +154,27 @@ export default function App() {
         </nav>
       </div>
 
-      {/* Fiches de détail partagées */}
-      <CapaciteSheet cap={detail?.type === 'cap' ? detail.data : null} open={detail?.type === 'cap'} onClose={fermerDetail} char={actif} onToggleUse={toggleUse} onToggleMod={toggleMod} onChoix={(cap, txt) => maj((c) => ({ ...c, choix: { ...(c.choix || {}), [cap.id]: txt } }))} onOpenVoie={details.voie} />
-      <VoieSheet voie={detail?.type === 'voie' ? detail.data : null} open={detail?.type === 'voie'} onClose={fermerDetail} char={actif} onOpenCap={details.cap} />
-      <ProfilSheet profil={detail?.type === 'profil' ? detail.data : null} open={detail?.type === 'profil'} onClose={fermerDetail} onOpenVoie={details.voie} />
-      <PeupleSheet peuple={detail?.type === 'peuple' ? detail.data : null} open={detail?.type === 'peuple'} onClose={fermerDetail} onOpenVoie={details.voie} />
-      <EquipSheet item={detail?.type === 'equip' ? detail.data : null} open={detail?.type === 'equip'} onClose={fermerDetail} />
-      <EtatSheet etat={detail?.type === 'etat' ? detail.data : null} open={detail?.type === 'etat'} onClose={fermerDetail} />
-      <RegleSheet regle={detail?.type === 'regle' ? detail.data : null} open={detail?.type === 'regle'} onClose={fermerDetail} />
-
       <Creation
         open={creation}
         onClose={() => setCreation(false)}
+        details={detailsCreation}
         onCreate={(c) => {
           store.ajouter(c);
           setCreation(false);
           setTab('perso');
         }}
       />
+
+      {/* Fiches de détail partagées */}
+      {/* (rendues après l'assistant de création pour s'afficher par-dessus) */}
+      <CapaciteSheet cap={detail?.type === 'cap' ? detail.data : null} open={detail?.type === 'cap'} onClose={fermerDetail} char={persoDetail} onToggleUse={toggleUse} onToggleMod={toggleMod} onChoix={(cap, txt) => maj((c) => ({ ...c, choix: { ...(c.choix || {}), [cap.id]: txt } }))} onOpenVoie={suivre.voie} />
+      <VoieSheet voie={detail?.type === 'voie' ? detail.data : null} open={detail?.type === 'voie'} onClose={fermerDetail} char={persoDetail} onOpenCap={suivre.cap} />
+      <ProfilSheet profil={detail?.type === 'profil' ? detail.data : null} open={detail?.type === 'profil'} onClose={fermerDetail} onOpenVoie={suivre.voie} />
+      <PeupleSheet peuple={detail?.type === 'peuple' ? detail.data : null} open={detail?.type === 'peuple'} onClose={fermerDetail} onOpenVoie={suivre.voie} />
+      <EquipSheet item={detail?.type === 'equip' ? detail.data : null} open={detail?.type === 'equip'} onClose={fermerDetail} />
+      <EtatSheet etat={detail?.type === 'etat' ? detail.data : null} open={detail?.type === 'etat'} onClose={fermerDetail} />
+      <RegleSheet regle={detail?.type === 'regle' ? detail.data : null} open={detail?.type === 'regle'} onClose={fermerDetail} />
+
       {actif && <Journal open={journal} onClose={() => setJournal(false)} />}
       {actif && <EditCharacter open={edit} onClose={() => setEdit(false)} char={actif} maj={maj} d={d} />}
 

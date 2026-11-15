@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ChevronLeft, ChevronRight, Check, Wand2, BookOpen, Info, Coins } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Wand2, BookOpen, Info, Coins, BookText } from 'lucide-react';
 import { Sheet, Btn, Chip, Card, Badge, cx, Stepper, SectionTitle } from './ui.jsx';
 import { peuples, profils, peupleById, profilById, voieById, voiesDomaine, familles, CARACS, CARAC_NOMS, equipById, SOURCES, sourceDe } from '../data/index.js';
 import { SERIES, deriver, fmt } from '../lib/rules.js';
@@ -51,7 +51,27 @@ function equipementDepart(profil) {
   return ids;
 }
 
-export default function Creation({ open, onClose, onCreate }) {
+/**
+ * Carte de choix : la zone principale sélectionne, le bouton de droite ouvre la description complète
+ * (fiche de détail affichée par-dessus l'assistant).
+ */
+function CarteChoix({ actif, onClick, onInfo, infoLabel, children }) {
+  return (
+    <div className={cx('flex items-stretch overflow-hidden rounded-xl rune-border', actif ? 'border-gold bg-gold/15' : 'bg-surface')}>
+      <button type="button" onClick={onClick} aria-pressed={actif} className="min-w-0 flex-1 p-3 text-left active:bg-surface2">
+        {children}
+      </button>
+      {onInfo && (
+        <button type="button" onClick={onInfo} aria-label={infoLabel} title={infoLabel} className="flex w-12 shrink-0 flex-col items-center justify-center gap-0.5 border-l border-line font-ui text-[10px] text-gold active:bg-surface2">
+          <BookText size={18} aria-hidden="true" />
+          Lire
+        </button>
+      )}
+    </div>
+  );
+}
+
+export default function Creation({ open, onClose, onCreate, details }) {
   const [etape, setEtape] = useState(0);
   const [nom, setNom] = useState('');
   const [peupleId, setPeupleId] = useState('humain');
@@ -242,16 +262,17 @@ export default function Creation({ open, onClose, onCreate }) {
           <SectionTitle>{src === 'ldr' ? 'Peuple' : `Peuples optionnels — ${titreSource}`}</SectionTitle>
           <div className="space-y-2">
             {peuples.filter((p) => sourceDe(p) === src).map((p) => (
-              <button
+              <CarteChoix
                 key={p.id}
-                type="button"
+                actif={peupleId === p.id}
                 onClick={() => {
                   setPeupleId(p.id);
                   setVoiePeupleDE(p.voies[0]);
                   setPlus(null);
                   setMoins(null);
                 }}
-                className={cx('w-full rounded-xl p-3 text-left rune-border', peupleId === p.id ? 'bg-gold/15 border-gold' : 'bg-surface')}
+                onInfo={details && (() => details.peuple(p))}
+                infoLabel={`Description complète du peuple ${p.nom}`}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-display text-[18px]">{p.nom}</span>
@@ -259,7 +280,7 @@ export default function Creation({ open, onClose, onCreate }) {
                 </div>
                 <div className="font-ui text-xs text-muted">{p.modificateurs}</div>
                 <div className="mt-1 line-clamp-2 text-[15px]">{p.description.split('\n')[0]}</div>
-              </button>
+              </CarteChoix>
             ))}
           </div>
           </div>
@@ -275,6 +296,11 @@ export default function Creation({ open, onClose, onCreate }) {
                   </Chip>
                 ))}
               </div>
+              {details && (
+                <Btn small variant="outline" className="mt-2 w-full" onClick={() => details.voie(voieById[voiePeuple])}>
+                  <BookText size={16} /> Lire la {voieById[voiePeuple]?.nom.charAt(0).toLowerCase() + voieById[voiePeuple]?.nom.slice(1)}
+                </Btn>
+              )}
             </Card>
           )}
         </>
@@ -326,6 +352,22 @@ export default function Creation({ open, onClose, onCreate }) {
             )}
           </div>
         ))}
+
+      {etape === 1 && profil && (
+        <Card className="sticky bottom-0 mt-4 p-3 shadow-lg">
+          <div className="flex items-center gap-2">
+            <IconeProfil id={profil.id} size={20} className="shrink-0 text-gold" aria-hidden="true" />
+            <span className="font-display text-[17px]">{profil.nom}</span>
+            <span className="font-ui text-xs text-muted">{familles[famille]?.nom || 'famille à choisir'}</span>
+          </div>
+          <p className="mt-1 line-clamp-2 text-[14px] text-muted">{profil.description.split('\n')[0]}</p>
+          {details && (
+            <Btn small variant="outline" className="mt-2 w-full" onClick={() => details.profil(profil)}>
+              <BookText size={16} /> Description complète, armes et voies du {profil.nom.toLowerCase()}
+            </Btn>
+          )}
+        </Card>
+      )}
 
       {etape === 2 && (
         <>
@@ -435,14 +477,15 @@ export default function Creation({ open, onClose, onCreate }) {
               const v = voieById[id];
               const on = voiesChoisies.includes(id);
               return (
-                <button
+                <CarteChoix
                   key={id}
-                  type="button"
+                  actif={on}
                   onClick={() => {
                     setVoiesChoisies((l) => (on ? l.filter((x) => x !== id) : l.length < 2 ? [...l, id] : [l[1], id]));
                     if (on && rang2Mage === id) setRang2Mage(null);
                   }}
-                  className={cx('w-full rounded-xl p-3 text-left rune-border', on ? 'bg-gold/15 border-gold' : 'bg-surface')}
+                  onInfo={details && (() => details.voie(v))}
+                  infoLabel={`Toutes les capacités de la ${v.nom.charAt(0).toLowerCase() + v.nom.slice(1)}`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-display text-[17px]">{v.nom}</span>
@@ -452,7 +495,10 @@ export default function Creation({ open, onClose, onCreate }) {
                     1. {v.capacites[0].nom} {v.capacites[0].sort ? '✦' : ''}
                   </div>
                   <div className="mt-1 line-clamp-2 text-[14px] text-muted">{v.capacites[0].description}</div>
-                </button>
+                  <div className="mt-1 font-ui text-[11px] text-muted" aria-hidden="true">
+                    Ensuite : {v.capacites.slice(1).map((c) => `${c.rang}. ${c.nom}${c.sort ? ' ✦' : ''}`).join(' · ')}
+                  </div>
+                </CarteChoix>
               );
             })}
           </div>
@@ -473,9 +519,16 @@ export default function Creation({ open, onClose, onCreate }) {
                   </select>
                 </label>
                 {domaine && (
-                  <p className="mt-2 text-[14px]">
-                    1. {voieById[domaine].capacites[0].nom} : <span className="text-muted">{voieById[domaine].capacites[0].description}</span>
-                  </p>
+                  <>
+                    <p className="mt-2 text-[14px]">
+                      1. {voieById[domaine].capacites[0].nom} : <span className="text-muted">{voieById[domaine].capacites[0].description}</span>
+                    </p>
+                    {details && (
+                      <Btn small variant="outline" className="mt-2 w-full" onClick={() => details.voie(voieById[domaine])}>
+                        <BookText size={16} /> Lire la {voieById[domaine].nom.charAt(0).toLowerCase() + voieById[domaine].nom.slice(1)}
+                      </Btn>
+                    )}
+                  </>
                 )}
               </Card>
             </>

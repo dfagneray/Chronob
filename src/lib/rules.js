@@ -497,7 +497,7 @@ export function validerNiveau(char) {
     orphelins,
     plan,
     demiPV: g.demiPV,
-    historique: [...(char.historique || []).filter((h) => h.niveau !== n), { niveau: n, pvBase: g.pv, pvCalcule: g.auto, manuel: g.manuel, picks: lvl.picks, orphelin: lvl.orphelin || null, date: new Date().toISOString() }],
+    historique: [...(char.historique || []).filter((h) => h.niveau !== n), { niveau: n, pvBase: g.pv, pvCalcule: g.auto, manuel: g.manuel, picks: lvl.picks, orphelin: lvl.orphelin || null, demiPVAvant: !!char.demiPV, date: new Date().toISOString() }],
   };
   const apres = deriver(next);
   next.pv = { ...next.pv, actuel: Math.min(apres.pvMax, (char.pv?.actuel ?? avant.pvMax) + (apres.pvMax - avant.pvMax)) };
@@ -506,6 +506,61 @@ export function validerNiveau(char) {
   next.pc = { actuel: apres.pcMax }; // les PC sont récupérés intégralement à chaque passage de niveau (p. 205)
   next.dr = { actuel: Math.min(apres.drMax, (char.dr?.actuel ?? apres.drMax) + Math.max(0, apres.drMax - avant.drMax)) };
   return next;
+}
+
+/**
+ * Annule le dernier passage de niveau : retire les rangs gagnés, le point orphelin et le gain de PV,
+ * et remet les choix de ce niveau dans le plan pour pouvoir les corriger puis revalider.
+ * Sans historique pour ce niveau (niveau saisi à la main), seul le niveau baisse.
+ */
+export function annulerNiveau(char) {
+  const n = char.niveau;
+  if (n <= 1) return char;
+  const h = (char.historique || []).find((x) => x.niveau === n);
+  const avant = deriver(char);
+  const voies = { ...(char.voies || {}) };
+  const orphelins = { ...(char.orphelins || {}) };
+  const plan = { ...(char.plan || {}) };
+  if (h) {
+    // rang le plus bas acquis à ce niveau, par voie (un niveau peut donner les rangs 1 et 2 d'une même voie)
+    const plusBas = {};
+    for (const p of h.picks || []) plusBas[p.voieId] = Math.min(plusBas[p.voieId] ?? Infinity, p.rang);
+    for (const [id, r] of Object.entries(plusBas)) {
+      if ((voies[id] || 0) < r) continue; // déjà retiré à la main
+      if (r - 1 < premierRang(voieById[id])) delete voies[id];
+      else voies[id] = r - 1;
+    }
+    if (h.orphelin) {
+      orphelins[h.orphelin] = (orphelins[h.orphelin] || 0) - 1;
+      if (orphelins[h.orphelin] <= 0) delete orphelins[h.orphelin];
+    }
+    plan[n] = { picks: h.picks || [], orphelin: h.orphelin || null, ...(h.manuel ? { pvBase: h.pvBase } : {}) };
+  }
+  const next = {
+    ...char,
+    niveau: n - 1,
+    voies,
+    orphelins,
+    plan,
+    demiPV: typeof h?.demiPVAvant === 'boolean' ? h.demiPVAvant : char.demiPV,
+    historique: (char.historique || []).filter((x) => x.niveau !== n),
+  };
+  const apres = deriver(next);
+  const borne = (cur, max) => Math.min(max, cur ?? max);
+  const pv = char.pv?.actuel ?? avant.pvMax;
+  next.pv = { ...char.pv, actuel: Math.min(apres.pvMax, Math.max(pv > 0 ? 1 : 0, pv - Math.max(0, avant.pvMax - apres.pvMax))) };
+  next.pm = { actuel: borne(char.pm?.actuel, apres.pmMax) };
+  next.pe = { actuel: borne(char.pe?.actuel, apres.peMax) };
+  next.pc = { actuel: borne(char.pc?.actuel, apres.pcMax) };
+  next.dr = { actuel: borne(char.dr?.actuel, apres.drMax) };
+  return next;
+}
+
+/** Annule les niveaux jusqu'à revenir au niveau `cible`. */
+export function revenirAuNiveau(char, cible) {
+  let c = char;
+  while (c.niveau > Math.max(1, cible)) c = annulerNiveau(c);
+  return c;
 }
 
 /** Fréquence d'utilisation détectée (une fois par combat / jour). */

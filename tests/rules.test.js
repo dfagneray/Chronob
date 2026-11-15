@@ -12,6 +12,8 @@ import {
   simulerPlan,
   voiesApresPlan,
   valeurMod,
+  annulerNiveau,
+  revenirAuNiveau,
 } from '../src/lib/rules.js';
 import { personnageVide } from '../src/lib/store.jsx';
 import { lhagva, ionas, item, planifier } from './helpers.js';
@@ -373,5 +375,46 @@ describe('Postures de combat (options tactiques p. 216, sprint p. 211)', () => {
   });
   it('la DEF de base (hors états et posture) reste affichée à part', () => {
     expect(deriver({ ...lhagva(), posture: 'defense-totale' }).defBase).toBe(16);
+  });
+});
+
+describe('Annuler un passage de niveau (correction d’une erreur)', () => {
+  const c1 = lhagva();
+  const c2 = validerNiveau(planifier(c1, 2, [{ voieId: 'voie-de-la-rage', rang: 2 }, { voieId: 'voie-du-pourfendeur', rang: 2 }]));
+  const c3 = validerNiveau(planifier(c2, 3, [{ voieId: 'voie-de-la-rage', rang: 3 }]));
+
+  it('le niveau annulé rend ses rangs, ses PV et repasse dans le plan', () => {
+    const r = annulerNiveau(c3);
+    expect(r.niveau).toBe(2);
+    expect(r.voies).toEqual(c2.voies);
+    expect(r.plan[3].picks).toEqual([{ voieId: 'voie-de-la-rage', rang: 3 }]);
+    expect(deriver(r).pvMax).toBe(deriver(c2).pvMax);
+    expect(r.historique.map((h) => h.niveau)).toEqual([2]);
+  });
+
+  it('corriger puis revalider', () => {
+    let r = annulerNiveau(c3);
+    r = planifier(r, 3, [{ voieId: 'voie-de-l-humain', rang: 2 }, { voieId: 'voie-du-pourfendeur', rang: 3 }].slice(1));
+    expect(verifierNiveau(r, 3).ok).toBe(true);
+    r = validerNiveau(r);
+    expect(r.voies['voie-du-pourfendeur']).toBe(3);
+    expect(r.voies['voie-de-la-rage']).toBe(2);
+  });
+
+  it('revenir plusieurs niveaux en arrière ; les voies ouvertes à un niveau disparaissent', () => {
+    const r = revenirAuNiveau(c3, 1);
+    expect(r.niveau).toBe(1);
+    expect(r.voies).toEqual(c1.voies);
+    expect(Object.keys(r.plan).map(Number)).toEqual([2, 3]);
+    expect(r.pv.actuel).toBeLessThanOrEqual(deriver(r).pvMax);
+    const ouvert = validerNiveau(planifier(c1, 2, [{ voieId: 'voie-du-colosse', rang: 1 }, { voieId: 'voie-de-la-rage', rang: 2 }]));
+    expect(annulerNiveau(ouvert).voies['voie-du-colosse']).toBeUndefined();
+  });
+
+  it('point orphelin rendu ; niveau réglé à la main : seul le niveau baisse', () => {
+    const o = validerNiveau(planifier(c1, 2, [{ voieId: 'voie-de-la-rage', rang: 2 }], { orphelin: 'PC' }));
+    expect(annulerNiveau(o).orphelins).toEqual({});
+    const manuel = { ...c1, niveau: 4 };
+    expect(annulerNiveau(manuel)).toMatchObject({ niveau: 3, voies: c1.voies });
   });
 });

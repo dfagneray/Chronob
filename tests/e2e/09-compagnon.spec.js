@@ -64,3 +64,26 @@ test('encyclopédie : filtre par ouvrage et références de page du Compagnon', 
   await btn(page, /^Minotaure/).first().click();
   await expect(page.getByRole('dialog', { name: 'Minotaure' })).toContainText('Compagnon p. 29');
 });
+
+test('création : description complète des peuples, profils et voies par-dessus l’assistant', async ({ page }) => {
+  await btn(page, 'Créer un personnage').first().click();
+  await btn(page, 'Description complète du peuple Wolfer').click();
+  await expect(page.getByRole('dialog', { name: 'Wolfer' })).toContainText('Espérance de vie');
+  await btn(page, 'Voie du wolfer').click();
+  await expect(page.getByRole('dialog', { name: 'Voie du wolfer' })).toBeVisible();
+  await btn(page, 'Fermer').last().click();
+  // l'assistant est toujours là, sans perte de saisie
+  await expect(page.getByRole('dialog', { name: /Nouveau héros/ })).toBeVisible();
+  await btn(page, /^Wolfer/).click();
+  await btn(page, 'Suivant').click();
+  await btn(page, /^Chamane/).click();
+  await btn(page, /Description complète, armes et voies du chamane/).click();
+  await expect(page.getByRole('dialog', { name: 'Chamane' })).toContainText('Armes & armures maîtrisées');
+  await btn(page, 'Fermer').last().click();
+  await btn(page, 'Suivant').click();
+  await btn(page, /Méthode rapide/).click();
+  await btn(page, 'PER', { exact: true }).click();
+  await btn(page, 'Suivant').click();
+  await btn(page, /Toutes les capacités de la voie de l’esprit animal/).click();
+  await expect(page.getByRole('dialog', { name: 'Voie de l’esprit animal' })).toContainText('Esprit du loup');
+});
